@@ -111,6 +111,8 @@ class RAGPipeline:
         """
         logger.info("Query: %s", question[:100])
 
+        start = time.time()
+
         # Step 1: Embed the query
         query_embedding = self._embeddings.embed_query(question)
 
@@ -134,7 +136,8 @@ class RAGPipeline:
         prompt = self._build_prompt(question, context)
         answer = self._generate_with_retry(prompt)
 
-        logger.info("Query answered, %d sources used", len(results))
+        logger.info("Query answered in %dms, %d sources used",
+            int((time.time() - start) * 1000), len(results))
         return QueryResult(answer=answer, sources=results, query=question)
 
     def _generate_with_retry(self, prompt: str, max_retries: int = 3) -> str:

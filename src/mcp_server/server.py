@@ -149,10 +149,8 @@ def get_config_resource() -> str:
 
 def main() -> None:
     """Start the MCP server."""
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    )
+    from src.logging_config import setup_logging
+    setup_logging(json_output=False, level=logging.INFO)
     logger.info("Starting RAG MCP Server...")
     mcp.run()
 
