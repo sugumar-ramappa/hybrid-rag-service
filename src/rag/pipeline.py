@@ -109,6 +109,8 @@ class RAGPipeline:
         3. Build a prompt with context
         4. Ask Gemini to answer
         """
+        logger.info("Query: %s", question[:100])
+
         # Step 1: Embed the query
         query_embedding = self._embeddings.embed_query(question)
 
@@ -132,6 +134,7 @@ class RAGPipeline:
         prompt = self._build_prompt(question, context)
         answer = self._generate_with_retry(prompt)
 
+        logger.info("Query answered, %d sources used", len(results))
         return QueryResult(answer=answer, sources=results, query=question)
 
     def _generate_with_retry(self, prompt: str, max_retries: int = 3) -> str:
