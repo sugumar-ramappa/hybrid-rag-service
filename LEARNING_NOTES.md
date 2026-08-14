@@ -48,11 +48,11 @@ Layer 1: RAG Pipeline         → "Load → chunk → embed → store → search
 |-----|-------|--------|
 | 15 | Structured logging + monitoring | ✅ Done |
 | 16 | Input validation + security | ✅ Done |
-| 17 | Docker containerization | ⬜ |
-| 18 | Cloud Run deployment (switch to Vertex AI) | ⬜ |
-| 19 | CI/CD with GitHub Actions | ⬜ |
-| 20 | Load testing + optimization | ⬜ |
-| 21 | Documentation + final review | ⬜ |
+| 17 | Docker containerization | ✅ Done |
+| 18 | Cloud Run deployment (switch to Vertex AI) | ⏭ Skipped (needs GCP account) |
+| 19 | CI/CD with GitHub Actions | ⏭ Skipped (no deploy target) |
+| 20 | Load testing + optimization | ⏭ Skipped |
+| 21 | Documentation + final review | ✅ Done |
 
 ---
 
