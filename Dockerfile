@@ -15,6 +15,7 @@ RUN mkdir -p data/chroma_db
 
 # Run as non-root user (security best practice)
 RUN useradd --create-home appuser
+RUN chown -R appuser:appuser /app/data
 USER appuser
 
 # Default: run the MCP server
