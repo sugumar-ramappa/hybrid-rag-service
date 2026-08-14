@@ -462,6 +462,85 @@ pipeline.ingest_documents()
 
 ---
 
+## Week 3: Production (Aug 14, 2026)
+
+### What is structured logging?
+- JSON-formatted logs that machines can parse (Grafana, CloudWatch, etc.)
+- Dev mode: `2026-08-14 [INFO] pipeline: Query: What is Python?` (human-readable)
+- Prod mode: `{"timestamp":"...","level":"INFO","message":"Query: What is Python?"}` (JSON)
+- Switch with `setup_logging(json_output=True/False)`.
+- Java equivalent: Logback with `JsonEncoder` vs `PatternLayout`.
+
+### What is OWASP?
+- Open Web Application Security Project — publishes top 10 security risks.
+- Our protections: input validation (OWASP #3), path traversal (OWASP #1), secrets in env vars (OWASP #2).
+
+### What is `top_k` validation?
+- `top_k` = how many search results to return from ChromaDB.
+- Clamped to 1-20: `max(1, min(top_k, 20))` prevents zero results or excessive token usage.
+- Java equivalent: `@Min(1) @Max(20)`.
+
+### What is path traversal protection?
+- Attack: symlink inside `documents/` pointing to `/etc/passwd`.
+- Protection: `file_path.resolve().is_relative_to(documents_dir.resolve())`.
+- Java equivalent: `path.normalize().startsWith(baseDir)`.
+- In our project: low risk (we control the folder), but defensive coding for production reuse.
+
+### What is Docker layer caching?
+- Copy `requirements.txt` BEFORE code → deps layer cached if unchanged.
+- Code changes don't re-trigger `pip install` (saves minutes on rebuild).
+- Same concept as Maven dependency caching in Java Docker builds.
+
+### Why non-root user in Docker?
+- `RUN useradd appuser` + `USER appuser` — never run as root.
+- If app is hacked, attacker only has limited permissions.
+- `chown -R appuser /app/data` needed for ChromaDB write access.
+
+### Why absolute paths failed in Docker?
+- `.env` had `/Users/sugumar/.../documents` — doesn't exist inside container.
+- Fix: override with `-e DOCUMENTS_DIR=./documents` at runtime.
+- Container filesystem starts at `/app/` — relative paths work inside it.
+
+### What is Streamlit?
+- Python library for building web UIs with ~20 lines of code.
+- `st.chat_input()` = input box, `st.chat_message()` = chat bubble, `st.session_state` = memory.
+- Good for internal tools, demos, MVPs. Not for millions of users.
+- Java equivalent: Vaadin or Thymeleaf (but much less code).
+
+### What is FastAPI?
+- Python's Spring Boot — framework for building REST APIs.
+- `@app.post("/query")` = `@PostMapping("/query")`.
+- Auto-generates Swagger docs at `/docs`.
+- Uses Pydantic for validation (like Lombok + Bean Validation).
+- `uvicorn api:app --reload` = run the server with auto-restart.
+
+### What is Pydantic?
+- Data validation library. Java equivalent: Lombok + `@Valid` annotations.
+- `BaseModel` = DTO class. `Field(min_length=1, max_length=2000)` = `@NotBlank @Size(max=2000)`.
+- Auto-converts JSON → Python objects and validates on the way in.
+
+### What does `uvicorn api:app --reload` mean?
+- `uvicorn` = ASGI server (like Tomcat). `api` = file name. `app` = FastAPI instance.
+- `--reload` = auto-restart on code change (like Spring DevTools).
+
+### MCP vs FastAPI vs Streamlit — when to use?
+- **MCP Server**: API for AI (Claude, VS Code call it via stdio/JSON).
+- **FastAPI**: API for apps (mobile apps, Slack bots call it via HTTP REST).
+- **Streamlit**: UI for humans (browser chat interface).
+
+### What is fine-tuning vs RAG?
+- **RAG**: search docs at query time. Data stays external. Update anytime.
+- **Fine-tuning**: train model on your data. Knowledge baked in permanently. Expensive ($50-500+).
+- RAG = looking up answers in a database. Fine-tuning = compiling knowledge into the app.
+- Use RAG for factual Q&A. Use fine-tuning for style/tone/domain expertise.
+
+### What is Vertex AI?
+- Google Cloud's managed AI platform. Same Gemini models as AI Studio.
+- Needs GCP account + credit card. Code change: swap `api_key=` for `vertexai=True`.
+- Only needed for production deployment at scale, SLA guarantees, or VPC isolation.
+
+---
+
 ## Day 4: embeddings.py
 
 ### What does EmbeddingService do?

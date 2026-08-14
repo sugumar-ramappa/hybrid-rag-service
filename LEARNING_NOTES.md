@@ -54,6 +54,13 @@ Layer 1: RAG Pipeline         → "Load → chunk → embed → store → search
 | 20 | Load testing + optimization | ⏭ Skipped |
 | 21 | Documentation + final review | ✅ Done |
 
+### Bonus (beyond 3-week plan)
+| Topic | Status |
+|-------|--------|
+| Streamlit chat UI (app.py) | ✅ Done |
+| FastAPI REST API (api.py) | ✅ Done |
+| GitHub repo setup (personal account) | ✅ Done |
+
 ---
 
 ## Setup Status
