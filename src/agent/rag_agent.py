@@ -59,6 +59,11 @@ def search_knowledge_base(query: str) -> dict:
     Returns:
         A dictionary with the answer and source information.
     """
+    if not query or not query.strip():
+        return {"error": "Query cannot be empty", "query": query}
+    if len(query) > 2000:
+        return {"error": f"Query too long ({len(query)} chars, max 2000)", "query": query}
+
     config = get_config()
     pipeline = _ensure_pipeline(config)
     try:

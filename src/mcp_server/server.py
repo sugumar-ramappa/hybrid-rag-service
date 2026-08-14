@@ -52,6 +52,10 @@ def _get_pipeline() -> RAGPipeline:
 # ──────────────────────────────────────────────
 
 
+_MAX_QUERY_LENGTH = 2000
+_MAX_TOP_K = 20
+
+
 @mcp.tool()
 def search_documents(
     query: Annotated[str, "The question to search for in the documents"],
@@ -64,6 +68,12 @@ def search_documents(
     The tool searches through all ingested documents and returns a comprehensive answer
     with source citations.
     """
+    if not query or not query.strip():
+        return "Error: query cannot be empty."
+    if len(query) > _MAX_QUERY_LENGTH:
+        return f"Error: query too long ({len(query)} chars, max {_MAX_QUERY_LENGTH})."
+    top_k = max(1, min(top_k, _MAX_TOP_K))
+
     try:
         pipeline = _get_pipeline()
         result = pipeline.query(query)

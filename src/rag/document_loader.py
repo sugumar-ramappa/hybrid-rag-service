@@ -59,6 +59,12 @@ class DocumentLoader:
         documents: list[Document] = []
 
         for file_path in sorted(self._documents_dir.iterdir()):
+            # Skip hidden files and prevent path traversal
+            if file_path.name.startswith("."):
+                continue
+            if not file_path.resolve().is_relative_to(self._documents_dir.resolve()):
+                logger.warning("Skipping file outside documents dir: %s", file_path.name)
+                continue
             if file_path.suffix.lower() in self.SUPPORTED_EXTENSIONS:
                 try:
                     docs = self._load_file(file_path)
