@@ -46,8 +46,8 @@ Layer 1: RAG Pipeline         → "Load → chunk → embed → store → search
 ### Week 3: Production + Deploy
 | Day | Topic | Status |
 |-----|-------|--------|
-| 15 | Structured logging + monitoring | ⬜ |
-| 16 | Input validation + security | ⬜ |
+| 15 | Structured logging + monitoring | ✅ Done |
+| 16 | Input validation + security | ✅ Done |
 | 17 | Docker containerization | ⬜ |
 | 18 | Cloud Run deployment (switch to Vertex AI) | ⬜ |
 | 19 | CI/CD with GitHub Actions | ⬜ |
