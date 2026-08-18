@@ -63,10 +63,12 @@ class RAGPipeline:
         self._embeddings = EmbeddingService(
             api_key=config.gemini.api_key,
             model_name=config.gemini.embedding_model,
+            dimensions=config.gemini.embedding_dim,
         )
         self._vector_store = VectorStore(
-            persist_dir=config.rag.chroma_persist_dir,
-            collection_name=config.rag.collection_name,
+            database_url=config.database.url,
+            embedding_dim=config.gemini.embedding_dim,
+            embedding_model=config.gemini.embedding_model,
         )
         self._model_name = config.gemini.model_name
 
