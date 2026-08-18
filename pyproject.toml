@@ -1,5 +1,5 @@
 [project]
-name = "rag-mcp-server"
+name = "hybrid-rag-service"
 version = "0.1.0"
 description = "A RAG pipeline exposed as an MCP server using Google ADK and Gemini"
 requires-python = ">=3.11"

@@ -1,4 +1,4 @@
-# RAG MCP Gemini
+# Hybrid RAG Service
 
 A Smart Document Q&A System that combines RAG (Retrieval Augmented Generation), MCP (Model Context Protocol), and Google ADK Agent.
 
@@ -123,8 +123,8 @@ uvicorn api:app --reload
 
 ### 1. Clone and setup
 ```bash
-git clone https://github.com/sugumar-ramappa/rag-mcp-gemini.git
-cd rag-mcp-gemini
+git clone https://github.com/sugumar-ramappa/hybrid-rag-service.git
+cd hybrid-rag-service
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -152,11 +152,11 @@ uvicorn api:app --reload                             # REST API
 
 ### 5. Docker
 ```bash
-docker build -t rag-mcp-gemini .
+docker build -t hybrid-rag-service .
 docker run --env-file .env \
   -e DOCUMENTS_DIR=./documents \
   -e CHROMA_PERSIST_DIR=./data/chroma_db \
-  rag-mcp-gemini sh -c "python -m scripts.ingest && python -m scripts.query 'What is Python?'"
+  hybrid-rag-service sh -c "python -m scripts.ingest && python -m scripts.query 'What is Python?'"
 ```
 
 ## Project Structure
