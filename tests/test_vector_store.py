@@ -3,8 +3,18 @@
 import tempfile
 from pathlib import Path
 
-from src.rag.text_splitter import TextChunk
+from src.rag.text_splitter import TextChunk, _make_chunk_id
 from src.rag.vector_store import VectorStore
+
+
+def chunk(content: str, source: str = "test.txt", index: int = 0) -> TextChunk:
+    """Build a TextChunk the same way TextSplitter would."""
+    return TextChunk(
+        content=content,
+        metadata={"source": source, "chunk_index": index},
+        chunk_index=index,
+        chunk_id=_make_chunk_id(source, index, content),
+    )
 
 
 def test_add_and_search() -> None:
@@ -14,8 +24,8 @@ def test_add_and_search() -> None:
 
         # Create test chunks with fake embeddings
         chunks = [
-            TextChunk(content="Python is great", metadata={"source": "a.txt"}, chunk_index=0),
-            TextChunk(content="Java is also great", metadata={"source": "b.txt"}, chunk_index=1),
+            chunk("Python is great", source="a.txt", index=0),
+            chunk("Java is also great", source="b.txt", index=0),
         ]
         # Simple fake embeddings (3 dimensions)
         embeddings = [
@@ -46,10 +56,7 @@ def test_clear_store() -> None:
     with tempfile.TemporaryDirectory() as tmp_dir:
         store = VectorStore(persist_dir=tmp_dir, collection_name="clear_test")
 
-        chunks = [
-            TextChunk(content="test", metadata={"source": "a.txt"}, chunk_index=0),
-        ]
-        store.add_chunks(chunks, [[1.0, 0.0]])
+        store.add_chunks([chunk("test", source="a.txt")], [[1.0, 0.0]])
 
         assert store.get_document_count() == 1
         store.clear()
@@ -61,11 +68,8 @@ def test_mismatched_chunks_and_embeddings() -> None:
     with tempfile.TemporaryDirectory() as tmp_dir:
         store = VectorStore(persist_dir=tmp_dir, collection_name="mismatch_test")
 
-        chunks = [
-            TextChunk(content="test", metadata={}, chunk_index=0),
-        ]
         try:
-            store.add_chunks(chunks, [[1.0], [2.0]])  # 1 chunk, 2 embeddings
+            store.add_chunks([chunk("test")], [[1.0], [2.0]])  # 1 chunk, 2 embeddings
             assert False, "Should have raised ValueError"
         except ValueError:
             pass  # Expected
@@ -76,14 +80,9 @@ def test_metadata_preserved() -> None:
     with tempfile.TemporaryDirectory() as tmp_dir:
         store = VectorStore(persist_dir=tmp_dir, collection_name="meta_test")
 
-        chunks = [
-            TextChunk(
-                content="Test content",
-                metadata={"source": "doc.pdf", "page": 5},
-                chunk_index=0,
-            ),
-        ]
-        store.add_chunks(chunks, [[1.0, 0.0, 0.0]])
+        c = chunk("Test content", source="doc.pdf")
+        c.metadata["page"] = 5
+        store.add_chunks([c], [[1.0, 0.0, 0.0]])
 
         results = store.search(query_embedding=[1.0, 0.0, 0.0], top_k=1)
         assert results[0].metadata["source"] == "doc.pdf"

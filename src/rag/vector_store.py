@@ -87,8 +87,13 @@ class VectorStore:
                 f"Mismatch: {len(chunks)} chunks but {len(embeddings)} embeddings"
             )
 
-        # ChromaDB requires string IDs (like primary keys)
-        ids = [f"chunk_{chunk.chunk_index}" for chunk in chunks]
+        # Stable, content-derived IDs. Using a positional counter here meant that
+        # adding one document shifted every later chunk's ID, and the upsert below
+        # silently overwrote unrelated chunks.
+        ids = [chunk.chunk_id for chunk in chunks]
+        if len(set(ids)) != len(ids):
+            raise ValueError("Duplicate chunk IDs in batch - refusing to upsert")
+
         documents = [chunk.content for chunk in chunks]
         metadatas = [chunk.metadata for chunk in chunks]
 

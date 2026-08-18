@@ -12,6 +12,7 @@ PYTHON CONCEPTS FOR JAVA DEVS:
 - enumerate() = like IntStream with index
 """
 
+import hashlib
 import logging
 from dataclasses import dataclass
 
@@ -27,7 +28,32 @@ class TextChunk:
     """A chunk of text with its metadata - like a Java record."""
     content: str
     metadata: dict
-    chunk_index: int
+    chunk_index: int  # position WITHIN its source document, not across the corpus
+    chunk_id: str  # stable identity, derived from source + position + content
+
+
+def _document_key(metadata: dict) -> str:
+    """
+    Identify the document a chunk came from.
+
+    PDFs produce one Document per page, so the page number is part of the
+    identity - otherwise page 1 and page 2 would both claim chunk_index 0.
+    """
+    source = metadata.get("source", "unknown")
+    page = metadata.get("page")
+    return f"{source}#p{page}" if page is not None else source
+
+
+def _make_chunk_id(doc_key: str, chunk_index: int, content: str) -> str:
+    """
+    Build a stable ID for a chunk.
+
+    Derived from content, so the same chunk always gets the same ID no matter
+    what else is in the corpus or what order documents were loaded in. This is
+    what makes re-ingestion idempotent rather than destructive.
+    """
+    digest = hashlib.sha256(f"{doc_key}:{chunk_index}:{content}".encode("utf-8"))
+    return digest.hexdigest()[:16]
 
 
 class TextSplitter:
@@ -60,18 +86,20 @@ class TextSplitter:
                 .collect(Collectors.toList())
         """
         all_chunks: list[TextChunk] = []
-        chunk_index = 0
 
         for doc in documents:
             texts = self._splitter.split_text(doc.content)
+            doc_key = _document_key(doc.metadata)
 
-            for text in texts:
+            # Index restarts per document. A global counter would shift every
+            # downstream chunk's identity whenever a document was added or removed.
+            for chunk_index, text in enumerate(texts):
                 all_chunks.append(TextChunk(
                     content=text,
                     metadata={**doc.metadata, "chunk_index": chunk_index},
                     chunk_index=chunk_index,
+                    chunk_id=_make_chunk_id(doc_key, chunk_index, text),
                 ))
-                chunk_index += 1
 
         logger.info(
             "Split %d documents into %d chunks",
