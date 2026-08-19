@@ -46,14 +46,28 @@ from src.config import get_config
 logger = logging.getLogger(__name__)
 
 PROMPTS = {
+    # The wording here matters more than it looks. An earlier version said
+    # "uses the exact technical identifiers that appear in the text", which the
+    # model read as "reuse the text's phrasing" - producing questions that
+    # restated their source almost verbatim (78% average vocabulary overlap).
+    # Those measure string matching, not retrieval, and would have inflated
+    # recall to near-perfect while proving nothing.
     "exact_term": """You are building an evaluation set for a documentation search system.
 
 Below is one chunk from the Kubernetes documentation. Write ONE question that:
 - is answerable ONLY from this specific chunk, not from general Kubernetes knowledge
-- uses the exact technical identifiers that appear in the text (API field names,
-  resource kinds, flags) - the way an engineer searching for this would type it
+- names at least one precise technical identifier from the text - an API field,
+  resource kind, flag, or setting name (e.g. reclaimPolicy, StatefulSet,
+  --node-selector). These are the tokens someone would actually search for.
+- is otherwise phrased in YOUR OWN WORDS. Do NOT reuse any run of four or more
+  consecutive words from the text. Ask about what the text explains; do not
+  restate what it says.
 - is a single sentence, under 20 words
 - does not mention "the chunk", "the text", "the document", or "above"
+
+BAD  (restates the text): "Where can I find ready-made operators to suit my use case?"
+GOOD (names an identifier, own phrasing): "Which field controls whether a
+      PersistentVolume survives after its claim is removed?"
 
 Return ONLY the question. No preamble, no quotes, no explanation.
 
