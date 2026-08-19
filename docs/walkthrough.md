@@ -22,15 +22,26 @@ source .venv/bin/activate
 docker ps | grep ragdb            # Postgres must be running
 ```
 
-Two shell shortcuts, so the commands below stay short:
+One shell shortcut, so the SQL commands below stay short:
 
 ```bash
 alias psqlrag='docker exec -i ragdb psql -U postgres -d ragdb'
-export DOCUMENTS_DIR=./walkthrough
 ```
 
-`DOCUMENTS_DIR` overrides `.env` for this shell only, so the walkthrough never
-touches your real corpus.
+Every ingest below passes `--dir walkthrough`, so it reads the one test document
+rather than your real corpus. Use the flag rather than `export DOCUMENTS_DIR=...`:
+an exported variable stays set for the rest of the shell session, so it is easy
+to run a later ingest against the wrong directory without noticing. A flag
+applies to one command and is visible in shell history.
+
+Worth knowing before you start:
+
+```bash
+python -m scripts.ingest --dir walkthrough --dry-run
+```
+
+reports how many chunks would be embedded, and in how many requests, without
+calling the API or writing anything.
 
 Start from an empty table:
 
@@ -44,7 +55,7 @@ psqlrag -c "SELECT count(*) FROM chunks;"     # expect 0
 ## Step 1 — first ingest
 
 ```bash
-python -m scripts.ingest
+python -m scripts.ingest --dir walkthrough
 ```
 
 **Expect:** `4 chunks from 1 documents: 4 new, 0 already embedded`, then
@@ -143,7 +154,7 @@ what hybrid search fixes later. Worth noting the result now so you can compare.
 ## Step 4 — re-ingest, nothing changed
 
 ```bash
-python -m scripts.ingest
+python -m scripts.ingest --dir walkthrough
 ```
 
 **Expect:** `4 chunks from 1 documents: 0 new, 4 already embedded`, and
@@ -176,7 +187,7 @@ psqlrag -c "SELECT chunk_index, chunk_id FROM chunks ORDER BY chunk_index;"
 Then:
 
 ```bash
-python -m scripts.ingest
+python -m scripts.ingest --dir walkthrough
 ```
 
 **Expect:** `1 new, 3 already embedded` and `1 embedded, 3 reused, 1 removed`.
@@ -200,17 +211,41 @@ An edit only forces *extra* re-embedding when it changes **which blocks land in
 which chunk**. Editing inside a block re-embeds that block's chunk and nothing
 else - true wherever in the document you edit.
 
-To see the difference, add roughly 100 characters to the **first** paragraph,
-under Persistent Volumes. Chunk 0 is 927 characters; pushing it past
-`CHUNK_SIZE=1000` forces the `## Persistent Volume Claims` heading out of chunk
-0 and into chunk 1.
+Find this line in the Persistent Volumes section:
 
-```bash
-python -m scripts.ingest
+```
+configure dynamic provisioning so that storage is created on demand.
 ```
 
-**Expect two chunks to change**, not one - chunk 0 because its text grew, and
-chunk 1 because it now begins differently.
+and append to it:
+
+```
+ Each volume also records a phase such as Available, Bound, Released, or Failed, which controllers watch.
+```
+
+That grows the first paragraph past `CHUNK_SIZE`, so it can no longer share a
+chunk with the headings above it.
+
+Check the cost before spending anything:
+
+```bash
+python -m scripts.ingest --dir walkthrough --dry-run
+```
+
+then:
+
+```bash
+python -m scripts.ingest --dir walkthrough
+```
+
+**Expect 5 chunks, and all 5 re-embedded** — `5 embedded, 0 reused, 4 removed`.
+Sizes go from `[927, 871, 769, 692]` to `[49, 975, 871, 769, 692]`: chunk 0
+becomes a 49-character chunk holding nothing but the two headings.
+
+Three of those chunks have **byte-identical content** to before and still
+re-embedded, because `chunk_id = sha256(source : chunk_index : content)` and
+every index below the change shifted by one. Position is part of identity, so
+renumbering alone is enough.
 
 That is the real rule, and it is worth stating precisely:
 
@@ -245,7 +280,7 @@ psqlrag -c "SELECT count(*) FROM chunks;"     -- one more than before
 ```
 
 ```bash
-python -m scripts.ingest
+python -m scripts.ingest --dir walkthrough
 ```
 
 **Expect** `1 removed`, and the count back to normal. `delete_orphans` removed a
@@ -257,12 +292,10 @@ exactly what happens to superseded versions of edited text.
 ## Step 8 — scale up
 
 ```bash
-unset DOCUMENTS_DIR          # back to .env, i.e. ./documents
 ./scripts/fetch_corpus.sh
 ```
 
-Set `MAX_FILES=20` in `.env` and ingest. Then raise to 50, then 150, ingesting
-between each. Watch the counts:
+Ingest with `--max-files 20`, then 50, then 150. Watch the counts:
 
 ```
 MAX_FILES=20   →  140 new,   0 reused
@@ -279,7 +312,6 @@ Climbing the ladder costs exactly the same total tokens as jumping straight to
 
 ```bash
 psqlrag -c "TRUNCATE chunks;"
-unset DOCUMENTS_DIR
 git checkout walkthrough/storage-guide.md    # undo the test edits
 ```
 

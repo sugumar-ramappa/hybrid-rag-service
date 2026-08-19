@@ -33,6 +33,20 @@ class QueryResult:
     query: str
 
 
+@dataclass(frozen=True)
+class IngestResult:
+    """
+    What one ingest run actually did.
+
+    A single count would hide the interesting part: on a second run over an
+    unchanged corpus, total_chunks is unchanged but embedded is zero.
+    """
+    total_chunks: int  # chunks the corpus currently produces
+    embedded: int      # newly embedded and written this run
+    skipped: int       # already stored by this model at this size
+    deleted: int       # stale chunks removed
+
+
 class RAGPipeline:
     """
     Orchestrates the full RAG pipeline.
@@ -55,7 +69,10 @@ class RAGPipeline:
         self._genai_client = genai.Client(api_key=config.gemini.api_key)
 
         # Initialize components (like dependency injection)
-        self._loader = DocumentLoader(config.rag.documents_dir)
+        self._loader = DocumentLoader(
+            config.rag.documents_dir,
+            max_files=config.rag.max_files,
+        )
         self._splitter = TextSplitter(
             chunk_size=config.rag.chunk_size,
             chunk_overlap=config.rag.chunk_overlap,
@@ -64,6 +81,7 @@ class RAGPipeline:
             api_key=config.gemini.api_key,
             model_name=config.gemini.embedding_model,
             dimensions=config.gemini.embedding_dim,
+            batch_size=config.gemini.embed_batch_size,
         )
         self._vector_store = VectorStore(
             database_url=config.database.url,
@@ -74,32 +92,90 @@ class RAGPipeline:
 
         logger.info("RAG pipeline initialized")
 
-    def ingest_documents(self) -> int:
+    def ingest_documents(self, dry_run: bool = False) -> IngestResult:
         """
-        Ingest all documents from the documents directory.
+        Ingest the documents directory incrementally.
 
-        Returns: Number of chunks ingested
+        Rather than re-embedding everything on every run, this syncs:
+
+            insert  chunks not yet stored
+            skip    chunks already stored by this model at this size
+            delete  chunks whose source no longer produces them
+
+        Embedding is the expensive step - an API call per batch, rate limited
+        on the free tier. Re-running over an unchanged corpus now costs nothing,
+        and adding one document embeds only that document.
+
+        Returns: IngestResult describing what actually happened
         """
         # Step 1: Load documents
         documents = self._loader.load_all()
         if not documents:
             logger.warning("No documents found in %s", self._config.rag.documents_dir)
-            return 0
+            return IngestResult(0, 0, 0, 0)
 
         # Step 2: Split into chunks
         chunks = self._splitter.split_documents(documents)
         if not chunks:
             logger.warning("No chunks generated from documents")
-            return 0
+            return IngestResult(0, 0, 0, 0)
 
-        # Step 3: Generate embeddings
-        texts = [chunk.content for chunk in chunks]
-        embeddings = self._embeddings.embed_texts(texts)
+        model = self._config.gemini.embedding_model
+        dimensions = self._config.gemini.embedding_dim
 
-        # Step 4: Store in vector store
-        count = self._vector_store.add_chunks(chunks, embeddings)
-        logger.info("Ingested %d chunks from %d documents", count, len(documents))
-        return count
+        # Step 3: Work out what actually needs embedding
+        chunk_ids = [chunk.chunk_id for chunk in chunks]
+        already_stored = self._vector_store.existing_chunk_ids(chunk_ids, model, dimensions)
+        new_chunks = [c for c in chunks if c.chunk_id not in already_stored]
+
+        logger.info(
+            "%d chunks from %d documents: %d new, %d already embedded",
+            len(chunks), len(documents), len(new_chunks), len(already_stored),
+        )
+
+        # Step 4: Embed and store the new ones, writing each batch as it lands.
+        #
+        # Deliberately not "embed everything, then store everything". The
+        # free-tier limit is tokens per minute, so a full corpus takes tens of
+        # minutes and will hit 429s on the way - that is the expected path, not
+        # an anomaly. Persisting per batch means a failure costs one batch
+        # rather than the whole run, and re-running resumes: every chunk
+        # already written is skipped by the check above.
+        batch_size = self._embeddings.batch_size
+        embedded = 0
+
+        # dry_run answers "what would this cost?" before spending the tokens:
+        # everything up to here is local work, and the counts are already known.
+        if dry_run:
+            logger.warning(
+                "DRY RUN - would embed %d chunks in %d request(s). Nothing written.",
+                len(new_chunks), (len(new_chunks) + batch_size - 1) // batch_size,
+            )
+            return IngestResult(
+                total_chunks=len(chunks),
+                embedded=0,
+                skipped=len(already_stored),
+                deleted=0,
+            )
+
+        for start in range(0, len(new_chunks), batch_size):
+            batch = new_chunks[start : start + batch_size]
+            vectors = self._embeddings.embed_texts([c.content for c in batch])
+            embedded += self._vector_store.add_chunks(batch, vectors)
+            logger.info("Embedded %d/%d new chunks", embedded, len(new_chunks))
+
+        # Step 5: Remove chunks these documents used to produce but no longer do.
+        # Editing a document changes its chunks' content and therefore their IDs,
+        # so the old versions would otherwise linger and keep being retrieved.
+        sources = {chunk.metadata.get("source", "unknown") for chunk in chunks}
+        deleted = self._vector_store.delete_orphans(sources, set(chunk_ids))
+
+        return IngestResult(
+            total_chunks=len(chunks),
+            embedded=embedded,
+            skipped=len(already_stored),
+            deleted=deleted,
+        )
 
     def query(self, question: str) -> QueryResult:
         """
