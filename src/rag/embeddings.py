@@ -57,11 +57,16 @@ class EmbeddingService:
         dimensions: int = 768,
         batch_size: int = 50,
         max_retries: int = 4,
+        cache=None,
     ) -> None:
         self._client = genai.Client(api_key=api_key)
         self._model_name = model_name
         self._dimensions = dimensions
         self._max_retries = max_retries
+        # Optional EmbeddingCache. Applied to queries only - document
+        # embeddings are already protected from repeat work by incremental
+        # ingest, which skips chunks whose content is unchanged.
+        self._cache = cache
         # Public: callers slice their work by this so they can persist each
         # batch as it completes rather than losing everything on a late failure.
         self.batch_size = batch_size
@@ -157,5 +162,19 @@ class EmbeddingService:
         Generate embedding for a single search query.
         Uses RETRIEVAL_QUERY task type for better search results.
         """
+        if self._cache is not None:
+            cached = self._cache.get(
+                query, self._model_name, self._dimensions, "RETRIEVAL_QUERY"
+            )
+            if cached is not None:
+                return cached
+
         result = self._embed_with_retry(query, "RETRIEVAL_QUERY")
-        return self._check_dim(result.embeddings[0].values)
+        vector = self._check_dim(result.embeddings[0].values)
+
+        if self._cache is not None:
+            self._cache.put(
+                query, self._model_name, self._dimensions, "RETRIEVAL_QUERY", vector
+            )
+
+        return vector

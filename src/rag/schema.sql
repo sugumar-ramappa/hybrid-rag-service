@@ -45,3 +45,30 @@ CREATE INDEX IF NOT EXISTS chunks_content_tsv_idx
 -- Supports deleting or re-ingesting a single document without touching others.
 CREATE INDEX IF NOT EXISTS chunks_source_idx
     ON chunks (source);
+
+
+-- Query embeddings, cached.
+--
+-- The eval harness runs the same 42 questions on every configuration, so
+-- without this each run spends 42 of a 1,000/day quota re-embedding text that
+-- has not changed. In Postgres rather than a local file because a local cache
+-- dies with the container and is not shared between instances.
+CREATE TABLE IF NOT EXISTS embedding_cache (
+    -- sha256(model : dimensions : task_type : text).
+    --
+    -- task_type is part of the key, not decoration: chunks embed as
+    -- RETRIEVAL_DOCUMENT and queries as RETRIEVAL_QUERY, and the same text
+    -- under each produces a different vector. A key omitting it would serve a
+    -- document vector for a query and quietly degrade retrieval.
+    cache_key    TEXT        PRIMARY KEY,
+
+    embedding    vector(768) NOT NULL,
+    model        TEXT        NOT NULL,
+    dimensions   INTEGER     NOT NULL,
+    task_type    TEXT        NOT NULL,
+
+    created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+    -- Support LRU eviction and a reportable hit rate.
+    last_used_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    hit_count    INTEGER     NOT NULL DEFAULT 0
+);
