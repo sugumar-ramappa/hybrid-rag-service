@@ -17,12 +17,23 @@ ENV/
 *.swp
 *.swo
 
-# Environment variables
+# Secrets — deny every .env variant, allow only the placeholder template
 .env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*.json
+service-account*.json
 
 # Data
 data/
 *.db
+
+# Fetched corpus — hundreds of files belonging to the Kubernetes project.
+# Reproduce it with ./scripts/fetch_corpus.sh rather than committing it.
+# (walkthrough/ is deliberately NOT ignored: it is one small teaching document.)
+documents/
 
 # OS
 .DS_Store

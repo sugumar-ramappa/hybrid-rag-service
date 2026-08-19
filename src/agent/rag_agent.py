@@ -95,11 +95,17 @@ def ingest_new_documents() -> dict:
     config = get_config()
     pipeline = _ensure_pipeline(config)
     try:
-        count = pipeline.ingest_documents()
+        result = pipeline.ingest_documents()
     except Exception as e:
         logger.exception("Ingestion failed")
         return {"error": str(e), "status": "failed"}
-    return {"chunks_ingested": count, "status": "success"}
+    return {
+        "total_chunks": result.total_chunks,
+        "embedded": result.embedded,
+        "skipped": result.skipped,
+        "deleted": result.deleted,
+        "status": "success",
+    }
 
 
 def get_knowledge_base_stats() -> dict:

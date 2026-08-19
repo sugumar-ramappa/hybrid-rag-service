@@ -161,6 +161,60 @@ def test_reingest_is_idempotent(store: VectorStore) -> None:
     assert store.get_document_count() == 1
 
 
+def test_existing_chunk_ids_reports_what_is_already_embedded(store: VectorStore) -> None:
+    stored = chunk("already here", source="a.txt")
+    store.add_chunks([stored], [vec(1.0)])
+
+    fresh = chunk("brand new", source="b.txt")
+    found = store.existing_chunk_ids(
+        [stored.chunk_id, fresh.chunk_id], "test-model", DIM
+    )
+
+    assert found == {stored.chunk_id}
+
+
+def test_existing_chunk_ids_ignores_a_different_model(store: VectorStore) -> None:
+    """
+    Vectors from another model live in a different space and are not
+    comparable, so they must be re-embedded rather than reused.
+    """
+    stored = chunk("content", source="a.txt")
+    store.add_chunks([stored], [vec(1.0)])
+
+    assert store.existing_chunk_ids([stored.chunk_id], "some-other-model", DIM) == set()
+    assert store.existing_chunk_ids([stored.chunk_id], "test-model", 1536) == set()
+
+
+def test_delete_orphans_removes_only_superseded_chunks(store: VectorStore) -> None:
+    """Editing a document leaves its old chunks behind unless they are swept."""
+    old_version = chunk("version one", source="doc.md")
+    other_doc = chunk("untouched", source="other.md")
+    store.add_chunks([old_version, other_doc], [vec(1.0, 0.0), vec(0.0, 1.0)])
+
+    # doc.md is re-ingested with different content, so a different chunk_id
+    new_version = chunk("version two", source="doc.md")
+    store.add_chunks([new_version], [vec(0.5, 0.5)])
+    assert store.get_document_count() == 3  # old version still lingering
+
+    deleted = store.delete_orphans({"doc.md"}, {new_version.chunk_id})
+
+    assert deleted == 1
+    assert store.get_document_count() == 2
+    remaining = {r.content for r in store.search(vec(1.0, 0.0), top_k=10)}
+    assert remaining == {"version two", "untouched"}
+
+
+def test_delete_orphans_leaves_untouched_sources_alone(store: VectorStore) -> None:
+    """Ingesting part of a corpus must not delete the rest of it."""
+    a = chunk("doc a", source="a.md")
+    b = chunk("doc b", source="b.md")
+    store.add_chunks([a, b], [vec(1.0, 0.0), vec(0.0, 1.0)])
+
+    # Only a.md was re-ingested this run
+    assert store.delete_orphans({"a.md"}, {a.chunk_id}) == 0
+    assert store.get_document_count() == 2
+
+
 def test_dimension_mismatch_is_rejected(store: VectorStore) -> None:
     """Configured dimension must agree with the schema's vector(N) column."""
     with pytest.raises(ValueError, match="Schema declares vector"):

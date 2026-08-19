@@ -1,0 +1,188 @@
+# Plan
+
+Goal: a RAG service whose retrieval quality is **measured**, not asserted.
+
+The project is finished when the README opens with a number, that number came
+from a hand-verified golden set, and there is a live URL to try it.
+
+---
+
+## Done
+
+| Work | Hrs |
+|------|-----|
+| Repo setup: clone, rename, git identity, history cleanup | 1.5 |
+| Chunk-ID collision fix + 3 regression tests | 1.5 |
+| pgvector migration: config, schema, embeddings, store rewrite, 10 tests | 4.5 |
+| Secrets hardening: gitignore rules, pre-commit hook | 0.5 |
+| Retrieval design docs | 1.0 |
+
+**~9 hours.** Note that only the chunk-ID fix was on the original task list —
+the rest was setup and one justified but unplanned migration.
+
+## Remaining
+
+| # | Step | Hrs | Produces |
+|---|------|-----|----------|
+| ~~1~~ | ~~**Loader fixes**~~ — done: recursive traversal, hidden-path check, path-relative `source`, failure count | ~~0.5~~ | ✅ |
+| ~~2~~ | ~~**Real corpus + incremental ingest**~~ — done: **784 chunks / 56 documents**, frozen at `MAX_FILES=56` | ~~3.0~~ | ✅ |
+| 3 | **Golden set** — generate 30 candidates, hand-verify every one | 3.0 | `eval/golden_set.json` |
+| 4 | **Eval harness + embedding cache** — `scripts/evaluate.py` with recall@k and MRR | 4.0 | A metrics table |
+| 5 | **Baseline run** | 0.5 | **The first number** |
+| 6 | **Hybrid + RRF** — tsvector and vector fused in one SQL query | 2.0 | `hybrid_search()` + tests |
+| 7 | **Re-measure** | 0.5 | **The delta** |
+| 8 | **Containerize** — build the image, run it locally against Postgres, verify | 0.5 | A container proven to work |
+| 9 | **CI** — ruff and pytest against a Postgres service container | 1.0 | Green badge |
+| 10 | **README rewrite** — results first, architecture second | 1.0 | What people actually read |
+
+**~17.5 hours.** One commit per step.
+
+Steps 1–5 are the ones that matter. That is the point where the project becomes
+worth showing; everything after is improvement and packaging.
+
+---
+
+## The corpus, frozen
+
+**784 chunks across 56 Kubernetes documentation pages**, from
+`content/en/docs/concepts` in github.com/kubernetes/website. Reproduce with
+`./scripts/fetch_corpus.sh`, then ingest — `MAX_FILES=56` in `.env` pins it.
+
+Size was set by the free tier, not chosen: embedding is capped at **1,000 texts
+per day** and **100 per minute**, counted per text rather than per API call, so
+batching reduces HTTP overhead but not quota. The full 396-file corpus would
+have taken six days.
+
+That constraint is also what made incremental ingest a requirement rather than
+an optimisation - re-embedding on every run would have exhausted a day's quota
+in a single pass.
+
+Do not expand the corpus after the golden set exists. Verification asks "does
+any other chunk answer this better?", which is a judgement against the corpus as
+it stood; adding chunks later can invalidate it silently.
+
+## Rules
+
+**One change per measurement.** Hybrid search goes in at step 6 and nothing else
+does. Two improvements between measurements give one number and no attribution,
+and "I improved retrieval" without knowing which change earned it is exactly the
+claim that falls apart under questioning.
+
+**Do not commit the corpus.** A few hundred markdown files bloat the repo and are
+not ours. `scripts/fetch_corpus.sh` sparse-clones them; `documents/` is
+gitignored.
+
+**Do commit the golden set.** Small, and the single most valuable artifact here.
+Hand-verified evaluation data is the thing almost nobody builds.
+
+**No more detours.** The tempting ones — structure-aware chunking, reranking,
+`halfvec`, a nicer UI — are all genuinely interesting and all currently
+unmeasurable. They become worth doing after step 7, when their effect can be
+proved. Before then they are how a project ends up as good infrastructure that
+nobody can evaluate.
+
+## Caching
+
+Two distinct mechanisms, folded into steps 2 and 4 rather than done separately.
+Both shorten the path to a measured baseline, which is the test for whether work
+belongs before step 5.
+
+### Incremental ingest (step 2)
+
+Not a cache — sync semantics, which is what production does. On re-ingest:
+
+- **insert** chunks whose `chunk_id` is not stored
+- **skip** chunks already stored under the same `embedding_model` and `embedding_dim`
+- **delete** chunks whose source was re-ingested but which no longer appear
+
+Today `ingest_documents()` re-embeds the entire corpus every run. After this,
+re-ingesting an unchanged corpus costs zero embedding calls, and adding one
+document embeds only that document.
+
+This is what content-derived chunk IDs were for. With the original positional
+IDs, "already embedded" was unanswerable — the IDs shifted whenever the corpus
+changed, so nothing would ever have matched.
+
+### Query embedding cache (step 4)
+
+Backed by a Postgres table rather than a local file: a local cache dies with the
+Cloud Run instance at step 8 and is not shared between instances, whereas a table
+costs no extra infrastructure and already exists in the deployment.
+
+```sql
+CREATE TABLE IF NOT EXISTS embedding_cache (
+    cache_key    TEXT        PRIMARY KEY,
+    embedding    vector(768) NOT NULL,
+    model        TEXT        NOT NULL,
+    dimensions   INTEGER     NOT NULL,
+    task_type    TEXT        NOT NULL,
+    created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+    last_used_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    hit_count    INTEGER     NOT NULL DEFAULT 0
+);
+```
+
+**The cache key must be `sha256(model : dimensions : task_type : text)`.**
+
+`task_type` is the subtle part. Chunks are embedded as `RETRIEVAL_DOCUMENT` and
+queries as `RETRIEVAL_QUERY`, and the same text under those two task types
+produces different vectors — that asymmetry is the point of the parameter. A key
+omitting it would serve a document vector for a query, degrading retrieval in a
+way no existing test would catch.
+
+`last_used_at` and `hit_count` support LRU eviction and give a cache hit rate
+worth reporting.
+
+Why it matters here specifically: steps 4–7 run the same 30 questions through the
+harness twenty or more times. That is ~570 redundant embedding calls, and at
+free-tier rate limits roughly two minutes of waiting per run.
+
+### Not doing: answer caching
+
+Caching generated answers goes stale the moment the corpus or prompt changes, and
+debugging retrieval against answers from a previous index is worse than paying
+for the call. Semantic answer caching is a real production pattern, but it
+belongs after there is a baseline to protect.
+
+## Where each step bites
+
+**Step 2** eats wall-clock. Free-tier rate limits over a few thousand chunks means
+the ingest runs long — start it and do something else. Expect some files to fail;
+that is what step 1's failure count is for.
+
+**Step 3 is the hard one, and it is conceptual rather than technical.** Writing a
+question answerable from exactly one chunk is harder than it sounds. Most
+generated candidates are too vague ("what is storage?") or answerable from twenty
+chunks. Roughly half get rejected. That rejection work is what makes the numbers
+mean anything.
+
+**Steps 5 and 7 are the payoff.** Everything before is setup, everything after is
+packaging.
+
+## Public hosting — deferred, not dropped
+
+Everything through step 10 runs locally: Docker Postgres, the free-tier Gemini
+API, and the eval harness. No cloud account is needed to finish the project.
+
+Step 8 deliberately stops at "the container works", because that is the half
+that is about our code. Actual hosting is platform busywork - registry auth,
+IAM, service accounts - and is worth doing once, on the platform we actually
+want, rather than twice.
+
+When a GCP billing account exists: Cloud Run plus Cloud SQL or Neon, roughly
+2-3 hours for a first deploy. Hugging Face Spaces with Neon is the cardless
+alternative at about half that, but it is the weaker line to have on a CV for
+someone with a GCP background, so it is not worth spending the effort on first.
+
+Until then the honest description is: containerized, runs against Postgres with
+pgvector, not publicly hosted.
+
+## After step 7
+
+In rough order of expected value, each measured independently against the golden
+set:
+
+1. Structure-aware chunking with heading paths prepended
+2. Cross-encoder reranking
+3. Embedding dimension comparison — 768 vs `halfvec(3072)`
+4. Query rewriting, if a conversational interface is added

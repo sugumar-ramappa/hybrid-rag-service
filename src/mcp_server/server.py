@@ -107,8 +107,12 @@ def ingest_documents() -> str:
     """
     try:
         pipeline = _get_pipeline()
-        count = pipeline.ingest_documents()
-        return f"Successfully ingested {count} document chunks into the vector store."
+        result = pipeline.ingest_documents()
+        return (
+            f"Corpus now holds {result.total_chunks} chunks: "
+            f"{result.embedded} newly embedded, {result.skipped} reused from a "
+            f"previous run, {result.deleted} stale chunks removed."
+        )
     except Exception as e:
         logger.exception("Ingestion failed")
         return f"Error ingesting documents: {e}"

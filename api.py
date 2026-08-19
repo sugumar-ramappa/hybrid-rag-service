@@ -61,5 +61,10 @@ def stats():
 @app.post("/ingest")
 def ingest():
     """Ingest documents from the documents directory."""
-    count = _get_pipeline().ingest_documents()
-    return {"chunks_ingested": count}
+    result = _get_pipeline().ingest_documents()
+    return {
+        "total_chunks": result.total_chunks,
+        "embedded": result.embedded,
+        "skipped": result.skipped,
+        "deleted": result.deleted,
+    }

@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+#
+# Blocks secrets from entering git history.
+#
+# Enable once per clone:
+#     git config core.hooksPath .githooks
+#
+# Deliberate override (use sparingly):
+#     git commit --no-verify
+#
+set -uo pipefail
+
+fail=0
+
+# ---------------------------------------------------------------- filenames --
+# Files that should never be committed, whatever they contain.
+while IFS= read -r file; do
+    [ -z "$file" ] && continue
+    case "$file" in
+        .env.example)
+            ;;  # the placeholder template is meant to be committed
+        .env|.env.*|*.pem|*.key|*credentials*.json|service-account*.json)
+            echo "BLOCKED  $file  — looks like a secrets file"
+            fail=1
+            ;;
+    esac
+done < <(git diff --cached --name-only --diff-filter=ACM)
+
+# ------------------------------------------------------------------ content --
+# Unambiguous live-credential formats. Placeholders won't match these.
+added=$(git diff --cached -U0 --diff-filter=ACM | grep '^+' | grep -v '^+++')
+
+block_patterns='AIza[0-9A-Za-z_-]{30,}|sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----'
+
+if printf '%s' "$added" | grep -qE "$block_patterns"; then
+    echo "BLOCKED  staged changes contain what looks like a live credential:"
+    printf '%s' "$added" | grep -oE "$block_patterns" | sed 's/^/         /' | head -5
+    fail=1
+fi
+
+# Connection strings with inline passwords: warn, don't block — placeholders
+# like postgresql://user:password@localhost are legitimate in docs.
+if printf '%s' "$added" | grep -qE 'postgres(ql)?://[^[:space:]]+:[^[:space:]@]+@'; then
+    echo "WARNING  staged changes contain a database URL with an inline password."
+    echo "         Confirm it is a placeholder and not a real connection string."
+fi
+
+if [ "$fail" -ne 0 ]; then
+    echo
+    echo "Commit aborted. Move the value into .env (gitignored) and read it"
+    echo "with os.getenv(), as src/config.py already does."
+    exit 1
+fi
+
+exit 0

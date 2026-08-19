@@ -183,6 +183,74 @@ class VectorStore:
         logger.info("Wrote %d chunks", len(rows))
         return len(rows)
 
+    def existing_chunk_ids(
+        self,
+        chunk_ids: list[str],
+        embedding_model: str,
+        embedding_dim: int,
+    ) -> set[str]:
+        """
+        Of the given chunk IDs, which are already stored by THIS model at THIS
+        size - and therefore do not need embedding again.
+
+        Model and dimension are part of the question, not decoration: the same
+        text embedded by a different model produces a vector in a different
+        space, and the two are not comparable. Reusing across a model change
+        would quietly corrupt the index.
+
+        This is what content-derived chunk IDs bought us. Under the original
+        positional scheme, "have I already embedded this?" was unanswerable -
+        the IDs moved whenever the corpus changed.
+        """
+        if not chunk_ids:
+            return set()
+
+        with self._connect() as conn:
+            rows = conn.execute(
+                """
+                SELECT chunk_id FROM chunks
+                WHERE chunk_id = ANY(%s)
+                  AND embedding_model = %s
+                  AND embedding_dim = %s
+                """,
+                (list(chunk_ids), embedding_model, embedding_dim),
+            ).fetchall()
+
+        return {row[0] for row in rows}
+
+    def delete_orphans(self, sources: set[str], keep_chunk_ids: set[str]) -> int:
+        """
+        Drop chunks belonging to the given sources that the corpus no longer
+        produces.
+
+        Editing a document changes its chunks' content, and therefore their IDs.
+        The new versions are inserted, but without this the previous versions
+        stay behind and keep surfacing in search results. Deleting a document
+        entirely has the same problem.
+
+        Only touches the sources just ingested, so it is safe to run against a
+        partial corpus - documents that were not loaded this time are untouched.
+
+        Returns: number of chunks deleted
+        """
+        if not sources:
+            return 0
+
+        with self._connect() as conn:
+            cur = conn.execute(
+                """
+                DELETE FROM chunks
+                WHERE source = ANY(%s)
+                  AND NOT (chunk_id = ANY(%s))
+                """,
+                (list(sources), list(keep_chunk_ids)),
+            )
+            deleted = cur.rowcount
+
+        if deleted:
+            logger.info("Removed %d orphaned chunk(s)", deleted)
+        return deleted
+
     def delete_by_source(self, source: str) -> int:
         """
         Remove every chunk belonging to one document.

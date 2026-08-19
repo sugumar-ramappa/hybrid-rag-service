@@ -98,6 +98,114 @@ def test_skip_empty_files(tmp_path: Path) -> None:
     assert len(documents) <= 1
 
 
+def test_loads_nested_directories(tmp_path: Path) -> None:
+    """
+    A real docs corpus is nested. iterdir() only yielded direct children, so
+    everything below the top level was silently invisible.
+    """
+    doc_dir = tmp_path / "docs"
+    (doc_dir / "concepts" / "storage").mkdir(parents=True)
+    (doc_dir / "top.md").write_text("Top level")
+    (doc_dir / "concepts" / "overview.md").write_text("One deep")
+    (doc_dir / "concepts" / "storage" / "volumes.md").write_text("Two deep")
+
+    documents = DocumentLoader(str(doc_dir)).load_all()
+
+    assert len(documents) == 3
+
+
+def test_source_is_path_relative_to_corpus_root(tmp_path: Path) -> None:
+    """
+    Bare filenames make citations useless in a tree full of index.md, and
+    weaken chunk IDs, which derive identity partly from source.
+    """
+    doc_dir = tmp_path / "docs"
+    (doc_dir / "concepts" / "storage").mkdir(parents=True)
+    (doc_dir / "concepts" / "storage" / "index.md").write_text("Storage index")
+    (doc_dir / "concepts" / "index.md").write_text("Concepts index")
+
+    documents = DocumentLoader(str(doc_dir)).load_all()
+
+    sources = {d.metadata["source"] for d in documents}
+    assert sources == {"concepts/index.md", "concepts/storage/index.md"}
+
+
+def test_skips_files_inside_hidden_directories(tmp_path: Path) -> None:
+    """
+    Checking only file_path.name misses these: the files themselves have
+    ordinary names, and a cloned repo hides thousands of them under .git/.
+    """
+    doc_dir = tmp_path / "docs"
+    (doc_dir / ".git").mkdir(parents=True)
+    (doc_dir / ".github" / "workflows").mkdir(parents=True)
+    (doc_dir / ".git" / "COMMIT_EDITMSG.txt").write_text("not a document")
+    (doc_dir / ".github" / "workflows" / "release.md").write_text("not a document")
+    (doc_dir / "real.md").write_text("an actual document")
+
+    documents = DocumentLoader(str(doc_dir)).load_all()
+
+    assert len(documents) == 1
+    assert documents[0].metadata["source"] == "real.md"
+
+
+def test_one_bad_file_does_not_abort_the_load(tmp_path: Path) -> None:
+    """A single unreadable file must not cost you the rest of the corpus."""
+    doc_dir = tmp_path / "docs"
+    doc_dir.mkdir()
+    (doc_dir / "good.md").write_text("readable")
+    (doc_dir / "bad.txt").write_bytes(b"\xff\xfe invalid utf-8 \x00\x80")
+
+    documents = DocumentLoader(str(doc_dir)).load_all()
+
+    assert len(documents) == 1
+    assert documents[0].metadata["source"] == "good.md"
+
+
+def test_max_files_caps_the_corpus(tmp_path: Path) -> None:
+    """A cost guard: stop reading after N files."""
+    doc_dir = tmp_path / "docs"
+    doc_dir.mkdir()
+    for i in range(10):
+        (doc_dir / f"doc{i:02d}.md").write_text(f"document number {i}")
+
+    assert len(DocumentLoader(str(doc_dir), max_files=3).load_all()) == 3
+    assert len(DocumentLoader(str(doc_dir), max_files=0).load_all()) == 10
+    assert len(DocumentLoader(str(doc_dir)).load_all()) == 10
+
+
+def test_max_files_selects_the_same_files_every_time(tmp_path: Path) -> None:
+    """
+    Deterministic selection matters: a golden set built against a capped corpus
+    would be worthless if the cap picked different files on the next run.
+    """
+    doc_dir = tmp_path / "docs"
+    (doc_dir / "nested").mkdir(parents=True)
+    for i in range(10):
+        (doc_dir / f"doc{i:02d}.md").write_text(f"top {i}")
+        (doc_dir / "nested" / f"sub{i:02d}.md").write_text(f"nested {i}")
+
+    first = DocumentLoader(str(doc_dir), max_files=5).load_all()
+    second = DocumentLoader(str(doc_dir), max_files=5).load_all()
+
+    assert [d.metadata["source"] for d in first] == [d.metadata["source"] for d in second]
+
+
+def test_raising_max_files_is_a_superset(tmp_path: Path) -> None:
+    """
+    Raising the cap must only add files, never swap them - otherwise
+    incremental ingest would re-embed content it had already paid for.
+    """
+    doc_dir = tmp_path / "docs"
+    doc_dir.mkdir()
+    for i in range(10):
+        (doc_dir / f"doc{i:02d}.md").write_text(f"document {i}")
+
+    small = {d.metadata["source"] for d in DocumentLoader(str(doc_dir), max_files=3).load_all()}
+    large = {d.metadata["source"] for d in DocumentLoader(str(doc_dir), max_files=6).load_all()}
+
+    assert small < large
+
+
 def test_multiple_files(tmp_path: Path) -> None:
     """Test loading multiple files."""
     doc_dir = tmp_path / "docs"
