@@ -20,6 +20,8 @@ from src.config import AppConfig
 from src.rag.document_loader import DocumentLoader
 from src.rag.embeddings import EmbeddingService
 from src.rag.text_splitter import TextSplitter
+from src.rag.answer_cache import AnswerCache
+from src.rag.embedding_cache import EmbeddingCache
 from src.rag.vector_store import SearchResult, VectorStore
 
 logger = logging.getLogger(__name__)
@@ -31,6 +33,12 @@ class QueryResult:
     answer: str
     sources: list[SearchResult]
     query: str
+    # Whether this came from the semantic answer cache, and if so what question
+    # it matched. Surfaced rather than hidden: a wrong cache hit is silent, so
+    # callers and UIs need to be able to see what was reused and how close it was.
+    from_cache: bool = False
+    cache_distance: float | None = None
+    cache_matched_question: str | None = None
 
 
 @dataclass(frozen=True)
@@ -82,6 +90,9 @@ class RAGPipeline:
             model_name=config.gemini.embedding_model,
             dimensions=config.gemini.embedding_dim,
             batch_size=config.gemini.embed_batch_size,
+            # Exact-text cache for query embeddings. Minor next to the answer
+            # cache below - embedding is ~1% of request cost - but free.
+            cache=EmbeddingCache(config.database.url),
         )
         self._vector_store = VectorStore(
             database_url=config.database.url,
@@ -89,6 +100,13 @@ class RAGPipeline:
             embedding_model=config.gemini.embedding_model,
         )
         self._model_name = config.gemini.model_name
+
+        # Semantic answer cache. Skips retrieval and generation - roughly 99% of
+        # a request's cost - when a previous question meant the same thing.
+        self._answer_cache = (
+            AnswerCache(config.database.url, config.rag.answer_cache_threshold)
+            if config.rag.answer_cache_enabled else None
+        )
 
         logger.info("RAG pipeline initialized")
 
@@ -191,8 +209,28 @@ class RAGPipeline:
 
         start = time.time()
 
-        # Step 1: Embed the query
+        # Step 1: Embed the query.
+        #
+        # Unavoidable even on a cache hit - the embedding is what the semantic
+        # cache searches WITH. It is also the cheap step, at roughly 1% of the
+        # cost of the retrieval and generation it can save.
         query_embedding = self._embeddings.embed_query(question)
+
+        # Step 1b: Has an equivalent question already been answered?
+        if self._answer_cache is not None:
+            corpus_version = self._answer_cache.corpus_version()
+            hit = self._answer_cache.lookup(query_embedding, corpus_version)
+            if hit is not None:
+                logger.info("Answered from cache in %dms (distance %.4f)",
+                            int((time.time() - start) * 1000), hit.distance)
+                return QueryResult(
+                    answer=hit.answer,
+                    sources=[],
+                    query=question,
+                    from_cache=True,
+                    cache_distance=hit.distance,
+                    cache_matched_question=hit.matched_question,
+                )
 
         # Step 2: Retrieve relevant chunks
         results = self._vector_store.search(
@@ -213,6 +251,14 @@ class RAGPipeline:
         # Step 4: Generate answer using Gemini (with retry for rate limits)
         prompt = self._build_prompt(question, context)
         answer = self._generate_with_retry(prompt)
+
+        if self._answer_cache is not None:
+            self._answer_cache.store(
+                question, query_embedding, answer,
+                [{"source": r.metadata.get("source"),
+                  "chunk_index": r.metadata.get("chunk_index")} for r in results],
+                corpus_version,
+            )
 
         logger.info("Query answered in %dms, %d sources used",
             int((time.time() - start) * 1000), len(results))

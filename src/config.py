@@ -86,6 +86,25 @@ class RAGConfig:
     max_files: int = field(
         default_factory=lambda: int(os.getenv("MAX_FILES", "0"))
     )
+    # Reuse a previous answer when a new question means the same thing.
+    #
+    # Skips retrieval AND generation, which are ~99% of a request's cost. The
+    # embedding still happens - it is what the lookup searches with.
+    answer_cache_enabled: bool = field(
+        default_factory=lambda: os.getenv("ANSWER_CACHE_ENABLED", "true").lower() == "true"
+    )
+    # Cosine distance below which two questions count as the same question.
+    #
+    # Calibrated on this corpus, not guessed: rephrasings of the same question
+    # measured 0.009-0.070 apart, while the closest two genuinely different
+    # questions measured 0.211 apart. 0.12 sits in that gap.
+    #
+    # Raising it risks serving one question's answer to another - silently,
+    # since a wrong cache hit is indistinguishable from a right one. Lowering it
+    # only costs money.
+    answer_cache_threshold: float = field(
+        default_factory=lambda: float(os.getenv("ANSWER_CACHE_THRESHOLD", "0.12"))
+    )
     collection_name: str = "rag_documents"
 
 

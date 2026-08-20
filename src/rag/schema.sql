@@ -72,3 +72,43 @@ CREATE TABLE IF NOT EXISTS embedding_cache (
     last_used_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     hit_count    INTEGER     NOT NULL DEFAULT 0
 );
+
+
+-- Generated answers, cached by MEANING rather than by exact text.
+--
+-- This is the cache that matters economically. Embedding a question is roughly
+-- 1% of a request's cost; retrieval and generation are the other 99%. Matching
+-- a new question against previously answered ones lets both be skipped.
+--
+-- Measured on this corpus, rephrasings of the same question sit 0.009-0.070
+-- apart, while the closest two genuinely different questions sit 0.211 apart.
+-- The default threshold of 0.12 falls in that gap with margin on both sides.
+CREATE TABLE IF NOT EXISTS answer_cache (
+    id             BIGSERIAL   PRIMARY KEY,
+
+    -- Kept for debugging and for auditing what a hit actually matched against.
+    -- Serving the wrong answer is silent, so being able to see which question
+    -- a response was reused from matters more than it looks.
+    question       TEXT        NOT NULL,
+    embedding      vector(768) NOT NULL,
+
+    answer         TEXT        NOT NULL,
+    sources        JSONB       NOT NULL,
+
+    -- A fingerprint of the corpus at the time the answer was generated.
+    -- Re-ingesting changes it, so every prior answer stops matching rather
+    -- than being served against documents that no longer say the same thing.
+    -- Without this, a cache hit after a corpus update is silently wrong.
+    corpus_version TEXT        NOT NULL,
+
+    created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
+    last_used_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+    hit_count      INTEGER     NOT NULL DEFAULT 0
+);
+
+-- Lookup is itself a vector search, so it needs the same index the chunks do.
+CREATE INDEX IF NOT EXISTS answer_cache_embedding_idx
+    ON answer_cache USING hnsw (embedding vector_cosine_ops);
+
+CREATE INDEX IF NOT EXISTS answer_cache_corpus_idx
+    ON answer_cache (corpus_version);
