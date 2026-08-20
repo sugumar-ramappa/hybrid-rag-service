@@ -93,10 +93,12 @@ class RAGConfig:
     # 0.95 -> 0.98 and recall@1 0.67 -> 0.74 across 43 hand-verified questions,
     # with the entire gain on identifier-based queries.
     #
-    # Configurable rather than hardcoded because that result is a property of
-    # the question distribution, not of the technique. An earlier evaluation set
-    # phrased half its questions to avoid the source vocabulary and hybrid lost
-    # on it. If your traffic looks like that, set this to "dense".
+    # Configurable rather than hardcoded because that result depends on the
+    # question distribution, not on the technique alone. The keyword arm earns
+    # its vote only when questions and answers share vocabulary - here they do,
+    # because people searching Kubernetes docs type identifiers. On a corpus
+    # whose users never do, it contributes noise: set this to "dense" and
+    # confirm with scripts/evaluate.py.
     retrieval_mode: str = field(
         default_factory=lambda: os.getenv("RETRIEVAL_MODE", "hybrid")
     )

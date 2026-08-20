@@ -1,0 +1,9 @@
+{
+  // Renders the ```mermaid diagrams in docs/interview/ inside VS Code's
+  // built-in markdown preview (Cmd+Shift+V). Without it the diagrams show
+  // as raw code blocks. GitHub renders them natively, so this is only
+  // needed for reading locally.
+  "recommendations": [
+    "bierner.markdown-mermaid"
+  ]
+}

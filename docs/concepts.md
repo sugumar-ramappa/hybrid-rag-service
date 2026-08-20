@@ -78,17 +78,39 @@ placeholders filled in at runtime — the same contract as a JDBC
 
 ### Does it really compare against all 784 chunks?
 
-Conceptually yes, mechanically no. The HNSW index navigates a graph and only
-computes distance for a few dozen candidates.
+**At this size, yes — it really compares all 784.** There is an HNSW index:
 
 ```sql
 CREATE INDEX ... ON chunks USING hnsw (embedding vector_cosine_ops);
 ```
 
-At 784 chunks it barely matters. At 10 million it's the difference between
-milliseconds and minutes. It's also why the 768-dimension decision mattered:
-pgvector's HNSW caps at 2000 dimensions, so the model's native 3072 would have
-left the table unindexed.
+but Postgres does not use it, and measuring shows why:
+
+| Plan | Time |
+|---|---:|
+| Sequential scan (what Postgres chooses) | **2.3 ms** |
+| HNSW index scan (forced) | 73 ms |
+
+784 vectors is about 2.3 MB. Reading all of it and doing 784 distance
+calculations is faster than navigating an index graph. The planner is right.
+
+An index helps when it lets you *skip* most of the table. When the whole table
+fits in memory there is nothing worth skipping, and the index is pure overhead.
+Same reasoning as a Postgres b-tree on a 50-row table.
+
+So why build it? Because the crossover is a corpus-size question. At a few
+hundred thousand rows the sequential scan becomes the slow plan, Postgres starts
+choosing the index, and no application code changes. **That is what the
+768-dimension decision actually bought** — not speed today, but keeping the index
+*possible*. pgvector's HNSW caps at 2000 dimensions, so the model's native 3072
+would have left the table permanently unindexable.
+
+Check it yourself:
+
+```sql
+EXPLAIN ANALYZE SELECT chunk_id FROM chunks
+ORDER BY embedding <=> (SELECT embedding FROM chunks LIMIT 1) LIMIT 5;
+```
 
 ### Why only the top 5?
 
@@ -431,12 +453,25 @@ implementation here returned results *identical to dense*, because
 chunk containing all fifteen stems, and matched nothing. Tests passed, because
 they used one-word queries.
 
-And the result contradicted the prior: **hybrid search lost at every weighting
-tested.** Dense already placed 20 of 21 exact-identifier questions in the top 5,
-leaving the keyword arm nothing to add, while paraphrased questions have no rare
-terms so it contributed only noise.
+The fix — rewriting the operators to OR — took the keyword arm from **0 matches
+to 416**. Nothing about the code's shape changed, and no test had complained.
+Only the measurement showed the difference.
 
-Without measuring, a regression would have shipped as an improvement.
+**The aggregate can hide the mechanism.** Overall recall@5 moved 0.95 → 0.98,
+which is small enough to dismiss as noise. The per-style split is what makes it
+readable:
+
+| Style | recall@1 | recall@5 |
+|---|---|---|
+| `exact_term` | 0.71 → **0.86** | 0.95 → **1.00** |
+| `paraphrase` | 0.64 → 0.64 | 0.95 → 0.95 |
+
+Every point came from identifier questions; paraphrased ones did not move at all.
+That is precisely what the technique predicts, so the result is explainable rather
+than merely observed — and it tells you which corpora would *not* benefit.
+
+Without measuring, a hybrid implementation that was silently doing nothing would
+have shipped as an improvement.
 
 ---
 

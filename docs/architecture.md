@@ -7,10 +7,10 @@ evaluation set before it counts.
 | | |
 |---|---|
 | Corpus | 784 chunks across 56 Kubernetes documentation pages |
-| Golden set | 42 hand-verified questions (21 exact-term, 21 paraphrase) |
+| Golden set | 43 hand-verified questions (21 exact-term, 22 natural phrasing) |
 | Embeddings | `gemini-embedding-001` at 768 dimensions, normalized |
 | Storage | Postgres 16 + pgvector, HNSW and GIN indexes |
-| Tests | 36, including integration tests against real Postgres |
+| Tests | 55, including integration tests against real Postgres |
 
 ---
 
@@ -32,39 +32,31 @@ The sentence the project earned:
 > Hybrid search with reciprocal rank fusion took recall@5 from 0.95 to 0.98 and
 > recall@1 from 0.67 to 0.74 across 43 hand-verified questions. The entire gain
 > was on identifier-based queries, which reached perfect recall@5 — paraphrased
-> questions were unchanged. That is the textbook result, and it took two
-> evaluation sets to establish it honestly.
+> questions were unchanged.
 
-**The first evaluation set gave the opposite answer**, and understanding why is
-the more valuable half of the project.
+**That second sentence is the one that matters.** A three-point move in an
+aggregate is small enough to be noise. The per-style breakdown is what makes it a
+finding:
 
-Half its questions had been generated with a prompt instructing the model to
-*"deliberately avoid the technical terms used in the text"*. That produced
-questions no user would type — *"how many copies of the main management program
-are running"* instead of *"how many API servers are running"* — and measurably
-so: they shared **19%** of their vocabulary with their own answer, against 44%
-for identifier-based ones.
+| Style | recall@1 | recall@5 | Change |
+|---|---|---|---|
+| `exact_term` — names identifiers like `reclaimPolicy` | 0.71 → **0.86** | 0.95 → **1.00** | every question retrieved |
+| `paraphrase` — natural phrasing, no identifier | 0.64 → 0.64 | 0.95 → 0.95 | **none** |
 
-Keyword search cannot match words a question never uses. So half the set was
-structurally immune to the thing a hybrid-search experiment measures, and hybrid
-lost at every weighting tested.
+Keyword search can only contribute where a question and its answer share
+vocabulary. A question naming `UnknownVersionInteroperabilityProxy` hands the
+keyword arm a rare term to rank on; *"how does the cluster decide where to run
+things"* hands it nothing, so reciprocal rank fusion gets a vote from one arm
+only and the dense ranking survives untouched.
 
-Regenerating those questions with realistic phrasing raised the overlap to 50%
-and reversed the result:
+The measured result therefore matches the mechanism, and it says which corpora
+would **not** benefit — one whose users never type identifiers gains nothing
+here. Labelling every golden-set question by style is what bought that; without
+the split, the same experiment reports "+3 points" and cannot explain them.
 
-| Question set | Overlap with answer | Dense | Hybrid |
-|---|---:|---:|---:|
-| Obliquely phrased | 19% | **0.81** | 0.74 |
-| Realistically phrased | 50% | 0.95 | **0.98** |
-
-Same corpus, same embeddings, same retrieval code. **Only the wording of the
-evaluation questions changed, and the headline metric moved 14 points while the
-conclusion about hybrid search inverted.**
-
-Two things follow. A retrieval score quoted without describing its question
-distribution is close to meaningless. And an evaluation set is an instrument that
-can be miscalibrated in ways that look exactly like a finding — this one was, and
-it took measuring question-to-answer vocabulary overlap to see it.
+It also means a retrieval score quoted without describing its question
+distribution says very little. Ours is 21 identifier-based and 22 naturally
+phrased, stated up front for that reason.
 
 ---
 
@@ -224,6 +216,31 @@ CREATE INDEX ... USING gin  (content_tsv);
 `content_tsv` is maintained by Postgres and can never drift from `content`.
 Nothing queries it yet — hybrid search is the next change.
 
+**The HNSW index is not used at this corpus size, and that is correct.** Measured
+with `EXPLAIN ANALYZE` on the 784-row table:
+
+| Plan | Time |
+|---|---:|
+| Sequential scan (what Postgres chooses) | **2.3 ms** |
+| HNSW index scan (forced with `enable_seqscan = off`) | 73 ms |
+
+784 vectors of 768 floats is about 2.3 MB — it fits in memory, and comparing all
+of them is cheaper than traversing a graph. The planner is right to ignore the
+index.
+
+So the index earns nothing today. It is built anyway because the crossover is a
+corpus-size question, not a code question: at a few hundred thousand rows the
+sequential scan becomes the slow plan and Postgres starts using the index with no
+change to the application. What the 768-dimension decision actually bought was
+**keeping that option open** — at the model's native 3072, pgvector could not
+have built the index at all, and the table would have been permanently stuck on
+sequential scans.
+
+That distinction matters under questioning. "We use HNSW so queries are fast" is
+false here and easy to disprove. "We sized the embeddings so HNSW stays available
+as the corpus grows, and measured that the planner correctly ignores it at 784
+rows" is the true version, and a better answer.
+
 Each batch of 50 is written before the next is embedded. A rate-limit failure
 forty minutes into a run therefore costs one batch, and re-running resumes. That
 happened, and cost nine chunks out of 778.
@@ -231,7 +248,7 @@ happened, and cost nine chunks out of 778.
 ### 07 · Build the golden set — `scripts/generate_golden_set.py`
 
 ```
-chunks → 42 verified question/chunk pairs
+chunks → 43 verified question/chunk pairs
 ```
 
 Sixty candidates, sampled **by document rather than by chunk**. The corpus is
@@ -247,7 +264,7 @@ row_number() OVER (PARTITION BY source ORDER BY random())
 Each candidate is generated from **one chunk in isolation** — the model never
 sees the corpus, so it cannot know whether twenty other chunks answer its
 question equally well. That judgement is what hand-verification supplies, and why
-18 of 60 were rejected.
+17 of 60 were rejected.
 
 Two question styles are generated deliberately:
 
@@ -262,7 +279,7 @@ merely observed.
 ### 08 · Measure — `scripts/evaluate.py`
 
 ```
-42 questions → recall@k, MRR
+43 questions → recall@k, MRR
 ```
 
 Embed each question, search, find where the expected chunk ranked. No generation,
@@ -424,8 +441,8 @@ means never knowing what it was worth.
 ## 8. Questions this project lets you answer
 
 **How do you know your retrieval works?**
-42 hand-verified question-to-chunk pairs, measured with recall@1/5/10 and MRR,
-broken down by question style. 18 of 60 candidates rejected — that rejection rate
+43 hand-verified question-to-chunk pairs, measured with recall@1/5/10 and MRR,
+broken down by question style. 17 of 60 candidates rejected — that rejection rate
 is the point, not a defect. The generator sees one chunk at a time and cannot
 know whether another chunk answers better; that criterion is exactly what human
 verification supplies.

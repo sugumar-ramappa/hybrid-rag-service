@@ -13,11 +13,11 @@ would know it was wrong.
 | Chunking | Recursive character, 1000 chars / 200 overlap | baseline |
 | Embedding | `gemini-embedding-001`, 768 dimensions, normalized | measured |
 | Storage | Postgres + pgvector, HNSW + GIN indexes | measured |
-| Search | Dense (cosine) — **and** hybrid with RRF | both measured |
+| Search | **Hybrid** — vector + keyword fused with RRF | measured, and the default |
 | Reranking | none | deferred |
 | Query rewriting | none | not needed (single-turn) |
 
-784 chunks, 56 Kubernetes documentation pages, measured against 42 hand-verified
+784 chunks, 56 Kubernetes documentation pages, measured against 43 hand-verified
 questions.
 
 ---

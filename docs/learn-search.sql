@@ -148,7 +148,7 @@ LIMIT 5;
 --
 --      IF THIS RETURNS NO ROWS, that question is not cached. See what is:
 --          SELECT question FROM answer_cache;
---      or repopulate all 42 evaluation questions:
+--      or repopulate all 43 evaluation questions:
 --          python -m scripts.evaluate --mode dense
 
 WITH q AS (
@@ -178,7 +178,7 @@ LIMIT 5;
 --
 --      Open eval/golden_set.json, copy any "question" value, and paste it in
 --      place of the text below. It must be cached first - run
---      `python -m scripts.evaluate --mode dense` to embed all 42 of them.
+--      `python -m scripts.evaluate --mode dense` to embed all 43 of them.
 --
 --      Try one of each style and compare:
 --        exact_term - "Which Pod quality classifications are blocked from
@@ -359,9 +359,10 @@ SELECT count(*) AS chunks, count(DISTINCT source) AS documents FROM chunks;
 SELECT count(*) AS cached_questions, sum(hit_count) AS times_reused
 FROM embedding_cache;
 
--- 7.3  For each of the 42 questions, the eval:
+-- 7.3  For each of the 43 questions, the eval:
 --        1. looked up the question's embedding (Part 1)
 --        2. sorted all 784 chunks by distance from it (Part 3)
 --        3. checked whether the expected chunk was in the top 5
 --
---      34 of 42 succeeded with dense search.  That is recall@5 = 0.81.
+--      42 of 43 succeed with hybrid search.  That is recall@5 = 0.98.
+--      Dense-only gets 41 of 43, or 0.95.

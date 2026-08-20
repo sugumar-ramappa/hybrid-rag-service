@@ -11,9 +11,6 @@ than assumed.
 
 ## Results
 
-Measured on **42 hand-verified questions** over **784 chunks** from 56
-Kubernetes documentation pages.
-
 Measured against **43 hand-verified questions** over **784 chunks** from 56
 Kubernetes documentation pages.
 
@@ -34,25 +31,16 @@ naming a specific identifier:
 questions were unchanged on recall and marginally worse on MRR (0.78 → 0.75) —
 the residue of keyword noise.
 
-### The same system scored 0.81 on a different question set
+That asymmetry is the result, not a footnote. Keyword search can only contribute
+where a question and its answer share vocabulary, so a question naming
+`reclaimPolicy` gives the keyword arm a rare term to rank on, while *"how does
+the cluster decide where to run things"* gives it nothing. Labelling every
+question by style is what makes the mechanism visible in the numbers — without
+the split this is "+3 points, possibly noise."
 
-An earlier evaluation set phrased half its questions to *deliberately avoid* the
-source vocabulary — *"how many copies of the main management program are
-running"* rather than *"how many API servers are running"*. On that set:
-
-| Question set | Word overlap with answer | Dense | Hybrid |
-|---|---:|---:|---:|
-| Obliquely phrased | 19% | **0.81** | 0.74 |
-| Realistically phrased | 50% | 0.95 | **0.98** |
-
-Same corpus, same code, same embeddings. **Only the wording of the questions
-changed, and it moved the headline metric by 14 points and reversed the
-conclusion about hybrid search.**
-
-Keyword search cannot match words a question never uses, so the oblique set was
-structurally immune to the thing hybrid does. That is a property of the
-evaluation instrument, not of the technique — and it means a recall figure quoted
-without describing its question distribution says very little.
+It also means a recall figure quoted without describing its question
+distribution says very little. Ours is 21 identifier-based and 22 naturally
+phrased, and the per-style rows are reported for exactly that reason.
 
 Reproduce with:
 
@@ -69,7 +57,7 @@ python -m scripts.evaluate --compare
 Most RAG projects stop at *"it returns plausible answers."* This one answers the
 question that follows: **how do you know?**
 
-- **42 hand-verified question-to-chunk pairs.** 60 were generated; 18 were
+- **43 hand-verified question-to-chunk pairs.** 60 were generated; 17 were
   rejected for being link-list chunks, question/chunk mismatches, or questions
   that restated their own answer. That 30% rejection rate is the point of
   verification, not a defect in it.
@@ -253,13 +241,23 @@ src/
   mcp_server/               MCP tools
   agent/                    Google ADK agent
 scripts/                    fetch, ingest, evaluate, inspect, golden set tooling
-eval/golden_set.json        42 hand-verified questions
-tests/                      39 tests, integration against real Postgres
+eval/golden_set.json        43 hand-verified questions
+tests/                      55 tests, integration against real Postgres
 docs/                       architecture, plan, retrieval strategies, walkthrough
 ```
 
 ## Documentation
 
+**Start here:** [`docs/interview/`](docs/interview/) — three documents covering
+the architecture flow with method names, a method-by-method code walkthrough, and
+how the system was tested and measured.
+
+- [`docs/interview/architecture-flow.md`](docs/interview/architecture-flow.md) —
+  ingestion, query, and hybrid-search diagrams; models and strategies chosen
+- [`docs/interview/code-walkthrough.md`](docs/interview/code-walkthrough.md) —
+  every class and method in data-flow order
+- [`docs/interview/testing.md`](docs/interview/testing.md) — the test suite, the
+  golden set, the eval harness, and what measuring found
 - [`docs/architecture.md`](docs/architecture.md) — the pipeline stage by stage,
   technology trade-offs, findings, and interview answers
 - [`docs/plan.md`](docs/plan.md) — remaining steps and the rules that keep them honest
@@ -274,6 +272,6 @@ docs/                       architecture, plan, retrieval strategies, walkthroug
 pytest tests/ -v
 ```
 
-39 tests. The vector store suite runs against a real Postgres rather than mocks —
+55 tests. The vector store suite runs against a real Postgres rather than mocks —
 two of the three hardest bugs here were Postgres behaviour that no mock would
 have caught.
