@@ -158,12 +158,28 @@ def main() -> None:
         if not runs:
             print("No saved runs yet.")
             return
-        print(f"\n  {'run':<24} {'n':>4} {'recall@1':>9} {'recall@5':>9} {'MRR':>7}")
-        for path in runs:
-            data = json.loads(path.read_text())
-            o = data["summary"]["overall"]
-            print(f"  {data['label']:<24} {o['n']:>4} {o['recall@1']:>9.2f} "
-                  f"{o['recall@5']:>9.2f} {o['mrr']:>7.2f}")
+        # Group by question count. Runs measured against different golden sets
+        # are NOT comparable - the question distribution is the instrument, and
+        # this project measured a 14-point swing from wording alone.
+        loaded = [json.loads(p.read_text()) for p in runs]
+        by_set: dict[int, list] = {}
+        for d in loaded:
+            by_set.setdefault(d["summary"]["overall"]["n"], []).append(d)
+
+        for n in sorted(by_set):
+            group = sorted(by_set[n], key=lambda d: -d["summary"]["overall"]["recall@5"])
+            gset = group[0].get("golden_set", "(not recorded)")
+            print(f"\n  question set: {gset}  ({n} questions)")
+            print(f"  {'run':<24} {'recall@1':>9} {'recall@5':>9} {'recall@10':>10} {'MRR':>7}")
+            print("  " + "-" * 62)
+            for d in group:
+                o = d["summary"]["overall"]
+                print(f"  {d['label']:<24} {o['recall@1']:>9.2f} {o['recall@5']:>9.2f} "
+                      f"{o['recall@10']:>10.2f} {o['mrr']:>7.2f}")
+
+        if len(by_set) > 1:
+            print("\n  Runs under different question sets are not comparable -")
+            print("  the question distribution is part of the instrument.")
         return
 
     config = get_config()
@@ -210,6 +226,7 @@ def main() -> None:
         out = RESULTS_DIR / f"{label}.json"
         out.write_text(json.dumps({
             "label": label,
+            "golden_set": args.golden_set,
             "mode": args.mode,
             "keyword_weight": args.keyword_weight,
             "corpus_chunks": store.get_document_count(),

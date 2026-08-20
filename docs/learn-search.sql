@@ -138,19 +138,24 @@ LIMIT 5;
 --      Queries 3.1 and 3.2 compared against an existing CHUNK, because turning
 --      a question into an embedding normally costs an API call.
 --
---      But the eval harness already embedded all 42 evaluation questions and
---      cached them in the embedding_cache table. The cache key is
---      sha256(model : dimensions : task_type : question), which Postgres can
---      recompute - so we can look up a real question's embedding and search
---      with it, for free.
+--      But any question already asked through the system is cached in the
+--      embedding_cache table. The cache key is
+--          sha256(model : dimensions : task_type : question)
+--      which Postgres can recompute, so we can look up a real question's
+--      embedding and search with it for free.
 --
 --      This is EXACTLY what happens when someone asks the system a question.
+--
+--      IF THIS RETURNS NO ROWS, that question is not cached. See what is:
+--          SELECT question FROM answer_cache;
+--      or repopulate all 42 evaluation questions:
+--          python -m scripts.evaluate --mode dense
 
 WITH q AS (
     SELECT embedding FROM embedding_cache
     WHERE cache_key = encode(sha256((
         'gemini-embedding-001:768:RETRIEVAL_QUERY:' ||
-        'What history lies behind the name K8s being used as an abbreviation for Kubernetes?'
+        'Why is Kubernetes abbreviated as K8s?'
     )::bytea), 'hex')
 )
 SELECT round((c.embedding <=> (SELECT embedding FROM q))::numeric, 4) AS distance,
@@ -172,7 +177,8 @@ LIMIT 5;
 -- 3.5  Try a different question.
 --
 --      Open eval/golden_set.json, copy any "question" value, and paste it in
---      place of the text below. All 42 are cached, so any of them works.
+--      place of the text below. It must be cached first - run
+--      `python -m scripts.evaluate --mode dense` to embed all 42 of them.
 --
 --      Try one of each style and compare:
 --        exact_term - "Which Pod quality classifications are blocked from

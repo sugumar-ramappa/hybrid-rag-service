@@ -28,9 +28,9 @@ the rest was setup and one justified but unplanned migration.
 | ~~2~~ | ~~**Real corpus + incremental ingest**~~ — done: **784 chunks / 56 documents**, frozen at `MAX_FILES=56` | ~~3.0~~ | ✅ |
 | ~~3~~ | ~~**Golden set**~~ — done: **42 verified questions**, 21 exact-term / 21 paraphrase, across 38 documents | ~~3.0~~ | ✅ |
 | 4 | **Eval harness + embedding cache** — `scripts/evaluate.py` with recall@k and MRR | 4.0 | A metrics table |
-| 5 | **Baseline run** | 0.5 | **The first number** |
-| 6 | **Hybrid + RRF** — tsvector and vector fused in one SQL query | 2.0 | `hybrid_search()` + tests |
-| 7 | **Re-measure** | 0.5 | **The delta** |
+| ~~5~~ | ~~**Baseline run**~~ — dense recall@5 **0.95**, MRR 0.80 | ~~0.5~~ | ✅ |
+| ~~6~~ | ~~**Hybrid + RRF**~~ — one SQL query, two CTEs, rank fusion | ~~2.0~~ | ✅ |
+| ~~7~~ | ~~**Re-measure**~~ — hybrid recall@5 **0.98**, recall@1 0.67→0.74 | ~~0.5~~ | ✅ |
 | 8 | **Containerize** — build the image, run it locally against Postgres, verify | 0.5 | A container proven to work |
 | 9 | **CI** — ruff and pytest against a Postgres service container | 1.0 | Green badge |
 | 10 | **README rewrite** — results first, architecture second | 1.0 | What people actually read |

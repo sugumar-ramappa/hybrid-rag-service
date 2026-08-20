@@ -16,17 +16,6 @@
       "notes": "REJECTED: link list, no prose; question rewords one bullet"
     },
     {
-      "id": "q002",
-      "question": "Which Accept header value should I use for protobuf OpenAPI v2 responses?",
-      "style": "paraphrase",
-      "expected_chunk_id": "4e3f2658250b3f3e",
-      "source": "concepts/overview/kubernetes-api.md",
-      "chunk_index": 9,
-      "chunk_text": "<table>\n  <caption style=\"display:none\">Valid request header values for OpenAPI v2 queries</caption>\n  <thead>\n     <tr>\n        <th>Header</th>\n        <th style=\"min-width: 50%;\">Possible values</th>\n        <th>Notes</th>\n     </tr>\n  </thead>\n  <tbody>\n     <tr>\n        <td><code>Accept-Encoding</code></td>\n        <td><code>gzip</code></td>\n        <td><em>not supplying this header is also acceptable</em></td>\n     </tr>\n     <tr>\n        <td rowspan=\"3\"><code>Accept</code></td>\n        <td><code>application/com.github.proto-openapi.spec.v2@v1.0+protobuf</code></td>\n        <td><em>mainly for intra-cluster use</em></td>\n     </tr>\n     <tr>\n        <td><code>application/json</code></td>\n        <td><em>default</em></td>\n     </tr>\n     <tr>\n        <td><code>*</code></td>\n        <td><em>serves </em><code>application/json</code></td>\n     </tr>\n  </tbody>\n</table>",
-      "verified": false,
-      "notes": "REJECTED: chunk is a raw HTML table of header values"
-    },
-    {
       "id": "q003",
       "question": "What is the current beta status for structured logging features starting in version v1.23?",
       "style": "exact_term",
@@ -36,17 +25,6 @@
       "chunk_text": "### Klog output\n\nAn example of the traditional klog native format:\n\n```\nI1025 00:15:15.525108       1 httplog.go:79] GET /api/v1/namespaces/kube-system/pods/metrics-server-v0.3.1-57c75779f-9p8wg: (1.512ms) 200 [pod_nanny/v0.0.0 (linux/amd64) kubernetes/$Format 10.56.1.19:51756]\n```\n\nThe message string may contain line breaks:\n\n```\nI1025 00:15:15.525108       1 example.go:79] This is a message\nwhich has a line break.\n```\n\n### Structured Logging\n\n{{< feature-state for_k8s_version=\"v1.23\" state=\"beta\" >}}\n\n{{< warning >}}\nMigration to structured log messages is an ongoing process. Not all log messages are structured in\nthis version. When parsing log files, you must also handle unstructured log messages.\n\nLog formatting and value serialization are subject to change.\n{{< /warning>}}",
       "verified": true,
       "notes": "chunk states v1.23 beta via feature-state shortcode - the tokens are present"
-    },
-    {
-      "id": "q004",
-      "question": "How can I use RuntimeClass to apply custom configurations to specific Pods?",
-      "style": "paraphrase",
-      "expected_chunk_id": "e3bc456f7c9b217d",
-      "source": "concepts/containers/_index.md",
-      "chunk_index": 2,
-      "chunk_text": "Containers are intended to be stateless and\n[immutable](https://glossary.cncf.io/immutable-infrastructure/):\nyou should not change\nthe code of a container that is already running. If you have a containerized\napplication and want to make changes, the correct process is to build a new\nimage that includes the change, then recreate the container to start from the\nupdated image.\n\n## Container runtimes\n\n{{< glossary_definition term_id=\"container-runtime\" length=\"all\" >}}\n\nUsually, you can allow your cluster to pick the default container runtime\nfor a Pod. If you need to use more than one container runtime in your cluster,\nyou can specify the [RuntimeClass](/docs/concepts/containers/runtime-class/)\nfor a Pod to make sure that Kubernetes runs those containers using a\nparticular container runtime.\n\nYou can also use RuntimeClass to run different Pods with the same container\nruntime but with different settings.",
-      "verified": false,
-      "notes": "REJECTED: asks about RuntimeClass, chunk is about immutable containers"
     },
     {
       "id": "q005",
@@ -60,17 +38,6 @@
       "notes": "chunk contains the exact PodsBlockedInTerminatingState alert rule"
     },
     {
-      "id": "q006",
-      "question": "How can I list the active kube-apiserver instances using a label selector?",
-      "style": "paraphrase",
-      "expected_chunk_id": "9b3baab58fcf7880",
-      "source": "concepts/architecture/leases.md",
-      "chunk_index": 3,
-      "chunk_text": "## API server identity\n\n{{< feature-state feature_gate_name=\"APIServerIdentity\" >}}\n\nStarting in Kubernetes v1.26, each `kube-apiserver` uses the Lease API to publish its identity to the\nrest of the system. While not particularly useful on its own, this provides a mechanism for clients to\ndiscover how many instances of `kube-apiserver` are operating the Kubernetes control plane.\nExistence of kube-apiserver leases enables future capabilities that may require coordination between\neach kube-apiserver.\n\nYou can inspect Leases owned by each kube-apiserver by checking for lease objects in the `kube-system` namespace\nwith the name `apiserver-<sha256-hash>`. Alternatively you can use the label selector `apiserver.kubernetes.io/identity=kube-apiserver`:",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
-    },
-    {
       "id": "q007",
       "question": "What allows the kubelet to utilize diverse runtimes while avoiding the necessity of rebuilding cluster components?",
       "style": "exact_term",
@@ -80,17 +47,6 @@
       "chunk_text": "---\ntitle: Container Runtime Interface (CRI)\ncontent_type: concept\nweight: 60\n---\n\n<!-- overview -->\n\nThe CRI is a plugin interface which enables the kubelet to use a wide variety of\ncontainer runtimes, without having a need to recompile the cluster components.\n\nYou need a working\n{{<glossary_tooltip text=\"container runtime\" term_id=\"container-runtime\">}} on\neach Node in your cluster, so that the\n{{< glossary_tooltip text=\"kubelet\" term_id=\"kubelet\" >}} can launch\n{{< glossary_tooltip text=\"Pods\" term_id=\"pod\" >}} and their containers.\n\n{{< glossary_definition prepend=\"The Container Runtime Interface (CRI) is\" term_id=\"cri\" length=\"all\" >}}\n\n<!-- body -->\n\n## The API {#api}\n\n{{< feature-state for_k8s_version=\"v1.23\" state=\"stable\" >}}",
       "verified": true,
       "notes": "reviewed: chunk is prose and answers the question"
-    },
-    {
-      "id": "q008",
-      "question": "Where should I host control plane services if I want to avoid running user workloads there?",
-      "style": "paraphrase",
-      "expected_chunk_id": "60f0e7b8815f62c7",
-      "source": "concepts/architecture/_index.md",
-      "chunk_index": 3,
-      "chunk_text": "Control plane components can be run on any machine in the cluster. However, for simplicity, setup scripts\ntypically start all control plane components on the same machine, and do not run user containers on this machine.\nSee [Creating Highly Available clusters with kubeadm](/docs/setup/production-environment/tools/kubeadm/high-availability/)\nfor an example control plane setup that runs across multiple machines.\n\n### kube-apiserver\n\n{{< glossary_definition term_id=\"kube-apiserver\" length=\"all\" >}}\n\n### etcd\n\n{{< glossary_definition term_id=\"etcd\" length=\"all\" >}}\n\n### kube-scheduler\n\n{{< glossary_definition term_id=\"kube-scheduler\" length=\"all\" >}}\n\n### kube-controller-manager\n\n{{< glossary_definition term_id=\"kube-controller-manager\" length=\"all\" >}}\n\nThere are many different types of controllers. Some examples of them are:",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
     },
     {
       "id": "q009",
@@ -104,17 +60,6 @@
       "notes": "REJECTED: chunk is a bulleted list of addon links, not explanation"
     },
     {
-      "id": "q010",
-      "question": "What should I do if I need to update a Node's state significantly?",
-      "style": "paraphrase",
-      "expected_chunk_id": "7d05e175e2948455",
-      "source": "concepts/architecture/nodes.md",
-      "chunk_index": 3,
-      "chunk_text": "The name of a Node object must be a valid\n[DNS subdomain name](/docs/concepts/overview/working-with-objects/names#dns-subdomain-names).\n\n### Node name uniqueness\n\nThe [name](/docs/concepts/overview/working-with-objects/names#names) identifies a Node. Two Nodes\ncannot have the same name at the same time. Kubernetes also assumes that a resource with the same\nname is the same object. In the case of a Node, it is implicitly assumed that an instance using the\nsame name will have the same state (e.g. network settings, root disk contents) and attributes like\nnode labels. This may lead to inconsistencies if an instance was modified without changing its name.\nIf the Node needs to be replaced or updated significantly, the existing Node object needs to be\nremoved from API server first and re-added after the update.\n\n### Self-registration of Nodes",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
-    },
-    {
       "id": "q011",
       "question": "Which component manages the process of attaching and detaching volumes for applications requiring persistent state?",
       "style": "exact_term",
@@ -124,17 +69,6 @@
       "chunk_text": "- **Load balancing for Services:** If a Pod behind a [Service](/docs/concepts/services-networking/service/) fails, Kubernetes automatically removes it from the Service's endpoints to route traffic only to healthy Pods.\n\nHere are some of the key components that provide Kubernetes self-healing:\n\n- **[kubelet](/docs/concepts/architecture/#kubelet):** Ensures that containers are running, and restarts those that fail.\n\n- **Deployment (via ReplicaSet), ReplicaSet, StatefulSet and DaemonSet controllers:** Maintain the desired number of Pod replicas.\n\n- **PersistentVolume controller:** Manages volume attachment and detachment for stateful workloads.\n\n## Considerations {#considerations} \n\n- **Storage Failures:** If a persistent volume becomes unavailable, recovery steps may be required.\n\n- **Application Errors:** Kubernetes can restart containers, but underlying application issues must be addressed separately.\n\n## {{% heading \"whatsnext\" %}}",
       "verified": false,
       "notes": "REJECTED: question asks about volume attach/detach, chunk is about load balancing"
-    },
-    {
-      "id": "q012",
-      "question": "Can I use wildcards to match all values within FlowSchema rules?",
-      "style": "paraphrase",
-      "expected_chunk_id": "a8dc60e97bcdef01",
-      "source": "concepts/cluster-administration/flow-control.md",
-      "chunk_index": 24,
-      "chunk_text": "A FlowSchema matches a given request if at least one of its `rules`\nmatches. A rule matches if at least one of its `subjects` *and* at least\none of its `resourceRules` or `nonResourceRules` (depending on whether the\nincoming request is for a resource or non-resource URL) match the request.\n\nFor the `name` field in subjects, and the `verbs`, `apiGroups`, `resources`,\n`namespaces`, and `nonResourceURLs` fields of resource and non-resource rules,\nthe wildcard `*` may be specified to match all values for the given field,\neffectively removing it from consideration.",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
     },
     {
       "id": "q013",
@@ -148,17 +82,6 @@
       "notes": "reviewed: chunk is prose and answers the question"
     },
     {
-      "id": "q014",
-      "question": "Which specific endpoints provide kubelet metrics beyond the standard ones?",
-      "style": "paraphrase",
-      "expected_chunk_id": "4e88535c489cf1d7",
-      "source": "concepts/cluster-administration/observability.md",
-      "chunk_index": 1,
-      "chunk_text": "Figure 1 outlines how cluster components emit the three primary signal types.\n\n{{< mermaid >}}\nflowchart LR\n    A[Cluster components] --> M[Metrics pipeline]\n    A --> L[Log pipeline]\n    A --> T[Trace pipeline]\n    M --> S[(Storage and analysis)]\n    L --> S\n    T --> S\n    S --> O[Operators and automation]\n{{< /mermaid >}}\n\n*Figure 1. High-level signals emitted by cluster components and their consumers.*\n\n<!-- body -->\n## Metrics\n\nKubernetes components emit metrics in [Prometheus format](https://prometheus.io/docs/instrumenting/exposition_formats/) from their `/metrics` endpoints, including:\n\n- kube-controller-manager\n- kube-proxy\n- kube-apiserver\n- kube-scheduler\n- kubelet\n\nThe kubelet also exposes metrics at `/metrics/cadvisor`, `/metrics/resource`, and `/metrics/probes`, and add-ons such as [kube-state-metrics](/docs/concepts/cluster-administration/kube-state-metrics/) enrich those control plane signals with Kubernetes object status.",
-      "verified": false,
-      "notes": "REJECTED: chunk is a mermaid diagram; question asks about kubelet metric endpoints"
-    },
-    {
       "id": "q015",
       "question": "Which feature gate must be active on the kube-apiserver to utilize Mixed Version Proxy capabilities?",
       "style": "exact_term",
@@ -168,17 +91,6 @@
       "chunk_text": "This enables cluster administrators to configure highly available clusters that can be upgraded\nmore safely, by :\n\n1. ensuring that controllers relying on discovery to show a comprehensive list of resources\nfor important tasks always get the complete view of all resources. We call this complete cluster-wide \ndiscovery _Peer-aggregated discovery_.\n1. directing resource requests (made during the upgrade) to the correct kube-apiserver.\nThis proxying prevents users from seeing unexpected 404 Not Found errors that stem\nfrom the upgrade process. This mechanism is called the _Mixed Version Proxy_.\n\n## Enabling Peer-aggregated Discovery and Mixed Version Proxy\n\nEnsure that `UnknownVersionInteroperabilityProxy` [feature gate](/docs/reference/command-line-tools-reference/feature-gates/#UnknownVersionInteroperabilityProxy)\nis enabled when you start the {{< glossary_tooltip text=\"API Server\" term_id=\"kube-apiserver\" >}}:",
       "verified": true,
       "notes": "chunk names UnknownVersionInteroperabilityProxy directly"
-    },
-    {
-      "id": "q016",
-      "question": "Why might a Pod end up pending during the cluster consolidation process?",
-      "style": "paraphrase",
-      "expected_chunk_id": "2e74282f5f4d7da7",
-      "source": "concepts/cluster-administration/node-autoscaling.md",
-      "chunk_index": 8,
-      "chunk_text": "Removing non-empty Nodes during consolidation is disruptive&mdash;the Pods running on them are\nterminated, and possibly have to be recreated (for example by a Deployment). However, all such\nrecreated Pods should be able to schedule on existing Nodes in the cluster, or the replacement Nodes\nprovisioned as part of consolidation. __No Pods should normally become pending as a result of\nconsolidation.__\n\n{{< note >}}\nAutoscalers predict how a recreated Pod will likely be scheduled after a Node is provisioned or\nconsolidated, but they don't control the actual scheduling. Because of this, some Pods might\nbecome pending as a result of consolidation - if for example a completely new Pod appears while\nconsolidation is being performed.\n{{< /note >}}\n\nAutoscaler configuration may also enable triggering consolidation by other conditions (for example,\nthe time elapsed since a Node was created), in order to optimize different properties (for example,\nthe maximum lifespan of Nodes in a cluster).",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
     },
     {
       "id": "q017",
@@ -192,17 +104,6 @@
       "notes": "REJECTED: chunk is a component link list, not an explanation of the scheduler"
     },
     {
-      "id": "q018",
-      "question": "How do I update app configuration without needing to rebuild my container images?",
-      "style": "paraphrase",
-      "expected_chunk_id": "af755aa19355ff84",
-      "source": "concepts/overview/_index.md",
-      "chunk_index": 4,
-      "chunk_text": "* **Automatic bin packing**\n  You provide Kubernetes with a cluster of nodes that it can use to run containerized tasks.\n  You tell Kubernetes how much CPU and memory (RAM) each container needs. Kubernetes can fit\n  containers onto your nodes to make the best use of your resources.\n* **Self-healing**\n  Kubernetes restarts containers that fail, replaces containers, kills containers that don't\n  respond to your user-defined health check, and doesn't advertise them to clients until they\n  are ready to serve.\n* **Secret and configuration management**\n  Kubernetes lets you store and manage sensitive information, such as passwords, OAuth tokens,\n  and SSH keys. You can deploy and update secrets and application configuration without\n  rebuilding your container images, and without exposing secrets in your stack configuration.\n* **Batch execution**\n  In addition to services, Kubernetes can manage your batch and CI workloads, replacing containers that fail, if desired.\n* **Horizontal scaling**",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
-    },
-    {
       "id": "q019",
       "question": "How should a Pod define the hardware-vendor.example/foo limit to secure two specific devices for its container?",
       "style": "exact_term",
@@ -212,17 +113,6 @@
       "chunk_text": "### Example {#example-pod}\n\nSuppose a Kubernetes cluster is running a device plugin that advertises resource `hardware-vendor.example/foo`\non certain nodes. Here is an example of a pod requesting this resource to run a demo workload:\n\n```yaml\n---\napiVersion: v1\nkind: Pod\nmetadata:\n  name: demo-pod\nspec:\n  containers:\n    - name: demo-container-1\n      image: registry.k8s.io/pause:3.8\n      resources:\n        limits:\n          hardware-vendor.example/foo: 2\n#\n# This Pod needs 2 of the hardware-vendor.example/foo devices\n# and can only schedule onto a Node that's able to satisfy\n# that need.\n#\n# If the Node has more than 2 of those devices available, the\n# remainder would be available for other Pods to use.\n```\n\n## Device plugin implementation\n\nThe general workflow of a device plugin includes the following steps:\n\n1. Initialization. During this phase, the device plugin performs vendor-specific\n   initialization and setup to make sure the devices are in a ready state.",
       "verified": true,
       "notes": "reviewed: chunk is prose and answers the question"
-    },
-    {
-      "id": "q020",
-      "question": "What configuration fields are mandatory when defining a new Kubernetes resource?",
-      "style": "paraphrase",
-      "expected_chunk_id": "d4693819cbcd4407",
-      "source": "concepts/overview/working-with-objects/_index.md",
-      "chunk_index": 6,
-      "chunk_text": "### Required fields\n\nIn the manifest (YAML or JSON file) for the Kubernetes object you want to create, you'll need to set values for\nthe following fields:\n\n* `apiVersion` - Which version of the Kubernetes API you're using to create this object\n* `kind` - What kind of object you want to create\n* `metadata` - Data that helps uniquely identify the object, including a `name` string, `UID`, and optional `namespace`\n* `spec` - What state you desire for the object\n\nThe precise format of the object `spec` is different for every Kubernetes object, and contains\nnested fields specific to that object. The [Kubernetes API Reference](/docs/reference/kubernetes-api/)\ncan help you find the spec format for all of the objects you can create using Kubernetes.",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
     },
     {
       "id": "q021",
@@ -236,17 +126,6 @@
       "notes": "chunk states OTEL_EXPORTER_OTLP_HEADERS is used for auth headers"
     },
     {
-      "id": "q022",
-      "question": "Which component is responsible for implementing the cluster network model on every node?",
-      "style": "paraphrase",
-      "expected_chunk_id": "aa620ec7896efab9",
-      "source": "concepts/cluster-administration/networking.md",
-      "chunk_index": 5,
-      "chunk_text": "## How to implement the Kubernetes network model\n\nThe network model is implemented by the container runtime on each node. The most common container\nruntimes use [Container Network Interface](https://github.com/containernetworking/cni) (CNI)\nplugins to manage their network and security capabilities. Many different CNI plugins exist from\nmany different vendors. Some of these provide only basic features of adding and removing network\ninterfaces, while others provide more sophisticated solutions, such as integration with other\ncontainer orchestration systems, running multiple CNI plugins, advanced IPAM features etc.\n\nSee [this page](/docs/concepts/cluster-administration/addons/#networking-and-network-policy)\nfor a non-exhaustive list of networking addons supported by Kubernetes.\n\n## {{% heading \"whatsnext\" %}}",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
-    },
-    {
       "id": "q023",
       "question": "How do you extract a specific key from a ConfigMap using the env.valueFrom syntax?",
       "style": "exact_term",
@@ -256,17 +135,6 @@
       "chunk_text": "```shell\nkubectl apply -f env-configmap.yaml\n```\n```shell\nkubectl logs pod/env-configmap\n```\nThe output is similar to this:\n```console\n...\nusername: \"k8s-admin\"\naccess_level: \"1\"\n...\n```\n\nSometimes a Pod won't require access to all the values in a ConfigMap.\nFor example, you could have another Pod which only uses the username value from the ConfigMap.\nFor this use case, you can use the `env.valueFrom` syntax instead, which lets you select individual keys in\na ConfigMap. The name of the environment variable can also be different from the key within the ConfigMap.\nFor example:\n\n```yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: env-configmap\nspec:\n  containers:\n  - name: envars-test-container\n    image: nginx\n    env:\n    - name: CONFIGMAP_USERNAME\n      valueFrom:\n        configMapKeyRef:\n          name: myconfigmap\n          key: username\n```",
       "verified": true,
       "notes": "chunk explains env.valueFrom with a configMapKeyRef example"
-    },
-    {
-      "id": "q024",
-      "question": "How does the system decide which controller manager instance takes charge in a high-availability setup?",
-      "style": "paraphrase",
-      "expected_chunk_id": "0ceccb97927e8ff9",
-      "source": "concepts/cluster-administration/coordinated-leader-election.md",
-      "chunk_index": 2,
-      "chunk_text": "## Leader selection for Kubernetes components\n\nKubernetes uses the [Lease API](/docs/concepts/architecture/leases/) to perform leader election among multiple instances of the same control-plane component in a high-availability cluster, such as `kube-controller-manager` or `kube-scheduler`.\n\nA [Lease](/docs/concepts/architecture/leases/) acts as a lightweight distributed lock. stored by the [Kubernetes API server](/docs/reference/command-line-tools-reference/kube-apiserver/).\nAll running instances of a component watch or periodically read the relevant Lease object\nto determine which instance is currently acting as the leader.\n\nThe [Lease API](/docs/reference/kubernetes-api/cluster-resources/lease-v1/) defines fields\nsuch as:\n\n`holderIdentity`\n: the identity (for example: pod name or hostname-based string) of the current leader.\n\n`acquireTime`\n: timestamp when leadership was acquired.\n\n`renewTime`\n: timestamp of the most recent renewal by the leader.",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
     },
     {
       "id": "q025",
@@ -280,17 +148,6 @@
       "notes": "reviewed: chunk is prose and answers the question"
     },
     {
-      "id": "q026",
-      "question": "How do I enable bandwidth limiting annotations on my Pods?",
-      "style": "paraphrase",
-      "expected_chunk_id": "8181b668a545703a",
-      "source": "concepts/extend-kubernetes/compute-storage-net/network-plugins.md",
-      "chunk_index": 7,
-      "chunk_text": "```json\n{\n  \"name\": \"k8s-pod-network\",\n  \"cniVersion\": \"0.4.0\",\n  \"plugins\": [\n    {\n      \"type\": \"calico\",\n      \"log_level\": \"info\",\n      \"datastore_type\": \"kubernetes\",\n      \"nodename\": \"127.0.0.1\",\n      \"ipam\": {\n        \"type\": \"host-local\",\n        \"subnet\": \"usePodCidr\"\n      },\n      \"policy\": {\n        \"type\": \"k8s\"\n      },\n      \"kubernetes\": {\n        \"kubeconfig\": \"/etc/cni/net.d/calico-kubeconfig\"\n      }\n    },\n    {\n      \"type\": \"bandwidth\",\n      \"capabilities\": {\"bandwidth\": true}\n    }\n  ]\n}\n```\n\nNow you can add the `kubernetes.io/ingress-bandwidth` and `kubernetes.io/egress-bandwidth`\nannotations to your Pod. For example:\n\n```yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  annotations:\n    kubernetes.io/ingress-bandwidth: 1M\n    kubernetes.io/egress-bandwidth: 1M\n...\n```\n\n## {{% heading \"whatsnext\" %}}",
-      "verified": false,
-      "notes": "REJECTED: chunk is a JSON CNI config dump"
-    },
-    {
       "id": "q027",
       "question": "Which Pod quality classifications are blocked from accessing swap memory when LimitedSwap is active?",
       "style": "exact_term",
@@ -300,17 +157,6 @@
       "chunk_text": "With `LimitedSwap`, Pods that do not fall under the Burstable QoS classification (i.e.\n`BestEffort`/`Guaranteed` QoS Pods) are prohibited from utilizing swap memory.\n`BestEffort` QoS Pods exhibit unpredictable memory consumption patterns and lack\ninformation regarding their memory usage, making it difficult to determine a safe\nallocation of swap memory.\nConversely, `Guaranteed` QoS Pods are typically employed for applications that rely on the\nprecise allocation of resources specified by the workload, with memory being immediately available.\nTo maintain the aforementioned security and node health guarantees,\nthese Pods are not permitted to use swap memory when `LimitedSwap` is in effect.\nIn addition, high-priority pods are not permitted to use swap in order to ensure the memory\nthey consume always resides in RAM, hence ready to use.",
       "verified": true,
       "notes": "reviewed: chunk is prose and answers the question"
-    },
-    {
-      "id": "q028",
-      "question": "How do I enable field selectors for specific properties within a custom resource?",
-      "style": "paraphrase",
-      "expected_chunk_id": "99d73bbf8fc8d026",
-      "source": "concepts/extend-kubernetes/api-extension/custom-resources.md",
-      "chunk_index": 29,
-      "chunk_text": "### Selectable fields for custom resources {#crd-selectable-fields}\n\n{{< feature-state feature_gate_name=\"CustomResourceFieldSelectors\" >}}\n\nThe `spec.versions[*].selectableFields` field of a {{< glossary_tooltip term_id=\"CustomResourceDefinition\" text=\"CustomResourceDefinition\" >}} may be used to\ndeclare which other fields in a custom resource may be used in field selectors.\n\nThe following example adds the `.spec.color` and `.spec.size` fields as\nselectable fields.\n\n{{% code_sample file=\"customresourcedefinition/shirt-resource-definition.yaml\" %}}\n\nField selectors can then be used to get only resources with a `color` of `blue`:\n\n```shell\nkubectl get shirts.stable.example.com --field-selector spec.color=blue\n```\n\nThe output should be:\n\n```\nNAME       COLOR  SIZE\nexample1   blue   S\nexample2   blue   M\n```\n\n## {{% heading \"whatsnext\" %}}",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
     },
     {
       "id": "q029",
@@ -324,17 +170,6 @@
       "notes": "REJECTED: 86% vocabulary overlap; question asks about data keys, chunk lists type values"
     },
     {
-      "id": "q030",
-      "question": "Where can I find instructions on creating certificates for my cluster?",
-      "style": "paraphrase",
-      "expected_chunk_id": "ad1663ed211dd580",
-      "source": "concepts/cluster-administration/_index.md",
-      "chunk_index": 3,
-      "chunk_text": "## Managing a cluster\n\n* Learn how to [manage nodes](/docs/concepts/architecture/nodes/).\n  * Read about [Node autoscaling](/docs/concepts/cluster-administration/node-autoscaling/).\n\n* Learn how to set up and manage the [resource quota](/docs/concepts/policy/resource-quotas/) for shared clusters.\n\n## Securing a cluster\n\n* [Generate Certificates](/docs/tasks/administer-cluster/certificates/) describes the steps to\n  generate certificates using different tool chains.\n\n* [Kubernetes Container Environment](/docs/concepts/containers/container-environment/) describes\n  the environment for Kubelet managed containers on a Kubernetes node.\n\n* [Controlling Access to the Kubernetes API](/docs/concepts/security/controlling-access) describes\n  how Kubernetes implements access control for its own API.\n\n* [Authenticating](/docs/reference/access-authn-authz/authentication/) explains authentication in\n  Kubernetes, including the various authentication options.",
-      "verified": false,
-      "notes": "REJECTED: chunk is a link list under 'Managing a cluster'"
-    },
-    {
       "id": "q031",
       "question": "Which specific feature gate must be active to allow for orderly host power-down procedures on Linux systems?",
       "style": "exact_term",
@@ -344,17 +179,6 @@
       "chunk_text": "### Enabling graceful node shutdown\n\n{{< tabs name=\"graceful_shutdown_os\" >}}\n{{% tab name=\"Linux\" %}}\n{{< feature-state feature_gate_name=\"GracefulNodeShutdown\" >}}\n\nOn Linux, the graceful node shutdown feature is controlled with the `GracefulNodeShutdown`\n[feature gate](/docs/reference/command-line-tools-reference/feature-gates/) which is\nenabled by default in 1.21.\n\n{{< note >}}\nThe graceful node shutdown feature depends on systemd since it takes advantage of\n[systemd inhibitor locks](https://www.freedesktop.org/wiki/Software/systemd/inhibit/) to\ndelay the node shutdown with a given duration.\n{{</ note >}}\n{{% /tab %}}\n\n{{% tab name=\"Windows\" %}}\n{{< feature-state feature_gate_name=\"WindowsGracefulNodeShutdown\" >}}",
       "verified": true,
       "notes": "reviewed: chunk is prose and answers the question"
-    },
-    {
-      "id": "q032",
-      "question": "What is the best way to handle private images if I cannot modify my node configuration?",
-      "style": "paraphrase",
-      "expected_chunk_id": "120479772a601a76",
-      "source": "concepts/containers/images.md",
-      "chunk_index": 36,
-      "chunk_text": "1. Cluster running only non-proprietary (e.g. open-source) images.  No need to hide images.\n   - Use public images from a public registry\n     - No configuration required.\n     - Some cloud providers automatically cache or mirror public images, which improves\n       availability and reduces the time to pull images.\n1. Cluster running some proprietary images which should be hidden to those outside the company, but\n   visible to all cluster users.\n   - Use a hosted private registry\n     - Manual configuration may be required on the nodes that need to access to private registry.\n   - Or, run an internal private registry behind your firewall with open read access.\n     - No Kubernetes configuration is required.\n   - Use a hosted container image registry service that controls image access\n     - It will work better with Node autoscaling than manual node configuration.\n   - Or, on a cluster where changing the node configuration is inconvenient, use `imagePullSecrets`.",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
     },
     {
       "id": "q033",
@@ -368,17 +192,6 @@
       "notes": "REJECTED: chunk says JSONPath exists but not how to use it; the real answer is on the linked reference page"
     },
     {
-      "id": "q034",
-      "question": "How can I override the container image STOPSIGNAL instruction for a pod?",
-      "style": "paraphrase",
-      "expected_chunk_id": "704ffa21321b46a3",
-      "source": "concepts/containers/container-lifecycle-hooks.md",
-      "chunk_index": 2,
-      "chunk_text": "A more detailed description of the termination behavior can be found in\n[Termination of Pods](/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination).\n\n`StopSignal`\n\nThe StopSignal lifecycle can be used to define a stop signal which would be sent to the container when it is\nstopped. If you set this, it overrides any `STOPSIGNAL` instruction defined within the container image.\n\nA more detailed description of termination behaviour with custom stop signals can be found in\n[Stop Signals](/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination-stop-signals).\n\n### Hook handler implementations\n\nContainers can access a hook by implementing and registering a handler for that hook.\nThere are three types of hook handlers that can be implemented for Containers:",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
-    },
-    {
       "id": "q035",
       "question": "How does the `kubectl logs` command behave when log files undergo rotation?",
       "style": "exact_term",
@@ -388,17 +201,6 @@
       "chunk_text": "{{< note >}}\nOnly the contents of the latest log file are available through `kubectl logs`.\n\nFor example, if a Pod writes 40 MiB of logs and the kubelet rotates logs\nafter 10 MiB, running `kubectl logs` returns at most 10MiB of data.\n{{< /note >}}\n\n## System component logs\n\nThere are two types of system components: those that typically run in a container,\nand those components directly involved in running containers. For example:\n\n* The kubelet and container runtime do not run in containers. The kubelet runs\n  your containers (grouped together in {{< glossary_tooltip text=\"pods\" term_id=\"pod\" >}})\n* The Kubernetes scheduler, controller manager, and API server run within pods\n  (usually {{< glossary_tooltip text=\"static Pods\" term_id=\"static-pod\" >}}).\n  The etcd component runs in the control plane, and most commonly also as a static pod.\n  If your cluster uses kube-proxy, you typically run this as a `DaemonSet`.\n\n### Log locations {#log-location-node}",
       "verified": true,
       "notes": "reviewed: chunk is prose and answers the question"
-    },
-    {
-      "id": "q036",
-      "question": "Which flag do I use to make a control plane component act like an older Kubernetes version?",
-      "style": "paraphrase",
-      "expected_chunk_id": "000cbdb743fc966e",
-      "source": "concepts/cluster-administration/compatibility-version.md",
-      "chunk_index": 0,
-      "chunk_text": "---\ntitle: Compatibility Version For Kubernetes Control Plane Components\nreviewers:\n- jpbetz\n- siyuanfoundation\ncontent_type: concept\nweight: 70\n---\n\n<!-- overview -->\n\nSince release v1.32, we introduced configurable version compatibility and emulation options to Kubernetes control plane components to make upgrades safer by providing more control and increasing the granularity of steps available to cluster administrators.\n\n<!-- body -->\n\n## Emulated Version\n\nThe emulation option is set by the `--emulated-version` flag of control plane components. It allows the component to emulate the behavior (APIs, features, ...) of an earlier version of Kubernetes.\n\nWhen used, the capabilities available will match the emulated version: \n* Any capabilities present in the binary version that were introduced after the emulation version will be unavailable. \n* Any capabilities removed after the emulation version will be available.",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
     },
     {
       "id": "q037",
@@ -412,17 +214,6 @@
       "notes": "REJECTED: question asks about kube-proxy, chunk is about node certificates"
     },
     {
-      "id": "q038",
-      "question": "What are the two modes available for handling dependent object removal during resource deletion?",
-      "style": "paraphrase",
-      "expected_chunk_id": "de7a2424a459a8d4",
-      "source": "concepts/architecture/garbage-collection.md",
-      "chunk_index": 5,
-      "chunk_text": "## Cascading deletion {#cascading-deletion}\n\nKubernetes checks for and deletes objects that no longer have owner\nreferences, like the pods left behind when you delete a ReplicaSet. When you\ndelete an object, you can control whether Kubernetes deletes the object's\ndependents automatically, in a process called *cascading deletion*. There are\ntwo types of cascading deletion, as follows:\n\n* Foreground cascading deletion\n* Background cascading deletion\n\nYou can also control how and when garbage collection deletes resources that have\nowner references using Kubernetes {{<glossary_tooltip text=\"finalizers\" term_id=\"finalizer\">}}.\n\n### Foreground cascading deletion {#foreground-deletion}\n\nIn foreground cascading deletion, the owner object you're deleting first enters\na *deletion in progress* state. In this state, the following happens to the\nowner object:",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
-    },
-    {
       "id": "q039",
       "question": "Which annotation identifies mirror Pods to help prevent accidental modification during admission?",
       "style": "exact_term",
@@ -432,17 +223,6 @@
       "chunk_text": "### Don't change immutable objects {#dont-change-immutable-objects}\n\nSome Kubernetes objects in the API server can't change. For example, when you\ndeploy a {{< glossary_tooltip text=\"static Pod\" term_id=\"static-pod\" >}}, the\nkubelet on the node creates a \n{{< glossary_tooltip text=\"mirror Pod\" term_id=\"mirror-pod\" >}} in the API\nserver to track the static Pod. However, changes to the mirror Pod don't\npropagate to the static Pod. \n\nDon't attempt to mutate these objects during admission. All mirror Pods have the\n`kubernetes.io/config.mirror` annotation. To exclude mirror Pods while reducing\nthe security risk of ignoring an annotation, allow static Pods to only run in\nspecific namespaces. \n\n## Mutating webhook ordering and idempotence {#ordering-idempotence}\n\nThis section provides recommendations for webhook order and designing idempotent\nwebhooks. In summary, these are as follows:",
       "verified": true,
       "notes": "reviewed: chunk is prose and answers the question"
-    },
-    {
-      "id": "q040",
-      "question": "What metrics can I use to track persistent volume operation health in AWS or GCE?",
-      "style": "paraphrase",
-      "expected_chunk_id": "fdb1bb9224211c77",
-      "source": "concepts/cluster-administration/system-metrics.md",
-      "chunk_index": 7,
-      "chunk_text": "## Component metrics\n\n### kube-controller-manager metrics\n\nController manager metrics provide important insight into the performance and health of the\ncontroller manager. These metrics include common Go language runtime metrics such as go_routine\ncount and controller specific metrics such as etcd request latencies or Cloudprovider (AWS, GCE,\nOpenStack) API latencies that can be used to gauge the health of a cluster.\n\nStarting from Kubernetes 1.7, detailed Cloudprovider metrics are available for storage operations\nfor GCE, AWS, Vsphere and OpenStack.\nThese metrics can be used to monitor health of persistent volume operations.\n\nFor example, for GCE these metrics are called:",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
     },
     {
       "id": "q041",
@@ -456,17 +236,6 @@
       "notes": "reviewed: chunk is prose and answers the question"
     },
     {
-      "id": "q042",
-      "question": "Which Node.js versions prevent OOM issues when using cgroup v2 memory limits?",
-      "style": "paraphrase",
-      "expected_chunk_id": "f3b1df9c45e5be75",
-      "source": "concepts/architecture/cgroups.md",
-      "chunk_index": 7,
-      "chunk_text": "the version you use is v1.5.1 or higher.\n* If you deploy [Node.js](https://nodejs.org/) applications, prefer to use versions that detect cgroup v2\n  memory limits. Node.js reads cgroup v2 memory limits (through [libuv](https://libuv.org/))\n  starting with Node.js v20.3.0. The v18 release line does not reliably detect cgroup v2 memory limits.\n  Versions without this support may read the host's total memory instead of the\n  limit applied to the pod, which can lead to an incorrectly sized heap and out-of-memory (OOM)\n  terminations. On affected versions, set the heap size explicitly, for example with the\n  `--max-old-space-size` flag.",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
-    },
-    {
       "id": "q043",
       "question": "What requirement applies to an annotation key if you omit a DNS subdomain prefix?",
       "style": "exact_term",
@@ -476,17 +245,6 @@
       "chunk_text": "## Syntax and character set\n\n_Annotations_ are key/value pairs. Valid annotation keys have two segments: an optional prefix and name, separated by a slash (`/`). The name segment is required and must be 63 characters or less, beginning and ending with an alphanumeric character (`[a-z0-9A-Z]`) with dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between. The prefix is optional. If specified, the prefix must be a DNS subdomain: a series of DNS labels separated by dots (`.`), not longer than 253 characters in total, followed by a slash (`/`).\n\nIf the prefix is omitted, the annotation Key is presumed to be private to the user. Automated system components (e.g. `kube-scheduler`, `kube-controller-manager`, `kube-apiserver`, `kubectl`, or other third-party automation) which add annotations to end-user objects must specify a prefix.\n\nThe `kubernetes.io/` and `k8s.io/` prefixes are reserved for Kubernetes core components.",
       "verified": true,
       "notes": "reviewed: chunk is prose and answers the question"
-    },
-    {
-      "id": "q044",
-      "question": "How can I restrict how many process IDs a single Pod uses on a node?",
-      "style": "paraphrase",
-      "expected_chunk_id": "ea31489174a46f9e",
-      "source": "concepts/configuration/manage-resources-containers.md",
-      "chunk_index": 33,
-      "chunk_text": "**Example:**\n\nThe Pod below requests 2 CPUs and 1 \"example.com/foo\" (an extended resource).\n\n```yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: my-pod\nspec:\n  containers:\n  - name: my-container\n    image: myimage\n    resources:\n      requests:\n        cpu: 2\n        example.com/foo: 1\n      limits:\n        example.com/foo: 1\n```\n\n## PID limiting\n\nProcess ID (PID) limits allow for the configuration of a kubelet\nto limit the number of PIDs that a given Pod can consume. See\n[PID Limiting](/docs/concepts/policy/pid-limiting/) for information.\n\n## Troubleshooting\n\n### My Pods are pending with event message `FailedScheduling`\n\nIf the scheduler cannot find any node where a Pod can fit, the Pod remains\nunscheduled until a place can be found. An\n[Event](/docs/reference/kubernetes-api/cluster-resources/event-v1/) is produced\neach time the scheduler fails to find a place for the Pod. You can use `kubectl`\nto view the events for a Pod; for example:",
-      "verified": false,
-      "notes": "REJECTED: asks about PID limits, chunk is a yaml example of extended resources"
     },
     {
       "id": "q045",
@@ -500,17 +258,6 @@
       "notes": "REJECTED: 80% vocabulary overlap, restates the text"
     },
     {
-      "id": "q046",
-      "question": "What should I check for before shutting down a DRA driver during node maintenance?",
-      "style": "paraphrase",
-      "expected_chunk_id": "3934eea8472b301a",
-      "source": "concepts/cluster-administration/dra.md",
-      "chunk_index": 4,
-      "chunk_text": "### When draining a node, drain the DRA driver as late as possible\n\nThe DRA driver is responsible for unpreparing any devices that were allocated to\nPods, and if the DRA driver is {{< glossary_tooltip text=\"drained\"\nterm_id=\"drain\" >}} before Pods with claims have been deleted, it will not be\nable to finalize its cleanup. If you implement custom drain logic for nodes,\nconsider checking that there are no allocated/reserved ResourceClaim or\nResourceClaimTemplates before terminating the DRA driver itself.\n\n\n## Monitor and tune components for higher load, especially in high scale environments",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
-    },
-    {
       "id": "q047",
       "question": "What limitations does the kube proxy face regarding communication protocols?",
       "style": "exact_term",
@@ -520,17 +267,6 @@
       "chunk_text": "1.  The [apiserver proxy](/docs/tasks/access-application-cluster/access-cluster-services/#discovering-builtin-services):\n\n    - is a bastion built into the apiserver\n    - connects a user outside of the cluster to cluster IPs which otherwise might not be reachable\n    - runs in the apiserver processes\n    - client to proxy uses HTTPS (or http if apiserver so configured)\n    - proxy to target may use HTTP or HTTPS as chosen by proxy using available information\n    - can be used to reach a Node, Pod, or Service\n    - does load balancing when used to reach a Service\n\n1.  The [kube proxy](/docs/concepts/services-networking/service/#ips-and-vips):\n\n    - runs on each node\n    - proxies UDP, TCP and SCTP\n    - does not understand HTTP\n    - provides load balancing\n    - is only used to reach services\n\n1.  A Proxy/Load-balancer in front of apiserver(s):",
       "verified": true,
       "notes": "reviewed: chunk is prose and answers the question"
-    },
-    {
-      "id": "q048",
-      "question": "Are FlexVolume plugins still supported in modern Kubernetes versions?",
-      "style": "paraphrase",
-      "expected_chunk_id": "50ec5ffdb071cb81",
-      "source": "concepts/extend-kubernetes/compute-storage-net/_index.md",
-      "chunk_index": 1,
-      "chunk_text": "Kubernetes also includes support for [FlexVolume](/docs/concepts/storage/volumes/#flexvolume)\n  plugins, which are deprecated since Kubernetes v1.23 (in favour of CSI).\n\n  FlexVolume plugins allow users to mount volume types that aren't natively\n  supported by Kubernetes. When you run a Pod that relies on FlexVolume\n  storage, the kubelet calls a binary plugin to mount the volume. The archived\n  [FlexVolume](https://git.k8s.io/design-proposals-archive/storage/flexvolume-deployment.md)\n  design proposal has more detail on this approach.\n\n  The [Kubernetes Volume Plugin FAQ for Storage Vendors](https://github.com/kubernetes/community/blob/main/sig-storage/volume-plugin-faq.md#kubernetes-volume-plugin-faq-for-storage-vendors)\n  includes general information on storage plugins.\n\n* [Device plugins](/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/)",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
     },
     {
       "id": "q049",
@@ -544,17 +280,6 @@
       "notes": "reviewed: chunk is prose and answers the question"
     },
     {
-      "id": "q050",
-      "question": "Where can I find the official API definition for RuntimeClass?",
-      "style": "paraphrase",
-      "expected_chunk_id": "d5a0a3eacde49d9d",
-      "source": "concepts/containers/runtime-class.md",
-      "chunk_index": 8,
-      "chunk_text": "## {{% heading \"whatsnext\" %}}\n\n- [RuntimeClass Design](https://github.com/kubernetes/enhancements/blob/master/keps/sig-node/585-runtime-class/README.md)\n- [RuntimeClass Scheduling Design](https://github.com/kubernetes/enhancements/blob/master/keps/sig-node/585-runtime-class/README.md#runtimeclass-scheduling)\n- {{< api-reference page=\"node/runtime-class-v1\" text=\"RuntimeClass API reference\" >}}\n- Read about the [Pod Overhead](/docs/concepts/scheduling-eviction/pod-overhead/) concept\n- [PodOverhead Feature Design](https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/688-pod-overhead)",
-      "verified": false,
-      "notes": "REJECTED: whatsnext link list"
-    },
-    {
       "id": "q051",
       "question": "Which storage extension type became obsolete as of the v1.23 release in preference of the CSI standard?",
       "style": "exact_term",
@@ -564,17 +289,6 @@
       "chunk_text": "## Infrastructure extensions\n\n### Device plugins\n\n_Device plugins_ allow a node to discover new Node resources (in addition to the\nbuiltin ones like cpu and memory) via a\n[Device Plugin](/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/).\n\n### Storage plugins\n\n{{< glossary_tooltip text=\"Container Storage Interface\" term_id=\"csi\" >}} (CSI) plugins provide\na way to extend Kubernetes with supports for new kinds of volumes. The volumes can be backed by\ndurable external storage, or provide ephemeral storage, or they might offer a read-only interface\nto information using a filesystem paradigm.\n\nKubernetes also includes support for [FlexVolume](/docs/concepts/storage/volumes/#flexvolume) plugins,\nwhich are deprecated since Kubernetes v1.23 (in favour of CSI).",
       "verified": true,
       "notes": "reviewed: chunk is prose and answers the question"
-    },
-    {
-      "id": "q052",
-      "question": "What permissions does the cloud controller manager need for ServiceAccounts and Events?",
-      "style": "paraphrase",
-      "expected_chunk_id": "32b2b2be62e8eb0b",
-      "source": "concepts/architecture/cloud-controller.md",
-      "chunk_index": 7,
-      "chunk_text": "`v1/Event`:\n\n- create\n- patch\n- update\n\n`v1/ServiceAccount`:\n\n- create\n\nThe {{< glossary_tooltip term_id=\"rbac\" text=\"RBAC\" >}} ClusterRole for the cloud\ncontroller manager looks like:\n\n```yaml\napiVersion: rbac.authorization.k8s.io/v1\nkind: ClusterRole\nmetadata:\n  name: cloud-controller-manager\nrules:\n- apiGroups:\n  - \"\"\n  resources:\n  - events\n  verbs:\n  - create\n  - patch\n  - update\n- apiGroups:\n  - \"\"\n  resources:\n  - nodes\n  verbs:\n  - '*'\n- apiGroups:\n  - \"\"\n  resources:\n  - nodes/status\n  verbs:\n  - patch\n- apiGroups:\n  - \"\"\n  resources:\n  - services\n  verbs:\n  - list\n  - watch\n- apiGroups:\n  - \"\"\n  resources:\n  - services/status\n  verbs:\n  - patch\n  - update\n- apiGroups:\n  - \"\"\n  resources:\n  - serviceaccounts\n  verbs:\n  - create\n- apiGroups:\n  - \"\"\n  resources:\n  - persistentvolumes\n  verbs:\n  - get\n  - list\n  - update\n  - watch\n```\n\n\n## {{% heading \"whatsnext\" %}}",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
     },
     {
       "id": "q053",
@@ -588,17 +302,6 @@
       "notes": "REJECTED: 75% vocabulary overlap; question is generic"
     },
     {
-      "id": "q054",
-      "question": "What happens if I define a key in both stringData and data for a Secret?",
-      "style": "paraphrase",
-      "expected_chunk_id": "aab96d6da8da0b6a",
-      "source": "concepts/configuration/secret.md",
-      "chunk_index": 28,
-      "chunk_text": "The name of a Secret object must be a valid\n[DNS subdomain name](/docs/concepts/overview/working-with-objects/names#dns-subdomain-names).\n\nYou can specify the `data` and/or the `stringData` field when creating a\nconfiguration file for a Secret. The `data` and the `stringData` fields are optional.\nThe values for all keys in the `data` field have to be base64-encoded strings.\nIf the conversion to base64 string is not desirable, you can choose to specify\nthe `stringData` field instead, which accepts arbitrary strings as values.\n\nThe keys of `data` and `stringData` must consist of alphanumeric characters,\n`-`, `_` or `.`. All key-value pairs in the `stringData` field are internally\nmerged into the `data` field. If a key appears in both the `data` and the\n`stringData` field, the value specified in the `stringData` field takes\nprecedence.\n\n#### Size limit {#restriction-data-size}",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
-    },
-    {
       "id": "q055",
       "question": "What history lies behind the name K8s being used as an abbreviation for Kubernetes?",
       "style": "exact_term",
@@ -608,17 +311,6 @@
       "chunk_text": "<!-- overview -->\nThis page is an overview of Kubernetes.\n\n\n<!-- body -->\n\nThe name Kubernetes originates from Greek, meaning helmsman or pilot. K8s as an abbreviation\nresults from counting the eight letters between the \"K\" and the \"s\". Google open sourced the\nKubernetes project in 2014. Kubernetes combines\n[over 15 years of Google's experience](/blog/2015/04/borg-predecessor-to-kubernetes/) running\nproduction workloads at scale with best-of-breed ideas and practices from the community.\n\n## Why you need Kubernetes and what it can do {#why-you-need-kubernetes-and-what-can-it-do}\n\nContainers are a good way to bundle and run your applications. In a production\nenvironment, you need to manage the containers that run the applications and\nensure that there is no downtime. For example, if a container goes down, another\ncontainer needs to start. Wouldn't it be easier if this behavior was handled by a system?",
       "verified": true,
       "notes": "reviewed: chunk is prose and answers the question"
-    },
-    {
-      "id": "q056",
-      "question": "Which projects serve as reliable references for building custom webhook servers?",
-      "style": "paraphrase",
-      "expected_chunk_id": "4933543fc5d9f2a4",
-      "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
-      "chunk_index": 37,
-      "chunk_text": "## Examples of good implementations {#example-good-implementations}\n\n{{% thirdparty-content %}}\n\nThe following projects are examples of \"good\" custom webhook server\nimplementations. You can use them as a starting point when designing your own\nwebhooks. Don't use these examples as-is; use them as a starting point and\ndesign your webhooks to run well in your specific environment.\n\n* [`cert-manager`](https://github.com/cert-manager/cert-manager/tree/master/internal/webhook)\n* [Gatekeeper Open Policy Agent (OPA)](https://open-policy-agent.github.io/gatekeeper/website/docs/mutation)\n\n## {{% heading \"whatsnext\" %}}\n\n* [Use webhooks for authentication and authorization](/docs/reference/access-authn-authz/webhook/)\n* [Learn about MutatingAdmissionPolicies](/docs/reference/access-authn-authz/mutating-admission-policy/)\n* [Learn about ValidatingAdmissionPolicies](/docs/reference/access-authn-authz/validating-admission-policy/)",
-      "verified": false,
-      "notes": "REJECTED: chunk is a list of example project links, not an explanation"
     },
     {
       "id": "q057",
@@ -632,17 +324,6 @@
       "notes": "reviewed: chunk is prose and answers the question"
     },
     {
-      "id": "q058",
-      "question": "How do I identify dependents with invalid cross-namespace owner references?",
-      "style": "paraphrase",
-      "expected_chunk_id": "922c748cd9243595",
-      "source": "concepts/architecture/garbage-collection.md",
-      "chunk_index": 4,
-      "chunk_text": "Cluster-scoped dependents can only specify cluster-scoped owners.\nIn v1.20+, if a cluster-scoped dependent specifies a namespaced kind as an owner,\nit is treated as having an unresolvable owner reference, and is not able to be garbage collected.\n\nIn v1.20+, if the garbage collector detects an invalid cross-namespace `ownerReference`,\nor a cluster-scoped dependent with an `ownerReference` referencing a namespaced kind, a warning Event\nwith a reason of `OwnerRefInvalidNamespace` and an `involvedObject` of the invalid dependent is reported.\nYou can check for that kind of Event by running\n`kubectl get events -A --field-selector=reason=OwnerRefInvalidNamespace`.\n{{< /note >}}\n\n## Cascading deletion {#cascading-deletion}",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
-    },
-    {
       "id": "q059",
       "question": "Which PromQL query determines the total quantity of pods with a condition equal to false using kube_pod_status_ready?",
       "style": "exact_term",
@@ -652,17 +333,6 @@
       "chunk_text": "{{% thirdparty-content single=\"true\" %}}\n\nAn external component that is able and capable to scrape the endpoint of kube-state-metrics (for example via Prometheus) can now be used to enable the following use cases.\n\n## Example: using metrics from kube-state-metrics to query the cluster state {#example-kube-state-metrics-query-1}\n\nMetric series generated by kube-state-metrics are helpful to gather further insights into the cluster, as they can be used for querying.\n\nIf you use Prometheus or another tool that uses the same query language, the following PromQL query returns the number of pods that are not ready:\n\n```\ncount(kube_pod_status_ready{condition=\"false\"}) by (namespace, pod)\n```\n\n## Example: alerting based on from kube-state-metrics {#example-kube-state-metrics-alert-1}\n\nMetrics generated from kube-state-metrics also allow for alerting on issues in the cluster.",
       "verified": true,
       "notes": "reviewed: chunk is prose and answers the question"
-    },
-    {
-      "id": "q060",
-      "question": "Which specific fields determine the network model IP families for nodes and pods?",
-      "style": "paraphrase",
-      "expected_chunk_id": "9ad3ad33b864719f",
-      "source": "concepts/cluster-administration/networking.md",
-      "chunk_index": 4,
-      "chunk_text": "Kubernetes clusters only consider the IP families present on the Pods, Services and Nodes objects,\nindependently of the existing IPs of the represented objects. For example, a server or a pod can have multiple\nIP addresses assigned to its interfaces, but only the IP addresses in `node.status.addresses` or `pod.status.ips` are\nconsidered when implementing the Kubernetes network model and defining the cluster type.\n\n## How to implement the Kubernetes network model",
-      "verified": true,
-      "notes": "reviewed: natural phrasing, chunk answers it"
     }
   ]
 }

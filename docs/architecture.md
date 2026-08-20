@@ -27,18 +27,44 @@ changing one thing, and measuring again is the part almost nobody does, and it i
 what turns "I built a RAG system" into a conversation about trade-offs, failure
 modes, and evidence.
 
-The sentence the project earned — which is not the one it set out to:
+The sentence the project earned:
 
-> Dense-only retrieval scored recall@5 of 0.81 on 42 hand-verified questions.
-> Hybrid search with reciprocal rank fusion — the standard recommendation for
-> technical documentation — scored **worse**, at every keyword weighting tested.
-> It fixed one exact-identifier question and broke four paraphrased ones, because
-> dense retrieval was already at 20 of 21 on exact identifiers while paraphrased
-> questions contain no rare terms for the keyword arm to match on. Even weighted
-> at 0.2, its noise displaced the correct top-ranked chunk.
+> Hybrid search with reciprocal rank fusion took recall@5 from 0.95 to 0.98 and
+> recall@1 from 0.67 to 0.74 across 43 hand-verified questions. The entire gain
+> was on identifier-based queries, which reached perfect recall@5 — paraphrased
+> questions were unchanged. That is the textbook result, and it took two
+> evaluation sets to establish it honestly.
 
-The prior was wrong for this corpus. Without the measurement, hybrid would have
-shipped as an improvement and quietly made retrieval worse.
+**The first evaluation set gave the opposite answer**, and understanding why is
+the more valuable half of the project.
+
+Half its questions had been generated with a prompt instructing the model to
+*"deliberately avoid the technical terms used in the text"*. That produced
+questions no user would type — *"how many copies of the main management program
+are running"* instead of *"how many API servers are running"* — and measurably
+so: they shared **19%** of their vocabulary with their own answer, against 44%
+for identifier-based ones.
+
+Keyword search cannot match words a question never uses. So half the set was
+structurally immune to the thing a hybrid-search experiment measures, and hybrid
+lost at every weighting tested.
+
+Regenerating those questions with realistic phrasing raised the overlap to 50%
+and reversed the result:
+
+| Question set | Overlap with answer | Dense | Hybrid |
+|---|---:|---:|---:|
+| Obliquely phrased | 19% | **0.81** | 0.74 |
+| Realistically phrased | 50% | 0.95 | **0.98** |
+
+Same corpus, same embeddings, same retrieval code. **Only the wording of the
+evaluation questions changed, and the headline metric moved 14 points while the
+conclusion about hybrid search inverted.**
+
+Two things follow. A retrieval score quoted without describing its question
+distribution is close to meaningless. And an evaluation set is an instrument that
+can be miscalibrated in ways that look exactly like a finding — this one was, and
+it took measuring question-to-answer vocabulary overlap to see it.
 
 ---
 

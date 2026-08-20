@@ -86,6 +86,26 @@ class RAGConfig:
     max_files: int = field(
         default_factory=lambda: int(os.getenv("MAX_FILES", "0"))
     )
+    # How retrieval runs: "dense" (vector only) or "hybrid" (vector + keyword
+    # fused with reciprocal rank fusion).
+    #
+    # Defaults to hybrid because it measured better on this corpus: recall@5
+    # 0.95 -> 0.98 and recall@1 0.67 -> 0.74 across 43 hand-verified questions,
+    # with the entire gain on identifier-based queries.
+    #
+    # Configurable rather than hardcoded because that result is a property of
+    # the question distribution, not of the technique. An earlier evaluation set
+    # phrased half its questions to avoid the source vocabulary and hybrid lost
+    # on it. If your traffic looks like that, set this to "dense".
+    retrieval_mode: str = field(
+        default_factory=lambda: os.getenv("RETRIEVAL_MODE", "hybrid")
+    )
+    # How much the keyword arm counts in fusion. 1.0 is an equal vote with the
+    # dense arm; 0.0 is equivalent to dense-only.
+    keyword_weight: float = field(
+        default_factory=lambda: float(os.getenv("KEYWORD_WEIGHT", "1.0"))
+    )
+
     # Reuse a previous answer when a new question means the same thing.
     #
     # Skips retrieval AND generation, which are ~99% of a request's cost. The

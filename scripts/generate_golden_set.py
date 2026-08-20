@@ -74,15 +74,37 @@ Return ONLY the question. No preamble, no quotes, no explanation.
 CHUNK:
 {chunk}""",
 
+    # An earlier version of this prompt said "deliberately avoiding the technical
+    # terms used in the text". That produced questions no real user would type -
+    # "how many copies of the main management program are running" instead of
+    # "how many API servers are running" - and measurably so: those questions
+    # shared only 19% of their vocabulary with their own answer, against 44% for
+    # identifier-based ones.
+    #
+    # The consequence was a biased instrument. Keyword search cannot help a
+    # question that shares no words with its answer, so half the evaluation set
+    # was structurally immune to the thing a hybrid-search experiment measures.
+    #
+    # This version asks for how someone actually searches: natural phrasing,
+    # using whatever domain vocabulary they would already know, without copying
+    # the source. The prohibition on copying stays - a question restating its own
+    # answer measures string matching rather than retrieval.
     "paraphrase": """You are building an evaluation set for a documentation search system.
 
 Below is one chunk from the Kubernetes documentation. Write ONE question that:
 - is answerable ONLY from this specific chunk, not from general Kubernetes knowledge
-- describes the problem in PLAIN LANGUAGE, deliberately avoiding the technical
-  terms used in the text - as a newcomer who does not yet know the vocabulary
-  would phrase it
+- is phrased the way an engineer would actually type it into a search box:
+  natural and conversational, using whatever domain vocabulary they would
+  already know. Do NOT artificially avoid technical terms - if someone would
+  say "Pod" or "kubelet", use it.
+- does NOT reuse any run of four or more consecutive words from the text.
+  Ask about what the text explains; do not restate what it says.
 - is a single sentence, under 20 words
 - does not mention "the chunk", "the text", "the document", or "above"
+
+BAD  (nobody types this): "How can I see how many copies of the main management
+      program are currently running?"
+GOOD (how it is really searched): "How do I check how many API servers are running?"
 
 Return ONLY the question. No preamble, no quotes, no explanation.
 

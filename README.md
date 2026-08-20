@@ -14,34 +14,51 @@ than assumed.
 Measured on **42 hand-verified questions** over **784 chunks** from 56
 Kubernetes documentation pages.
 
+Measured against **43 hand-verified questions** over **784 chunks** from 56
+Kubernetes documentation pages.
+
 | Retrieval | recall@1 | recall@5 | recall@10 | MRR |
 |-----------|---------:|---------:|----------:|----:|
-| **Dense (vector only)** | **0.52** | **0.81** | **0.93** | **0.66** |
-| Hybrid, keyword weight 0.3 | 0.45 | 0.81 | 0.88 | 0.61 |
-| Hybrid, equal weight (standard RRF) | 0.50 | 0.74 | 0.81 | 0.60 |
+| Dense (vector only) | 0.67 | 0.95 | 0.98 | 0.80 |
+| **Hybrid (vector + BM25 + RRF)** | **0.74** | **0.98** | **0.98** | **0.83** |
 
-**Dense-only won.** Hybrid search — the standard recommendation for technical
-documentation — lost at every keyword weighting tested (1.0, 0.5, 0.3, 0.2).
+Hybrid wins, and the gain lands exactly where the theory predicts — on questions
+naming a specific identifier:
 
-The breakdown shows why, in questions out of 21 per style:
+| | recall@1 | recall@5 |
+|---|---:|---:|
+| `exact_term` — names things like `UnknownVersionInteroperabilityProxy` | 0.71 → **0.86** | 0.95 → **1.00** |
+| `paraphrase` — natural phrasing, no identifier | 0.64 → 0.64 | 0.95 → 0.95 |
 
-| | exact_term in top 5 | paraphrase in top 5 | paraphrase at rank 1 |
+**Every point of improvement came from identifier queries.** Paraphrased
+questions were unchanged on recall and marginally worse on MRR (0.78 → 0.75) —
+the residue of keyword noise.
+
+### The same system scored 0.81 on a different question set
+
+An earlier evaluation set phrased half its questions to *deliberately avoid* the
+source vocabulary — *"how many copies of the main management program are
+running"* rather than *"how many API servers are running"*. On that set:
+
+| Question set | Word overlap with answer | Dense | Hybrid |
 |---|---:|---:|---:|
-| Dense | 20 / 21 | **14 / 21** | **7 / 21** |
-| Hybrid w=0.3 | **21 / 21** | 13 / 21 | 3 / 21 |
-| Hybrid w=1.0 | **21 / 21** | 10 / 21 | 3 / 21 |
+| Obliquely phrased | 19% | **0.81** | 0.74 |
+| Realistically phrased | 50% | 0.95 | **0.98** |
 
-Hybrid reliably fixed **one** exact-identifier question and broke **four**
-paraphrased ones. Dense already placed 20 of 21 exact-term questions in the top
-5, so the keyword arm had almost nothing to add — while paraphrased questions
-contain no rare terms by construction, so it contributed only noise. Even
-weighted at 0.2, that noise was enough to displace the correct top-ranked chunk.
+Same corpus, same code, same embeddings. **Only the wording of the questions
+changed, and it moved the headline metric by 14 points and reversed the
+conclusion about hybrid search.**
+
+Keyword search cannot match words a question never uses, so the oblique set was
+structurally immune to the thing hybrid does. That is a property of the
+evaluation instrument, not of the technique — and it means a recall figure quoted
+without describing its question distribution says very little.
 
 Reproduce with:
 
 ```bash
-python -m scripts.evaluate --mode dense
-python -m scripts.evaluate --mode hybrid --keyword-weight 0.3
+python -m scripts.evaluate --mode dense  --label dense-v2
+python -m scripts.evaluate --mode hybrid --label hybrid-v2
 python -m scripts.evaluate --compare
 ```
 

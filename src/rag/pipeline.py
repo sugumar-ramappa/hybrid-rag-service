@@ -232,11 +232,24 @@ class RAGPipeline:
                     cache_matched_question=hit.matched_question,
                 )
 
-        # Step 2: Retrieve relevant chunks
-        results = self._vector_store.search(
-            query_embedding=query_embedding,
-            top_k=self._config.rag.top_k_results,
-        )
+        # Step 2: Retrieve relevant chunks.
+        #
+        # Hybrid by default - measured better on this corpus (recall@5 0.95 to
+        # 0.98). Switchable because that depends on how users phrase questions,
+        # not on the technique: on an evaluation set whose questions avoided the
+        # source vocabulary, dense won instead.
+        if self._config.rag.retrieval_mode == "hybrid":
+            results = self._vector_store.hybrid_search(
+                query_embedding=query_embedding,
+                query_text=question,
+                top_k=self._config.rag.top_k_results,
+                keyword_weight=self._config.rag.keyword_weight,
+            )
+        else:
+            results = self._vector_store.search(
+                query_embedding=query_embedding,
+                top_k=self._config.rag.top_k_results,
+            )
 
         if not results:
             return QueryResult(
