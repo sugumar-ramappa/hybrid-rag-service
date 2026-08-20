@@ -1,0 +1,324 @@
+{
+  "label": "dense",
+  "mode": "dense",
+  "corpus_chunks": 784,
+  "summary": {
+    "overall": {
+      "n": 42,
+      "recall@1": 0.5238095238095238,
+      "recall@5": 0.8095238095238095,
+      "recall@10": 0.9285714285714286,
+      "mrr": 0.6644179894179895
+    },
+    "exact_term": {
+      "n": 21,
+      "recall@1": 0.7142857142857143,
+      "recall@5": 0.9523809523809523,
+      "recall@10": 1.0,
+      "mrr": 0.8306878306878306
+    },
+    "paraphrase": {
+      "n": 21,
+      "recall@1": 0.3333333333333333,
+      "recall@5": 0.6666666666666666,
+      "recall@10": 0.8571428571428571,
+      "mrr": 0.4981481481481481
+    }
+  },
+  "outcomes": [
+    {
+      "id": "q003",
+      "style": "exact_term",
+      "rank": 2,
+      "expected": "concepts/cluster-administration/system-logs.md#4",
+      "question": "What is the current beta status for structured logging features starting in version v1.23?"
+    },
+    {
+      "id": "q004",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/containers/_index.md#2",
+      "question": "How do I update an application if I am not supposed to change a running program?"
+    },
+    {
+      "id": "q005",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/kube-state-metrics.md#3",
+      "question": "How should I configure a Prometheus rule to identify pods trapped in a Terminating state?"
+    },
+    {
+      "id": "q006",
+      "style": "paraphrase",
+      "rank": null,
+      "expected": "concepts/architecture/leases.md#3",
+      "question": "How can I see how many copies of the main management program are currently running?"
+    },
+    {
+      "id": "q007",
+      "style": "exact_term",
+      "rank": 2,
+      "expected": "concepts/containers/cri.md#0",
+      "question": "What allows the kubelet to utilize diverse runtimes while avoiding the necessity of rebuilding cluster components?"
+    },
+    {
+      "id": "q008",
+      "style": "paraphrase",
+      "rank": null,
+      "expected": "concepts/architecture/_index.md#3",
+      "question": "Where should I put the system's management software if I want a basic setup?"
+    },
+    {
+      "id": "q012",
+      "style": "paraphrase",
+      "rank": 10,
+      "expected": "concepts/cluster-administration/flow-control.md#24",
+      "question": "How can I indicate that a specific setting should apply to every possible value instead of just one?"
+    },
+    {
+      "id": "q013",
+      "style": "exact_term",
+      "rank": 9,
+      "expected": "concepts/extend-kubernetes/api-extension/apiserver-aggregation.md#0",
+      "question": "How does the aggregation layer differ from the functionality provided by Custom Resource Definitions?"
+    },
+    {
+      "id": "q015",
+      "style": "exact_term",
+      "rank": 2,
+      "expected": "concepts/architecture/mixed-version-proxy.md#1",
+      "question": "Which feature gate must be active on the kube-apiserver to utilize Mixed Version Proxy capabilities?"
+    },
+    {
+      "id": "q016",
+      "style": "paraphrase",
+      "rank": 6,
+      "expected": "concepts/cluster-administration/node-autoscaling.md#8",
+      "question": "Why might some tasks get stuck waiting to run when the system tries to reorganize its servers?"
+    },
+    {
+      "id": "q018",
+      "style": "paraphrase",
+      "rank": null,
+      "expected": "concepts/overview/_index.md#4",
+      "question": "How can I update my passwords and app settings without having to recreate my software programs?"
+    },
+    {
+      "id": "q019",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md#3",
+      "question": "How should a Pod define the hardware-vendor.example/foo limit to secure two specific devices for its container?"
+    },
+    {
+      "id": "q020",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/overview/working-with-objects/_index.md#6",
+      "question": "What basic information must I include in my setup file to define a new item?"
+    },
+    {
+      "id": "q021",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/system-traces.md#2",
+      "question": "How can you provide authentication credentials using the OTEL_EXPORTER_OTLP_HEADERS environment variable for trace backends?"
+    },
+    {
+      "id": "q023",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/configuration/configmap.md#13",
+      "question": "How do you extract a specific key from a ConfigMap using the env.valueFrom syntax?"
+    },
+    {
+      "id": "q024",
+      "style": "paraphrase",
+      "rank": 3,
+      "expected": "concepts/cluster-administration/coordinated-leader-election.md#2",
+      "question": "How do multiple copies of the same program decide which one is currently in charge?"
+    },
+    {
+      "id": "q025",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/configuration/windows-resource-management.md#2",
+      "question": "How should one configure --windows-priorityclass to prevent Pods from exhausting the kubelet's processor resources?"
+    },
+    {
+      "id": "q027",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#24",
+      "question": "Which Pod quality classifications are blocked from accessing swap memory when LimitedSwap is active?"
+    },
+    {
+      "id": "q028",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/api-extension/custom-resources.md#29",
+      "question": "How can I make it possible to filter my custom items based on their specific characteristics?"
+    },
+    {
+      "id": "q031",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/node-shutdown.md#2",
+      "question": "Which specific feature gate must be active to allow for orderly host power-down procedures on Linux systems?"
+    },
+    {
+      "id": "q032",
+      "style": "paraphrase",
+      "rank": 9,
+      "expected": "concepts/containers/images.md#36",
+      "question": "How do I let my computer system access software files that need to stay private?"
+    },
+    {
+      "id": "q034",
+      "style": "paraphrase",
+      "rank": 3,
+      "expected": "concepts/containers/container-lifecycle-hooks.md#2",
+      "question": "How do I change the specific message sent to my software to make it shut down properly?"
+    },
+    {
+      "id": "q035",
+      "style": "exact_term",
+      "rank": 3,
+      "expected": "concepts/cluster-administration/logging.md#8",
+      "question": "How does the `kubectl logs` command behave when log files undergo rotation?"
+    },
+    {
+      "id": "q036",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/compatibility-version.md#0",
+      "question": "How can I make my system behave like an older version while I update it?"
+    },
+    {
+      "id": "q038",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/architecture/garbage-collection.md#5",
+      "question": "How can I make sure that removing a main item automatically cleans up everything attached to it?"
+    },
+    {
+      "id": "q039",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#26",
+      "question": "Which annotation identifies mirror Pods to help prevent accidental modification during admission?"
+    },
+    {
+      "id": "q040",
+      "style": "paraphrase",
+      "rank": 4,
+      "expected": "concepts/cluster-administration/system-metrics.md#7",
+      "question": "How can I check if the tools managing my cloud storage connections are working correctly?"
+    },
+    {
+      "id": "q041",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/configuration/organize-cluster-access-kubeconfig.md#2",
+      "question": "What three specific parameters are bundled together when defining a context in a kubeconfig file?"
+    },
+    {
+      "id": "q042",
+      "style": "paraphrase",
+      "rank": 2,
+      "expected": "concepts/architecture/cgroups.md#7",
+      "question": "How can I keep my website programs from crashing when they use the wrong amount of memory?"
+    },
+    {
+      "id": "q043",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/overview/working-with-objects/annotations.md#3",
+      "question": "What requirement applies to an annotation key if you omit a DNS subdomain prefix?"
+    },
+    {
+      "id": "q046",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/dra.md#4",
+      "question": "How can I make sure hardware cleanup finishes properly before shutting down a machine?"
+    },
+    {
+      "id": "q047",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/proxies.md#1",
+      "question": "What limitations does the kube proxy face regarding communication protocols?"
+    },
+    {
+      "id": "q048",
+      "style": "paraphrase",
+      "rank": 2,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/_index.md#1",
+      "question": "Should I still use the old system for connecting custom storage types to my projects?"
+    },
+    {
+      "id": "q049",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/containers/container-environment.md#1",
+      "question": "How can a container access its own namespace details via the downward API?"
+    },
+    {
+      "id": "q051",
+      "style": "exact_term",
+      "rank": 2,
+      "expected": "concepts/extend-kubernetes/_index.md#17",
+      "question": "Which storage extension type became obsolete as of the v1.23 release in preference of the CSI standard?"
+    },
+    {
+      "id": "q052",
+      "style": "paraphrase",
+      "rank": 2,
+      "expected": "concepts/architecture/cloud-controller.md#7",
+      "question": "What permissions does the cloud controller manager have for creating new service accounts?"
+    },
+    {
+      "id": "q054",
+      "style": "paraphrase",
+      "rank": 2,
+      "expected": "concepts/configuration/secret.md#28",
+      "question": "What can I do if I want to avoid encoding my sensitive information as a base64 string?"
+    },
+    {
+      "id": "q055",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/overview/_index.md#1",
+      "question": "What history lies behind the name K8s being used as an abbreviation for Kubernetes?"
+    },
+    {
+      "id": "q057",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/dra.md#6",
+      "question": "How do insufficient QPS settings in the kube-scheduler impact the timing of Pod binding?"
+    },
+    {
+      "id": "q058",
+      "style": "paraphrase",
+      "rank": 6,
+      "expected": "concepts/architecture/garbage-collection.md#4",
+      "question": "How do I find objects that are failing to be automatically cleaned up because of incorrect owner settings?"
+    },
+    {
+      "id": "q059",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/kube-state-metrics.md#2",
+      "question": "Which PromQL query determines the total quantity of pods with a condition equal to false using kube_pod_status_ready?"
+    },
+    {
+      "id": "q060",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/networking.md#4",
+      "question": "Which specific internal records determine how the system handles addresses for my connected devices and applications?"
+    }
+  ]
+}

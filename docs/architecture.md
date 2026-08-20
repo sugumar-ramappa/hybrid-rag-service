@@ -27,11 +27,18 @@ changing one thing, and measuring again is the part almost nobody does, and it i
 what turns "I built a RAG system" into a conversation about trade-offs, failure
 modes, and evidence.
 
-The sentence the project is built to earn:
+The sentence the project earned — which is not the one it set out to:
 
-> Dense-only retrieval scored recall@5 of X on 42 hand-verified questions. Adding
-> hybrid search with reciprocal rank fusion took it to Y — and the gain was almost
-> entirely on exact-identifier queries, which is where embeddings are weakest.
+> Dense-only retrieval scored recall@5 of 0.81 on 42 hand-verified questions.
+> Hybrid search with reciprocal rank fusion — the standard recommendation for
+> technical documentation — scored **worse**, at every keyword weighting tested.
+> It fixed one exact-identifier question and broke four paraphrased ones, because
+> dense retrieval was already at 20 of 21 on exact identifiers while paraphrased
+> questions contain no rare terms for the keyword arm to match on. Even weighted
+> at 0.2, its noise displaced the correct top-ranked chunk.
+
+The prior was wrong for this corpus. Without the measurement, hybrid would have
+shipped as an improvement and quietly made retrieval worse.
 
 ---
 

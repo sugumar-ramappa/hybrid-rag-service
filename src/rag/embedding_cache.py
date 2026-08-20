@@ -78,7 +78,14 @@ class EmbeddingCache:
             )
 
         self._hits += 1
-        return list(row[0])
+
+        # pgvector hands back its own Vector type, not a plain sequence, and it
+        # is not directly iterable. Depending on the adapter version this can
+        # also be a numpy array, so handle both rather than assuming one.
+        value = row[0]
+        if hasattr(value, "to_list"):
+            return value.to_list()
+        return [float(x) for x in value]
 
     def put(self, text: str, model: str, dimensions: int, task_type: str,
             embedding: list[float]) -> None:

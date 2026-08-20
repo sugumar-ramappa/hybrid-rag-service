@@ -9,8 +9,8 @@ Start a database first:
     docker run -d --name ragdb -p 5432:5432 \
       -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=ragdb pgvector/pgvector:pg16
 
-WARNING: every test truncates the chunks table. Point DATABASE_URL at a
-development database, never a real one.
+WARNING: every test truncates the chunks table, so they run against
+TEST_DATABASE_URL - a separate, disposable database. They skip if it is unset.
 """
 
 import os
@@ -25,7 +25,18 @@ from src.rag.vector_store import VectorStore
 load_dotenv()
 
 DIM = 768
-DATABASE_URL = os.getenv("DATABASE_URL", "")
+
+# Deliberately NOT DATABASE_URL.
+#
+# Every test truncates the chunks table. Pointing that at the working database
+# destroys the corpus - which is exactly what happened here, silently, because a
+# guard that only refused *remote* databases happily wiped a local one.
+#
+# Tests now require an explicitly separate database and skip if it is absent.
+# Create one with:
+#     docker exec -i ragdb createdb -U postgres ragdb_test
+#     echo 'TEST_DATABASE_URL=postgresql://postgres:dev@localhost:5432/ragdb_test' >> .env
+TEST_DATABASE_URL = os.getenv("TEST_DATABASE_URL", "")
 
 
 def vec(*leading: float) -> list[float]:
@@ -47,22 +58,31 @@ def chunk(content: str, source: str = "test.txt", index: int = 0) -> TextChunk:
 @pytest.fixture
 def store() -> VectorStore:
     """A clean store for each test."""
-    if not DATABASE_URL:
-        pytest.skip("DATABASE_URL not set")
+    if not TEST_DATABASE_URL:
+        pytest.skip(
+            "TEST_DATABASE_URL not set. These tests truncate the chunks table, so "
+            "they need their own database - see the note at the top of this file."
+        )
 
-    # Truncating is destructive, so refuse anything that is not obviously local.
-    if not any(host in DATABASE_URL for host in ("localhost", "127.0.0.1")):
-        pytest.skip(f"refusing to truncate a non-local database: {DATABASE_URL.split('@')[-1]}")
+    # Belt and braces: even with a separate URL, refuse to run against anything
+    # whose database name does not say it is for testing. A copy-pasted
+    # connection string is one keystroke away from the working corpus.
+    db_name = TEST_DATABASE_URL.rsplit("/", 1)[-1].split("?")[0]
+    if "test" not in db_name.lower():
+        pytest.skip(
+            f"refusing to truncate database '{db_name}' - the name must contain "
+            "'test' to confirm it is disposable"
+        )
 
     # Skip ONLY when the database is unreachable. Catching every exception here
     # would turn real bugs in VectorStore into green "skipped" runs - which is
     # exactly what hid the register_vector bootstrap bug on the first run.
     try:
-        psycopg.connect(DATABASE_URL, connect_timeout=3).close()
+        psycopg.connect(TEST_DATABASE_URL, connect_timeout=3).close()
     except psycopg.OperationalError as exc:
-        pytest.skip(f"Postgres not reachable: {exc}")
+        pytest.skip(f"test database not reachable: {exc}")
 
-    s = VectorStore(DATABASE_URL, embedding_dim=DIM, embedding_model="test-model")
+    s = VectorStore(TEST_DATABASE_URL, embedding_dim=DIM, embedding_model="test-model")
     s.clear()
     return s
 
@@ -215,7 +235,100 @@ def test_delete_orphans_leaves_untouched_sources_alone(store: VectorStore) -> No
     assert store.get_document_count() == 2
 
 
+def test_hybrid_finds_what_dense_alone_misses(store: VectorStore) -> None:
+    """
+    The case hybrid search exists for: an exact identifier whose vector is
+    nowhere near the query vector.
+
+    The `reclaimPolicy` chunk is given a deliberately unrelated embedding, so
+    dense search cannot surface it. Keyword search matches the term exactly, and
+    fusion pulls it into the results.
+    """
+    target = chunk("The reclaimPolicy field controls volume retention", source="a.md", index=0)
+    noise1 = chunk("Networking concepts and service discovery", source="b.md", index=0)
+    noise2 = chunk("Scheduling pods onto available nodes", source="c.md", index=0)
+
+    store.add_chunks(
+        [target, noise1, noise2],
+        [vec(0.0, 0.0, 1.0), vec(1.0, 0.0, 0.0), vec(0.9, 0.1, 0.0)],
+    )
+
+    query_vector = vec(1.0, 0.0, 0.0)  # points at the noise, not the target
+
+    dense = store.search(query_embedding=query_vector, top_k=2)
+    assert all("reclaimPolicy" not in r.content for r in dense), \
+        "dense search should miss it - that is the premise of this test"
+
+    hybrid = store.hybrid_search(query_vector, "reclaimPolicy", top_k=3)
+    assert any("reclaimPolicy" in r.content for r in hybrid)
+
+
+def test_hybrid_keyword_arm_works_on_a_realistic_question(store: VectorStore) -> None:
+    """
+    REGRESSION: the keyword arm must match on SOME terms, not all of them.
+
+    plainto_tsquery joins every term with AND, so a real fifteen-word question
+    required a chunk containing all fifteen stems - which matched nothing, and
+    silently degraded hybrid search back to dense-only across the entire eval.
+
+    The earlier tests missed it by using one- and two-word queries, where
+    AND-of-one-term works perfectly well.
+    """
+    target = chunk(
+        "With LimitedSwap, Pods that do not fall under the Burstable QoS "
+        "classification are prohibited from utilizing swap memory.",
+        source="swap.md", index=0,
+    )
+    noise = chunk("Networking concepts and service discovery", source="net.md", index=0)
+
+    store.add_chunks([target, noise], [vec(0.0, 0.0, 1.0), vec(1.0, 0.0, 0.0)])
+
+    # A full-length question, as the eval harness actually sends. Only some of
+    # its terms appear in the target chunk.
+    question = ("Which Pod quality classifications are blocked from accessing "
+                "swap memory when LimitedSwap is active")
+
+    results = store.hybrid_search(vec(1.0, 0.0, 0.0), question, top_k=2)
+
+    assert any("LimitedSwap" in r.content for r in results), \
+        "the keyword arm found nothing - check the tsquery operator"
+
+
+def test_hybrid_still_works_when_no_keyword_matches(store: VectorStore) -> None:
+    """
+    Most natural-language questions share no vocabulary with the answer, so the
+    keyword arm returns nothing. The FULL OUTER JOIN must degrade to dense-only
+    rather than returning an empty result.
+    """
+    store.add_chunks(
+        [chunk("Storage volumes persist beyond pod lifetime", source="a.md")],
+        [vec(1.0, 0.0)],
+    )
+
+    results = store.hybrid_search(vec(1.0, 0.0), "zzzz nonexistent gibberish", top_k=5)
+
+    assert len(results) == 1
+    assert "Storage volumes" in results[0].content
+
+
+def test_hybrid_ranks_agreement_above_single_list_hits(store: VectorStore) -> None:
+    """
+    RRF's central property: a chunk both arms rank highly should beat one that
+    only one arm found. Agreement between independent signals is evidence.
+    """
+    both = chunk("kubectl drain removes pods from a node", source="both.md")
+    dense_only = chunk("Removing workloads from cluster machines", source="dense.md")
+
+    store.add_chunks([both, dense_only], [vec(1.0, 0.0), vec(0.99, 0.01)])
+
+    # Vector query favours dense_only slightly; keyword matches only `both`.
+    results = store.hybrid_search(vec(0.99, 0.01), "kubectl drain", top_k=2)
+
+    assert "kubectl drain" in results[0].content, \
+        "the chunk found by both arms should rank first"
+
+
 def test_dimension_mismatch_is_rejected(store: VectorStore) -> None:
     """Configured dimension must agree with the schema's vector(N) column."""
     with pytest.raises(ValueError, match="Schema declares vector"):
-        VectorStore(DATABASE_URL, embedding_dim=1536, embedding_model="test-model")
+        VectorStore(TEST_DATABASE_URL, embedding_dim=1536, embedding_model="test-model")

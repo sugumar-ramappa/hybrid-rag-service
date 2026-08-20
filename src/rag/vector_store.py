@@ -330,6 +330,117 @@ class VectorStore:
         logger.info("Found %d results for query", len(results))
         return results
 
+    def hybrid_search(
+        self,
+        query_embedding: list[float],
+        query_text: str,
+        top_k: int = 5,
+        rrf_k: int = 60,
+        keyword_weight: float = 1.0,
+    ) -> list[SearchResult]:
+        """
+        Search semantically AND lexically, then fuse the two rankings.
+
+        WHY BOTH
+        Dense search finds meaning but compresses away rare tokens - ask it about
+        `reclaimPolicy` and it returns generally storage-ish passages. Keyword
+        search nails exact identifiers but scores zero when the question shares no
+        vocabulary with the answer, which is most natural-language questions.
+        Each is blind exactly where the other is strong.
+
+        WHY RECIPROCAL RANK FUSION RATHER THAN ADDING SCORES
+        BM25-style relevance is unbounded and cosine distance is bounded, so the
+        two numbers cannot be meaningfully combined. RRF ignores scores entirely
+        and combines by POSITION:
+
+            score(doc) = sum over lists of  1 / (rrf_k + rank_in_that_list)
+
+        A document ranked 1st scores 1/61, 2nd scores 1/62, and appearing in both
+        lists beats appearing high in one. No normalisation, no per-corpus tuning,
+        and nothing to re-tune as the data drifts. rrf_k=60 is the value from the
+        original paper and is not sensitive.
+
+        WHY keyword_weight EXISTS
+        Measured on this corpus, an equal-weight fusion made exact-identifier
+        questions perfect (21/21 at recall@5, up from 20) and paraphrased ones
+        markedly worse (10/21, down from 14) - a net loss.
+
+        The cause is that OR-semantics keyword search matches on common words
+        too. A question phrased as "how do I update my passwords and settings"
+        has no rare terms, so the keyword arm returns forty loosely-related
+        chunks, and RRF gives that noise the same vote as the dense arm:
+
+            dense #1,  keyword absent   ->  1/61          = 0.0164
+            dense #30, keyword #1       ->  1/90 + 1/61   = 0.0275   wins
+
+        Weighting the keyword arm below 1.0 keeps its value on rare terms - where
+        it ranks the right chunk first and dense ranks it low - while stopping a
+        match on the word "update" from displacing a strong dense result.
+
+        Both arms retrieve deeper than top_k so fusion has material to work with -
+        a chunk ranked 12th by vector and 3rd by keyword should be able to surface.
+
+        NOTE ON `score`: for dense search, lower is better (cosine distance). Here
+        it is the RRF score, where HIGHER is better. Results are returned
+        best-first either way, which is all the eval harness depends on.
+        """
+        candidate_depth = max(top_k * 4, 20)
+
+        # plainto_tsquery joins every term with AND, so a fifteen-word question
+        # requires a chunk containing all fifteen stems - which matches nothing,
+        # and silently turns hybrid search back into dense-only. Rewriting the
+        # operators to OR gives search semantics: any term can match, and
+        # ts_rank scores documents higher for matching more of them, weighted by
+        # term rarity.
+        or_query = "replace(plainto_tsquery('english', %(q)s)::text, '&', '|')::tsquery"
+
+        sql = f"""
+            WITH dense AS (
+                SELECT chunk_id, content, metadata,
+                       row_number() OVER (ORDER BY embedding <=> %(vec)s::vector) AS rank
+                FROM chunks
+                ORDER BY embedding <=> %(vec)s::vector
+                LIMIT %(depth)s
+            ),
+            keyword AS (
+                SELECT chunk_id, content, metadata,
+                       row_number() OVER (
+                           ORDER BY ts_rank(content_tsv, {or_query}) DESC
+                       ) AS rank
+                FROM chunks
+                WHERE content_tsv @@ {or_query}
+                ORDER BY ts_rank(content_tsv, {or_query}) DESC
+                LIMIT %(depth)s
+            )
+            SELECT
+                COALESCE(d.content, k.content)   AS content,
+                COALESCE(d.metadata, k.metadata) AS metadata,
+                COALESCE(1.0 / (%(rrf_k)s + d.rank), 0)
+                  + %(kw_weight)s * COALESCE(1.0 / (%(rrf_k)s + k.rank), 0)
+                  AS rrf_score
+            FROM dense d
+            FULL OUTER JOIN keyword k ON d.chunk_id = k.chunk_id
+            ORDER BY rrf_score DESC
+            LIMIT %(top_k)s
+        """
+
+        with self._connect() as conn:
+            rows = conn.execute(sql, {
+                "vec": query_embedding,
+                "q": query_text,
+                "depth": candidate_depth,
+                "rrf_k": rrf_k,
+                "kw_weight": keyword_weight,
+                "top_k": top_k,
+            }).fetchall()
+
+        results = [
+            SearchResult(content=content, metadata=metadata, score=float(score))
+            for content, metadata, score in rows
+        ]
+        logger.info("Hybrid search returned %d results", len(results))
+        return results
+
     def get_document_count(self) -> int:
         """Total number of chunks stored."""
         with self._connect() as conn:

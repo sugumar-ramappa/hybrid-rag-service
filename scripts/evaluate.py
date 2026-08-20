@@ -58,12 +58,20 @@ def mrr(outcomes: list[Outcome]) -> float:
 
 
 def evaluate(questions: list[dict], embeddings: EmbeddingService,
-             store: VectorStore) -> list[Outcome]:
+             store: VectorStore, mode: str = "dense",
+             keyword_weight: float = 1.0) -> list[Outcome]:
     outcomes = []
 
     for i, q in enumerate(questions, start=1):
+        # Same cached embedding either way, so switching modes costs nothing -
+        # which is what makes the two runs directly comparable.
         vector = embeddings.embed_query(q["question"])
-        results = store.search(query_embedding=vector, top_k=MAX_K)
+
+        if mode == "hybrid":
+            results = store.hybrid_search(vector, q["question"], top_k=MAX_K,
+                                          keyword_weight=keyword_weight)
+        else:
+            results = store.search(query_embedding=vector, top_k=MAX_K)
 
         # search() returns content and metadata, not chunk_id, so match on the
         # (source, chunk_index) pair the metadata carries.
@@ -131,8 +139,13 @@ def report(outcomes: list[Outcome], label: str, corpus_size: int) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Evaluate retrieval quality.")
     parser.add_argument("--golden-set", default="eval/golden_set.json")
-    parser.add_argument("--label", default="dense-baseline",
-                        help="name for this run, used when saving results")
+    parser.add_argument("--mode", choices=["dense", "hybrid"], default="dense",
+                        help="dense = vector only; hybrid = vector + keyword fused with RRF")
+    parser.add_argument("--keyword-weight", type=float, default=1.0,
+                        help="hybrid only: how much the keyword arm counts in fusion. "
+                             "1.0 = equal vote with dense; lower reduces its influence")
+    parser.add_argument("--label", default=None,
+                        help="name for this run (defaults to the mode)")
     parser.add_argument("--no-save", action="store_true")
     parser.add_argument("--compare", action="store_true",
                         help="print every saved run side by side and exit")
@@ -175,11 +188,16 @@ def main() -> None:
         embedding_model=config.gemini.embedding_model,
     )
 
-    print(f"\nEvaluating {len(questions)} verified questions "
+    label = args.label or (
+        args.mode if args.mode == "dense" or args.keyword_weight == 1.0
+        else f"{args.mode}-w{args.keyword_weight:g}"
+    )
+    print(f"\nEvaluating {len(questions)} verified questions in {args.mode} mode "
           f"({len(data['questions']) - len(questions)} rejected)\n")
 
-    outcomes = evaluate(questions, embeddings, store)
-    summary = report(outcomes, args.label, store.get_document_count())
+    outcomes = evaluate(questions, embeddings, store, mode=args.mode,
+                        keyword_weight=args.keyword_weight)
+    summary = report(outcomes, label, store.get_document_count())
 
     stats = cache.stats
     print(f"\n  query cache: {stats['hits']} hits, {stats['misses']} misses "
@@ -189,9 +207,11 @@ def main() -> None:
 
     if not args.no_save:
         RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-        out = RESULTS_DIR / f"{args.label}.json"
+        out = RESULTS_DIR / f"{label}.json"
         out.write_text(json.dumps({
-            "label": args.label,
+            "label": label,
+            "mode": args.mode,
+            "keyword_weight": args.keyword_weight,
             "corpus_chunks": store.get_document_count(),
             "summary": summary,
             "outcomes": [
