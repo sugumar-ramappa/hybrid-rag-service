@@ -7,6 +7,14 @@ langchain-text-splitters>=0.2.0
 pypdf>=4.0.0
 python-dotenv>=1.0.0
 pydantic>=2.0.0
+
+# The HTTP surface. api.py has existed since early on and was never
+# installable: its own docstring said "pip install fastapi uvicorn", which
+# worked at a shell and meant the container could not serve it. Declared here so
+# the image can actually run the API rather than only the MCP server.
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+
 pytest>=8.0.0
 pytest-asyncio>=0.23.0
 ruff>=0.5.0

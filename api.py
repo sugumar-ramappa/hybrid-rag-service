@@ -52,9 +52,31 @@ def query(request: QueryRequest):
     )
 
 
+@app.get("/healthz")
+def healthz():
+    """Is the process alive? Deliberately checks NOTHING else.
+
+    This is the liveness probe, and a liveness probe that touches a dependency is
+    a mistake: Kubernetes responds to liveness failure by RESTARTING the
+    container. Point it at the database and a database blip restarts every
+    healthy pod at once, turning a brief outage into a crash loop that outlives
+    it.
+
+    Readiness is the probe that may check dependencies, because its failure
+    removes the pod from the Service instead of killing it. That is /stats below.
+    """
+    return {"status": "ok"}
+
+
 @app.get("/stats")
 def stats():
-    """Get pipeline statistics."""
+    """Get pipeline statistics.
+
+    Doubles as the READINESS probe. It constructs the pipeline and queries the
+    corpus, so a pod that cannot reach Postgres or has an empty index fails it
+    and is taken out of the Service - which is correct, because such a pod would
+    answer every question with nothing found.
+    """
     return _get_pipeline().get_stats()
 
 

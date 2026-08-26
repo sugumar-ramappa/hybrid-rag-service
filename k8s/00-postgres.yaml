@@ -1,0 +1,103 @@
+# Postgres with pgvector, in-cluster.
+#
+# DELIBERATELY NOT the `ragdb` container on the host. That one holds the ingested
+# corpus, the 267-pair evaluation set and another project's measurement cache -
+# roughly a week of work that exists nowhere else. A deployment experiment must
+# not be one `kubectl delete` away from it.
+#
+# This starts empty. `POST /ingest` populates it, which also makes the deployment
+# a genuine end-to-end test rather than a service pointed at a warm database.
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rag-postgres
+type: Opaque
+stringData:
+  # Local-only cluster, and the value is deliberately obvious rather than
+  # looking like a real credential someone might reuse. A Secret is base64, not
+  # encryption - anyone with get/secrets can read it. It is here to demonstrate
+  # the mechanism, and the mechanism is "not in the image, not in the repo's
+  # application config, injected at runtime".
+  POSTGRES_PASSWORD: local-dev-only-not-a-real-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rag-postgres
+spec:
+  # Headless: a StatefulSet's pod gets a stable DNS name of its own
+  # (rag-postgres-0.rag-postgres) rather than being load-balanced. With one
+  # replica it makes little difference; with more it is the difference between
+  # addressing a specific database and addressing "one of them".
+  clusterIP: None
+  selector:
+    app: rag-postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rag-postgres
+spec:
+  serviceName: rag-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rag-postgres
+  template:
+    metadata:
+      labels:
+        app: rag-postgres
+    spec:
+      containers:
+        - name: postgres
+          # pgvector's own image, not postgres:16 - the extension has to be
+          # present before `CREATE EXTENSION vector` can succeed, and building it
+          # at startup would make the pod's readiness depend on a compile.
+          image: pgvector/pgvector:pg16
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: ragdb
+            - name: POSTGRES_USER
+              value: raguser
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rag-postgres
+                  key: POSTGRES_PASSWORD
+            # Postgres refuses to initialise into a directory that is not empty,
+            # and a PVC mount root contains lost+found on some volume types. A
+            # subdirectory avoids a failure that reads as data corruption.
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          readinessProbe:
+            # pg_isready, not a TCP check. Postgres accepts connections before it
+            # is ready to serve them during recovery, so a port check marks the
+            # pod ready while queries still fail.
+            exec:
+              command: ["pg_isready", "-U", "raguser", "-d", "ragdb"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 100m
+            limits:
+              memory: 1Gi
+              cpu: "1"
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 2Gi

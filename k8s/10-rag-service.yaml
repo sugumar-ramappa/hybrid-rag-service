@@ -1,0 +1,132 @@
+# The RAG service itself.
+#
+# The API key arrives as a Secret rather than a .env file, which is the actual
+# point of deploying this: locally the key sits in a file next to the code, and
+# the first thing a real deployment has to change is where secrets come from.
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rag-config
+data:
+  # Non-secret configuration. Separated from the Secret deliberately - these are
+  # values you would happily print in a log, and mixing them into a Secret means
+  # every change to a chunk size needs a secret rotation.
+  #
+  # Hostname comes from the headless Service: <pod>.<service> inside the
+  # namespace. No IP anywhere, so a pod reschedule does not break the connection.
+  DATABASE_URL: postgresql://raguser:local-dev-only-not-a-real-secret@rag-postgres-0.rag-postgres:5432/ragdb
+  DOCUMENTS_DIR: /app/documents
+
+  # The measured-best configuration, from 267 evaluation pairs:
+  #   dense            recall@1 0.509
+  #   dense + rerank   recall@1 0.678
+  #   hybrid           recall@1 0.674
+  #   hybrid + rerank  recall@1 0.730   <- this
+  RETRIEVAL_MODE: hybrid
+  TOP_K_RESULTS: "5"
+  CHUNK_SIZE: "1000"
+  CHUNK_OVERLAP: "200"
+#
+# NOTE: there is deliberately NO Secret manifest here.
+#
+# A Secret containing a real key cannot be committed, and one containing a
+# placeholder is worse than nothing: `kubectl apply -f k8s/` would overwrite a
+# working key with REPLACE_ME, and the failure surfaces later as a confusing 400
+# from the embeddings API rather than as a missing secret.
+#
+# The `rag-secrets` Secret is created imperatively from .env instead - see
+# k8s/README.md. The Deployment below references it, so a missing Secret stops
+# the pod at ContainerCreating with a clear reason rather than starting a broken
+# one.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rag-service
+spec:
+  selector:
+    app: rag-service
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rag-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rag-service
+  template:
+    metadata:
+      labels:
+        app: rag-service
+    spec:
+      containers:
+        - name: rag-service
+          image: hybrid-rag-service:local
+          # Never, because the image is built straight into the local runtime and
+          # exists in no registry. Without this, Kubernetes tries to pull
+          # docker.io/library/hybrid-rag-service:local and the pod sits in
+          # ImagePullBackOff looking like a network fault.
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: rag-config
+            - secretRef:
+                name: rag-secrets
+          livenessProbe:
+            # /healthz checks nothing but the process. A liveness probe that
+            # touches the database restarts healthy pods during a database blip
+            # and turns a short outage into a crash loop.
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            # /stats builds the pipeline and queries the corpus, so a pod that
+            # cannot reach Postgres fails this and is removed from the Service
+            # rather than killed. That is the correct response: such a pod would
+            # answer every question with "nothing found".
+            httpGet:
+              path: /stats
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            failureThreshold: 6
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 250m
+            limits:
+              # The reranker is a ~90MB cross-encoder loaded into memory on first
+              # use, so the limit has to allow for a resident model rather than
+              # just the web process.
+              memory: 2Gi
+              cpu: "2"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rag-service
+spec:
+  # Traefik ships with k3s and is already running, so no controller to install.
+  ingressClassName: traefik
+  rules:
+    - host: rag.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rag-service
+                port:
+                  number: 8000

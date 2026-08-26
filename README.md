@@ -344,6 +344,49 @@ worse, which reads as a hard problem rather than a broken measurement.
 
 ---
 
+## Running on Kubernetes
+
+Deployed to a local k3s cluster — Deployment, headless Service, Ingress via
+Traefik, Postgres as a StatefulSet with a PersistentVolumeClaim, the API key as a
+Secret and tuning as a ConfigMap. Setup and reasoning in
+[`k8s/README.md`](k8s/README.md).
+
+```
+rag-postgres-0     1/1 Running    StatefulSet + 2Gi PVC, pgvector/pgvector:pg16
+rag-service        1/1 Running    liveness /healthz · readiness /stats
+ingress            rag.localhost via Traefik
+```
+
+**The point is not that it runs.** It is that containerising and scheduling it
+asked two questions local development never had to answer, and both had been
+wrong since the API was written:
+
+**`api.py` was never in the image.** The Dockerfile copied `src/`, `documents/`
+and `scripts/` — not `api.py`. `fastapi` and `uvicorn` were absent from
+`requirements.txt` too; the file's own docstring said `pip install fastapi
+uvicorn`. **The HTTP API had never once run in a container.** Developing it with
+`uvicorn api:app` at a shell hid that completely, because the shell had the
+dependencies the image did not.
+
+**There was no liveness endpoint.** The only candidate was `/stats`, which builds
+the pipeline and queries the corpus. Kubernetes answers a liveness failure by
+*restarting* the container, so pointing liveness at the database means a database
+blip restarts every healthy pod — a short outage becomes a crash loop that
+outlives its cause. `/healthz` was added to check nothing but the process;
+readiness is the probe allowed to touch dependencies, because failing it removes
+the pod from the Service rather than killing it.
+
+**On the corpus.** The cluster database starts empty and deliberately does not
+point at any Postgres on the host. Rather than re-embed, the existing 784 chunks
+and 337 cached embeddings were copied with `pg_dump | psql` — read-only on the
+source, a few seconds, and ~784 embedding calls not spent.
+
+**And a query worth keeping.** The first question asked was about reclaiming
+persistent volumes, which this 56-document corpus does not cover. The service
+answered *"the provided context does not contain information on how to reclaim a
+persistent volume"* — it declined instead of fabricating from the wrong chunks.
+That is a better demonstration than the query that worked.
+
 ## What's next
 
 **Not chunking.** This README previously recommended structure-aware chunking to
