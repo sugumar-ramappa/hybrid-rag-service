@@ -2,9 +2,17 @@
 FastAPI REST API for the RAG pipeline.
 
 Usage:
-    pip install fastapi uvicorn
     uvicorn api:app --reload
     Open http://localhost:8000/docs for Swagger UI
+
+fastapi and uvicorn are declared in requirements.txt. This docstring used to say
+"pip install fastapi uvicorn" instead, and that instruction was the bug: it worked
+at a shell, so nobody noticed the dependencies were never declared and this file
+was never copied into the Docker image. The HTTP API could not run in a container
+at all until the day it was deployed.
+
+If a run instruction tells you to install something the project does not declare,
+the project cannot build.
 """
 
 from fastapi import FastAPI, HTTPException

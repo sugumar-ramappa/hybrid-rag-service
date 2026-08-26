@@ -41,11 +41,36 @@ from psycopg.types.json import Jsonb
 logger = logging.getLogger(__name__)
 
 
+@dataclass(frozen=True)
+class CachedSource:
+    """A source from a cached answer, shaped like a live retrieval result.
+
+    WHY THIS EXISTS
+    The live path puts retrieval objects in QueryResult.sources, and every
+    consumer - the HTTP API, the MCP server, the ADK agent, the CLI - reads
+    `.metadata` and `.score` off them. The cache stores plain JSON, so a cached
+    answer's sources were a different type entirely.
+
+    The pipeline resolved that by returning `sources=[]` on a cache hit. That is
+    not a small omission: the answer TEXT still says "According to Source 3", so
+    a cached response cited evidence it did not return, and the citations became
+    unverifiable. For a system whose entire value is grounding, an answer nobody
+    can check is the failure mode - and it looked completely normal, because the
+    prose was unchanged.
+
+    Satisfying the same interface here fixes it in one place instead of teaching
+    five callers to handle two shapes.
+    """
+
+    metadata: dict
+    score: float | None
+
+
 @dataclass
 class CachedAnswer:
     """A previous answer judged close enough to reuse."""
     answer: str
-    sources: list
+    sources: list[CachedSource]
     matched_question: str  # what it actually matched - keep this visible
     distance: float
 
@@ -124,7 +149,20 @@ class AnswerCache:
         )
         return CachedAnswer(
             answer=row[2],
-            sources=row[3],
+            # Rehydrated into something with .metadata and .score, so a cached
+            # answer's sources read identically to a live one's.
+            #
+            # score is absent from rows written before it was stored, so it
+            # degrades to None rather than raising. None is honest here: the
+            # answer is real and the retrieval score is simply not recorded.
+            sources=[
+                CachedSource(
+                    metadata={"source": s.get("source"),
+                              "chunk_index": s.get("chunk_index")},
+                    score=s.get("score"),
+                )
+                for s in (row[3] or [])
+            ],
             matched_question=row[1],
             distance=row[4],
         )

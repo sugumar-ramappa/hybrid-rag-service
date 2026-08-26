@@ -170,3 +170,77 @@ def test_matched_question_is_returned(cache: AnswerCache) -> None:
 
     assert hit.matched_question == "What is a Pod?"
     assert 0 < hit.distance < THRESHOLD
+
+
+def test_sources_survive_the_round_trip(cache: AnswerCache) -> None:
+    """
+    A cached answer must return the sources it was stored with.
+
+    THE BUG THIS EXISTS FOR
+    The pipeline's cache-hit path returned `sources=[]` while the cached answer
+    TEXT still read "According to Source 3, ...". So a cached response cited
+    evidence it did not hand back, and the citation could not be checked.
+
+    Nothing looked wrong. The prose was unchanged, fluent and correct; only the
+    sources array was empty, and no test noticed because every other test in this
+    file stores `[]` for sources. Which is precisely how it survived 55 passing
+    tests.
+
+    For a system whose whole value is grounding, an answer nobody can verify is
+    the failure - so this asserts the round trip rather than trusting it.
+    """
+    stored = [
+        {"source": "concepts/configuration/secret.md", "chunk_index": 12, "score": 0.0328},
+        {"source": "concepts/configuration/secret.md", "chunk_index": 13, "score": 0.0322},
+    ]
+    cache.store("How do I mount a Secret?", unit(1.0), "Mount it as a volume.",
+                stored, "v1")
+
+    hit = cache.lookup(at_distance(0.03), "v1")
+
+    assert len(hit.sources) == 2, "a cached answer must not lose its sources"
+    assert [s.metadata["source"] for s in hit.sources] == [
+        "concepts/configuration/secret.md", "concepts/configuration/secret.md"]
+    assert [s.metadata["chunk_index"] for s in hit.sources] == [12, 13]
+    assert [s.score for s in hit.sources] == [0.0328, 0.0322]
+
+
+def test_cached_sources_match_the_live_interface(cache: AnswerCache) -> None:
+    """
+    Cached sources must be readable the same way live ones are.
+
+    Five callers - the HTTP API, the MCP server, the ADK agent, the CLI and the
+    evaluation harness - read `.metadata` and `.score` off whatever is in
+    QueryResult.sources. The live path puts retrieval objects there; the cache
+    stores plain JSON.
+
+    That mismatch is WHY the pipeline returned an empty list: passing the stored
+    dicts straight through would have raised AttributeError on `.metadata`, so
+    the symptom was avoided instead of the cause. This pins the interface so the
+    two paths cannot drift apart again.
+    """
+    cache.store("q", unit(1.0), "a",
+                [{"source": "a.md", "chunk_index": 1, "score": 0.5}], "v1")
+
+    source = cache.lookup(at_distance(0.01), "v1").sources[0]
+
+    assert hasattr(source, "metadata") and hasattr(source, "score")
+    assert source.metadata.get("source") == "a.md"
+
+
+def test_sources_stored_before_scores_existed_do_not_raise(cache: AnswerCache) -> None:
+    """
+    Rows written before `score` was stored must still be readable.
+
+    The fix added score to what gets cached. Existing rows have no such key, and
+    a cache that raised KeyError on its own older entries would be a worse
+    failure than the one being fixed - every previously cached answer would
+    become a 500 rather than an answer missing a number.
+    """
+    cache.store("q", unit(1.0), "a",
+                [{"source": "old.md", "chunk_index": 4}], "v1")
+
+    source = cache.lookup(at_distance(0.01), "v1").sources[0]
+
+    assert source.metadata.get("source") == "old.md"
+    assert source.score is None, "an unrecorded score is None, not zero or absent"

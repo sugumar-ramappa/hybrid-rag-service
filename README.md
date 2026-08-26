@@ -376,6 +376,31 @@ outlives its cause. `/healthz` was added to check nothing but the process;
 readiness is the probe allowed to touch dependencies, because failing it removes
 the pod from the Service rather than killing it.
 
+**A third bug, and this one was found by reading a response rather than by
+running a test.** A query returned an answer whose text said *"According to
+Source 3, you specify these values under `resources.requests.memory`"* — beside
+`"sources": []`.
+
+The cache-hit path in `pipeline.py` returned `sources=[]` unconditionally. The
+cache had stored all five sources correctly; the hit path discarded them. **So a
+cached answer cited evidence it did not return, and the citation could not be
+checked.** Nothing looked wrong: the prose was fluent, authoritative and
+accurate. For a system whose entire value is grounding, an answer nobody can
+verify is the failure mode, and this one was silent.
+
+The cause was a type mismatch avoided rather than resolved — the live path puts
+retrieval objects in `QueryResult.sources`, the cache stores plain JSON, and
+passing the dicts straight through would have raised `AttributeError` on
+`.metadata`. Fixed with a `CachedSource` that satisfies the same interface, so it
+is corrected in one place rather than in the five callers that read `.metadata`
+and `.score`.
+
+**Why 55 passing tests missed it:** every existing answer-cache test passed `[]`
+for sources. The round trip was never exercised. Three tests now pin it,
+including one asserting that rows written before `score` was cached still read
+back without raising — a cache that broke on its own older entries would be a
+worse failure than the one being fixed.
+
 **On the corpus.** The cluster database starts empty and deliberately does not
 point at any Postgres on the host. Rather than re-embed, the existing 784 chunks
 and 337 cached embeddings were copied with `pg_dump | psql` — read-only on the

@@ -225,7 +225,13 @@ class RAGPipeline:
                             int((time.time() - start) * 1000), hit.distance)
                 return QueryResult(
                     answer=hit.answer,
-                    sources=[],
+                    # hit.sources, not []. The cached answer text still says
+                    # "According to Source 3", so returning nothing made a
+                    # cached response cite evidence it did not hand back - and
+                    # the prose looked completely normal, so nothing downstream
+                    # could tell. An unverifiable citation is worse than no
+                    # citation in a system built on grounding.
+                    sources=hit.sources,
                     query=question,
                     from_cache=True,
                     cache_distance=hit.distance,
@@ -268,8 +274,14 @@ class RAGPipeline:
         if self._answer_cache is not None:
             self._answer_cache.store(
                 question, query_embedding, answer,
+                # score included, so a cache hit returns the same information a
+                # live answer does. Without it a cached source could name a
+                # document but not say how well it matched, and the two paths
+                # would stay subtly different in a way only a careful reader of
+                # two JSON responses would notice.
                 [{"source": r.metadata.get("source"),
-                  "chunk_index": r.metadata.get("chunk_index")} for r in results],
+                  "chunk_index": r.metadata.get("chunk_index"),
+                  "score": r.score} for r in results],
                 corpus_version,
             )
 
