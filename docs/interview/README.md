@@ -20,7 +20,7 @@ Three documents, in the order you would walk someone through the project.
 > is on identifier-based queries** — those went 0.95 → 1.00 at recall@5 and
 > 0.71 → 0.86 at recall@1 — while paraphrased questions were completely
 > unchanged. That is exactly what the technique predicts: the keyword arm can
-> only contribute where the question and the answer share vocabulary. Labelling
+> only contribute where the question carries a rare, distinctive term. Labelling
 > every golden-set question by style is what made that visible, rather than
 > reporting "+3 points" and hoping it wasn't noise.
 

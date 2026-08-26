@@ -313,9 +313,44 @@ Broken down by question style, which is where the story is:
 
 **The entire gain is on identifier questions, and paraphrased ones are
 untouched.** That is exactly the textbook prediction: the keyword arm can only
-help when the question and the answer share vocabulary. Being able to show *where*
+help when the question carries a rare, distinctive term. Being able to show *where*
 the gain landed, not just that a number moved, is the difference between "I added
 hybrid search" and understanding what it does.
+
+### Dense vs hybrid, question by question
+
+"Untouched" is the aggregate. Underneath, **15 of 43 questions changed rank** —
+10 improved, 5 got worse:
+
+| | improved | worse | net recall@5 |
+|---|---:|---:|---:|
+| `exact_term` | 5 | 1 | **+1** (0.95 → 1.00) |
+| `paraphrase` | 5 | 4 | 0 (0.95 → 0.95) |
+
+The individual moves are the clearest picture of what hybrid does:
+
+```
+WON — the keyword arm supplied a rare term dense had ranked low
+  q013  exact_term   #9  →  #4   "How does the aggregation layer differ from
+                                   Custom Resource Definitions?"
+  q018  paraphrase   MISS → #5   "How do I update app configuration without
+                                   rebuilding my container image?"
+
+LOST — the keyword arm matched common words and outvoted a correct dense hit
+  q020  paraphrase   #1  → MISS  "What configuration fields are mandatory when
+                                   defining a new Kubernetes resource?"
+  q022  paraphrase   #1  →  #5   "Which component implements the cluster network
+                                   model on each node?"
+```
+
+Both failure and success come from the **same mechanism**. RRF gives the keyword
+arm a vote; when the question carries `FlowSchema` that vote is informative, and
+when it carries only *configuration* and *mandatory* it is noise that can
+displace a correct dense result.
+
+That is what `KEYWORD_WEIGHT` exists to tune, and why paraphrased questions lost
+MRR (0.78 → 0.75) while holding recall@5 — several were pushed from rank 1 to
+rank 2, still retrieved, but no longer first.
 
 ---
 

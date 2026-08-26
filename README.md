@@ -32,7 +32,7 @@ questions were unchanged on recall and marginally worse on MRR (0.78 → 0.75) �
 the residue of keyword noise.
 
 That asymmetry is the result, not a footnote. Keyword search can only contribute
-where a question and its answer share vocabulary, so a question naming
+where a question carries a **rare, distinctive term**, so a question naming
 `reclaimPolicy` gives the keyword arm a rare term to rank on, while *"how does
 the cluster decide where to run things"* gives it nothing. Labelling every
 question by style is what makes the mechanism visible in the numbers — without
@@ -70,6 +70,15 @@ question that follows: **how do you know?**
 ---
 
 ## Quick start
+
+> **This container's Postgres server is shared.** `vendor-onboarding` keeps its
+> measurement cache in a `vendor_onboarding` database inside the same `ragdb`
+> container, because this project claimed port 5432 first.
+>
+> **Do not `docker rm ragdb` and recreate it** — the `docker run` command above will
+> silently destroy that project's cache, which is several days of rate-limited model
+> calls. Stopping the container is safe; removing it is not.
+
 
 ```bash
 # 1. Postgres with pgvector

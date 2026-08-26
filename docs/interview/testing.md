@@ -214,6 +214,46 @@ which shows *where* a change helps rather than just that a number moved. Without
 the split, hybrid search looks like "+3 points" instead of "identifier queries
 went from 0.95 to 1.00 and paraphrases were untouched."
 
+Real examples from the set:
+
+```
+exact_term  q003  "What is the current beta status for structured logging
+                   features starting in version v1.23?"
+            q013  "How does the aggregation layer differ from the functionality
+                   provided by Custom Resource Definitions?"
+
+paraphrase  q010  "What should I do if I need to update a Node's state
+                   significantly?"
+            q018  "How do I update app configuration without needing to rebuild
+                   my container image?"
+```
+
+### What actually separates the two styles
+
+The intuitive answer — *"paraphrased questions share fewer words with their
+answer"* — is **wrong on this corpus**, and measuring it is what showed that:
+
+| Style | Word overlap with its answer chunk | Questions with ≥1 rare term | Rare terms per question |
+|---|---:|---:|---:|
+| `exact_term` | 45% | 20 / 21 | **2.6** |
+| `paraphrase` | 52% | 18 / 22 | **1.5** |
+
+*Rare* = a word appearing in ≤1% of the 784 chunks.
+
+Paraphrased questions share slightly **more** vocabulary, because natural
+phrasing still reuses common words like *update*, *configuration*, *node*. What
+they lack is **distinctive** vocabulary.
+
+That matters because `ts_rank` weights matches by term rarity. Matching on
+*"update"* — which appears in hundreds of chunks — tells you almost nothing;
+matching on `FlowSchema` narrows 784 chunks to two. So the keyword arm's value is
+not driven by *how many* words are shared, but by **how rare the shared words
+are**.
+
+This is the sharper version of the claim, and the one worth making in an
+interview: hybrid search helps when queries carry **rare terms**, not merely when
+they carry shared terms.
+
 ### `scripts/check_golden_set.py` — catch leakage mechanically
 
 ```bash
@@ -394,7 +434,7 @@ number that could be noise. The per-style breakdown shows it is not:
 untouched — not slightly better, not slightly worse. Unchanged.**
 
 That is exactly what the technique predicts. The keyword arm can only contribute
-where the question and the answer share vocabulary. A question naming
+where the question carries a rare, distinctive term. A question naming
 `UnknownVersionInteroperabilityProxy` gives it a rare term to match on, and it
 ranks the right chunk first. A question phrased as *"how does the cluster decide
 where to run things"* gives it nothing, so RRF gets a vote from only one arm and
