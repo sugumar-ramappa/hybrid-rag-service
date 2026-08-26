@@ -17,7 +17,19 @@ Kubernetes documentation pages.
 | Retrieval | recall@1 | recall@5 | recall@10 | MRR |
 |-----------|---------:|---------:|----------:|----:|
 | Dense (vector only) | 0.67 | 0.95 | 0.98 | 0.80 |
-| **Hybrid (vector + BM25 + RRF)** | **0.74** | **0.98** | **0.98** | **0.83** |
+| Hybrid (vector + BM25 + RRF) | 0.74 | 0.98 | 0.98 | 0.83 |
+| **Hybrid + cross-encoder rerank** | **0.72** | **0.98** | **0.98** | **0.83** |
+
+On this 43-question set the three are within one question of each other, which is
+why a **267-pair set** was built from the corpus's own structure. There, hybrid +
+reranking is the clear winner and the ordering above reverses — see
+[Reranking](#reranking--implemented-and-the-result-reversed-itself).
+
+| 267 structural pairs | recall@1 | recall@5 | MRR |
+|---|---:|---:|---:|
+| dense | 0.509 | 0.921 | 0.677 |
+| hybrid | 0.674 | 0.951 | 0.793 |
+| **hybrid + rerank** | **0.730** | **0.974** | **0.828** |
 
 Hybrid wins, and the gain lands exactly where the theory predicts — on questions
 naming a specific identifier:
@@ -207,30 +219,150 @@ incremental ingest a requirement rather than an optimisation.
 
 ---
 
-## What's next, and why
+## Reranking — implemented, and the result reversed itself
 
-The failure list points at ranking, not recall. Of the 8 questions dense missed:
+The baseline pointed here. Of the 8 questions dense retrieval missed, **5 had the
+correct chunk at rank 6-10** — found, but buried — and 3 were absent entirely. A
+reranker only reorders what retrieval returned, so it targets the five.
 
-- **5** had the correct chunk at rank 6–10 — retrieval found it, ranking buried it
-- **3** were absent from the top 10 entirely
+`retrieve 50 → cross-encoder → keep 5`, using `ms-marco-MiniLM-L-6-v2` (90 MB,
+local, no API key).
 
-That split says **reranking** is the highest-value next change, not chunking —
-a reranker only reorders what retrieval already found, so it addresses the
-majority case here.
+### Measured on 267 structural pairs
 
-In order:
+| config | recall@1 | recall@5 | MRR |
+|---|---:|---:|---:|
+| dense | 0.509 | 0.921 | 0.677 |
+| dense + rerank | 0.678 | 0.944 | 0.788 |
+| hybrid | 0.674 | 0.951 | 0.793 |
+| **hybrid + rerank** | **0.730** | **0.974** | **0.828** |
 
-1. **Cross-encoder reranking** — retrieve 50, rerank to 5. Directly targets the
-   5 near-misses.
-2. **Structure-aware chunking** — split on markdown headings and prepend the
-   heading path. Targets the 3 that were never found: 7% of this corpus is Hugo
-   build markup and 29 of 56 documents end with a link list.
-3. **768 vs `halfvec(3072)`** — keep all dimensions at half precision instead.
+**Latency:** dense 51 ms · hybrid 30 ms · +rerank 195 ms.
 
-Neither of the first two is implemented. Both require either a re-embed of the
-corpus (a full day of free-tier quota) or a reranking model, and the evidence for
-ordering them came from the baseline — which is the point of having measured it
-first.
+**Reranking stacks with hybrid rather than replacing it.** It lifts dense by
+0.169 and hybrid by 0.056 on recall@1. Keyword fusion and semantic reordering fix
+*different* failures, so they are additive — which was not the expectation going
+in.
+
+### The 43-question set gave the wrong answer
+
+| config | 43 questions | 267 pairs |
+|---|---:|---:|
+| hybrid | 0.744 | 0.674 |
+| hybrid + rerank | **0.721** *(worst)* | **0.730** *(best)* |
+
+On 43 questions, adding reranking to hybrid looked like a regression and was
+written up as one. On 267 pairs it is the clear winner.
+
+**The difference was one question.** On 43, a single flipped answer moves recall@1
+by 2.33 points; on 267 it moves 0.33. The small set could not distinguish a real
+effect from a coin flip, and two confident conclusions were drawn from it anyway:
+"reranking does not help here" and "hybrid and reranking are alternatives, pick
+one". Both wrong.
+
+### Fusing beats replacing
+
+The first implementation replaced the retrieval order with the cross-encoder's
+score outright. Measured, that is not neutral:
+
+```
+exact_term   recall@1  0.857 -> 0.810     lexical signal discarded
+paraphrase   recall@5  0.955 -> 1.000     semantic judgement gained
+```
+
+Identifier questions were already correct *because* the literal token matched. A
+cross-encoder scores semantic plausibility, so it will promote a passage that
+reads like a better answer over one that actually contains `reclaimPolicy`.
+
+Fusing by rank — the same RRF the hybrid query already uses, applied one level up
+— keeps both signals. By rank, not score, for the same reason: cosine distance is
+bounded, RRF scores are small positives, and a cross-encoder logit is unbounded
+and here ranges about -11 to -2. Those three cannot be added.
+
+---
+
+## A 267-pair evaluation set, built from the corpus's own structure
+
+`recall@5 = 1.000` on 43 questions is 43 of 43. One awkward new question drops it
+to 0.977, so a two-point difference between configurations is one question. Every
+conclusion above was drawn on that basis, and one of them was wrong.
+
+The usual fix is a public benchmark with human relevance judgements. This does
+something different, because **the corpus already contains the labels**:
+
+```
+## Reclaiming
+When a user is done with their volume, they can delete the PVC...
+```
+
+A heading names a topic; the prose beneath it covers that topic. So
+`(heading, the chunk holding that prose)` is a labelled retrieval pair — 267 of
+them here, with no annotation, no LLM and no quota.
+
+```bash
+python -m scripts.build_structural_set
+python -m scripts.evaluate --golden-set eval/structural_set.json --mode hybrid --rerank
+```
+
+### What it measures, and what it does not
+
+A heading is a **topic label**, not a user question. Nobody asks "Configuring the
+kubelet"; they ask "how do I change kubelet settings". So this set measures
+*topical* retrieval, which is related to but not the same as question answering —
+and the pairs are marked `provenance: structural`, never `verified`, so a
+267-pair set cannot inherit the credibility of the 43 that a person actually read.
+
+The two sets are complementary rather than competing:
+
+| | phrasing | intent | size |
+|---|---|---|---|
+| 43 hand-verified | real | real | too small to trust a 2-point difference |
+| 267 structural | thin | none | large enough that 15 pairs is not noise |
+
+### And they agree
+
+| hybrid + rerank | 43 hand-verified | 267 structural |
+|---|---:|---:|
+| recall@5 | 0.977 | 0.974 |
+| MRR | 0.826 | 0.828 |
+
+Two sets built by completely different methods, agreeing to within a percentage
+point. That convergence is stronger evidence than either alone: 0.97 recall@5 is
+a property of the system, not of how one person worded 43 questions.
+
+### The bug that cost 7 points
+
+32 of the first 301 pairs — **11% of the set** — had the Hugo shortcode
+`{{% heading "whatsnext" %}}` as the query. The noise filter stripped shortcodes
+from the body and never from the heading, so they passed straight through: 32
+identical meaningless queries pointing at 32 different answers, which can only
+score as misses.
+
+Removing them lifted **every** configuration by roughly 7 points. A corrupted
+evaluation set does not announce itself — it just makes everything look uniformly
+worse, which reads as a hard problem rather than a broken measurement.
+
+---
+
+## What's next
+
+**Not chunking.** This README previously recommended structure-aware chunking to
+rescue "the 3 that were never found". At recall@5 of 0.974 they *are* found —
+that recommendation is retracted, and acting on it would have spent a full day of
+embedding quota on a solved problem.
+
+**Not more retrieval tuning either.** 0.974 recall@5, corroborated by two
+independent sets, is above a normal production bar for RAG — the number that
+matters is whether the answer reaches the context the model sees, and it does.
+
+The remaining weakness is not retrieval at all: **nothing here measures what the
+system does when retrieval fails.** Seven of 267 queries have no correct chunk in
+the top 5. Whether the answer is then "I don't know" or a confident fabrication
+from the wrong chunk matters far more than the 2.6%, and this harness stops at
+retrieval by design — generation quality was explicitly out of scope, which is
+what made a full evaluation free and repeatable.
+
+That is the honest next project, and it is a different one.
 
 ---
 
@@ -244,6 +376,7 @@ src/
     text_splitter.py        chunking + content-derived identity
     embeddings.py           Gemini, 768-dim, retry with backoff
     embedding_cache.py      query embeddings cached in Postgres
+    reranker.py             cross-encoder reranking, and RRF fusion with retrieval
     vector_store.py         dense and hybrid search
     schema.sql              tables, HNSW and GIN indexes
     pipeline.py             orchestration; the only public entry point
@@ -251,6 +384,7 @@ src/
   agent/                    Google ADK agent
 scripts/                    fetch, ingest, evaluate, inspect, golden set tooling
 eval/golden_set.json        43 hand-verified questions
+eval/structural_set.json    267 pairs derived from headings - no annotation
 tests/                      55 tests, integration against real Postgres
 docs/                       architecture, plan, retrieval strategies, walkthrough
 ```

@@ -29,10 +29,23 @@ from pathlib import Path
 from src.config import get_config
 from src.rag.embedding_cache import EmbeddingCache
 from src.rag.embeddings import EmbeddingService
+from src.rag.reranker import CrossEncoderReranker, fuse, movement
 from src.rag.vector_store import VectorStore
 
 RESULTS_DIR = Path("eval/results")
 MAX_K = 10
+
+# How many candidates the reranker is given before it picks the top MAX_K.
+#
+# 50 rather than 10, deliberately. Reranking the same 10 the metric reads could
+# only reorder within a window that already contains the answer - it could never
+# rescue a chunk sitting at rank 23. Widening the net first is the entire point
+# of retrieve-then-rerank: cheap search casts wide, the expensive model sorts.
+#
+# The failure analysis said 5 of 8 misses were at rank 6-10 and 3 were outside
+# the top 10 entirely. A pool of 50 gives the reranker a chance at both groups,
+# so the result distinguishes "ranking was the problem" from "retrieval was".
+RERANK_POOL = 50
 
 
 @dataclass
@@ -59,19 +72,41 @@ def mrr(outcomes: list[Outcome]) -> float:
 
 def evaluate(questions: list[dict], embeddings: EmbeddingService,
              store: VectorStore, mode: str = "dense",
-             keyword_weight: float = 1.0) -> list[Outcome]:
+             keyword_weight: float = 1.0,
+             reranker: CrossEncoderReranker | None = None,
+             rerank_mode: str = "fuse") -> list[Outcome]:
     outcomes = []
+    # Mutable cells so the loop can accumulate without a class. How much the
+    # reranker moved things is reported alongside the score: a gain with almost
+    # no movement came from one or two questions, which on 43 is noise.
+    promoted_total = [0]
+    biggest_jump = [0]
 
     for i, q in enumerate(questions, start=1):
         # Same cached embedding either way, so switching modes costs nothing -
         # which is what makes the two runs directly comparable.
         vector = embeddings.embed_query(q["question"])
 
+        # A wider pool when reranking, because the reranker can only reorder
+        # what retrieval handed it.
+        pool = RERANK_POOL if reranker else MAX_K
+
         if mode == "hybrid":
-            results = store.hybrid_search(vector, q["question"], top_k=MAX_K,
+            results = store.hybrid_search(vector, q["question"], top_k=pool,
                                           keyword_weight=keyword_weight)
         else:
-            results = store.search(query_embedding=vector, top_k=MAX_K)
+            results = store.search(query_embedding=vector, top_k=pool)
+
+        if reranker and results:
+            scored = reranker.rerank(q["question"], [r.content for r in results])
+            # Fuse by default. Replacing outright discards the lexical signal
+            # that identifier questions depend on - measured, not assumed.
+            scored = (fuse(scored, top_k=MAX_K) if rerank_mode == "fuse"
+                      else scored[:MAX_K])
+            results = [results[c.index] for c in scored]
+            moved = movement(scored)
+            promoted_total[0] += moved["promoted"]
+            biggest_jump[0] = max(biggest_jump[0], moved["max_promotion"])
 
         # search() returns content and metadata, not chunk_id, so match on the
         # (source, chunk_index) pair the metadata carries.
@@ -93,6 +128,10 @@ def evaluate(questions: list[dict], embeddings: EmbeddingService,
 
         marker = f"#{rank}" if rank else "MISS"
         print(f"  [{i:>2}/{len(questions)}] {marker:<5} {q['id']} {q['question'][:60]}")
+
+    if reranker:
+        print(f"\n  reranker moved {promoted_total[0]} chunk(s) up, "
+              f"biggest promotion {biggest_jump[0]} places")
 
     return outcomes
 
@@ -139,6 +178,15 @@ def report(outcomes: list[Outcome], label: str, corpus_size: int) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Evaluate retrieval quality.")
     parser.add_argument("--golden-set", default="eval/golden_set.json")
+    parser.add_argument("--rerank", action="store_true",
+                        help="retrieve %d candidates and reorder them with a "
+                             "cross-encoder before scoring. Targets the 5 of 8 "
+                             "misses that were at rank 6-10." % RERANK_POOL)
+    parser.add_argument("--rerank-mode", choices=["fuse", "replace"], default="fuse",
+                        help="fuse: combine retrieval rank with reranker rank "
+                             "(default). replace: use the reranker's order alone")
+    parser.add_argument("--rerank-model", default=None,
+                        help="override the cross-encoder")
     parser.add_argument("--mode", choices=["dense", "hybrid"], default="dense",
                         help="dense = vector only; hybrid = vector + keyword fused with RRF")
     parser.add_argument("--keyword-weight", type=float, default=1.0,
@@ -185,7 +233,19 @@ def main() -> None:
     config = get_config()
 
     data = json.loads(Path(args.golden_set).read_text())
-    questions = [q for q in data["questions"] if q.get("verified")]
+    # Two admissible provenances, kept distinguishable on purpose.
+    #
+    #   verified            a person read the question and confirmed the chunk
+    #   structural          derived from a heading and the prose beneath it
+    #
+    # The structural set is 7x larger and thinner: a heading is a topic label,
+    # not how anyone asks a question. It is large enough that a two-point
+    # difference is not one question, which the 43-question set cannot say. Both
+    # are useful; conflating them is not, so the header prints which is in use.
+    questions = [q for q in data["questions"]
+                 if q.get("verified") or q.get("provenance") == "structural"]
+    provenance = ("hand-verified" if all(q.get("verified") for q in questions)
+                  else "structurally derived" if questions else "none")
     if not questions:
         print("No verified questions. Review the golden set first.")
         return
@@ -208,11 +268,18 @@ def main() -> None:
         args.mode if args.mode == "dense" or args.keyword_weight == 1.0
         else f"{args.mode}-w{args.keyword_weight:g}"
     )
-    print(f"\nEvaluating {len(questions)} verified questions in {args.mode} mode "
+    how = args.mode + (f" + rerank/{args.rerank_mode}({RERANK_POOL}->{MAX_K})" if args.rerank else "")
+    print(f"\nEvaluating {len(questions)} {provenance} questions in {how} mode "
           f"({len(data['questions']) - len(questions)} rejected)\n")
 
+    reranker = None
+    if args.rerank:
+        kwargs = {"model_name": args.rerank_model} if args.rerank_model else {}
+        reranker = CrossEncoderReranker(**kwargs)
+
     outcomes = evaluate(questions, embeddings, store, mode=args.mode,
-                        keyword_weight=args.keyword_weight)
+                        keyword_weight=args.keyword_weight, reranker=reranker,
+                        rerank_mode=args.rerank_mode)
     summary = report(outcomes, label, store.get_document_count())
 
     stats = cache.stats

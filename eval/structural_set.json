@@ -1,0 +1,2683 @@
+{
+ "generator": "structural (headings as topical queries)",
+ "corpus": "documents",
+ "note": "Ground truth derived from document structure, not human labels. Measures topical retrieval, not question answering - see the module docstring.",
+ "stats": {
+  "headings": 526,
+  "rejected_unusable": 253,
+  "ungrounded": 6,
+  "no_chunks": 340
+ },
+ "questions": [
+  {
+   "id": "s0001",
+   "question": "Control plane components",
+   "source": "concepts/architecture/_index.md",
+   "chunk_index": 2,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 644,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0002",
+   "question": "Web UI (Dashboard)",
+   "source": "concepts/architecture/_index.md",
+   "chunk_index": 7,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 240,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0003",
+   "question": "Container resource monitoring",
+   "source": "concepts/architecture/_index.md",
+   "chunk_index": 8,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 209,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0004",
+   "question": "Control plane deployment options",
+   "source": "concepts/architecture/_index.md",
+   "chunk_index": 9,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 652,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0005",
+   "question": "Workload placement considerations",
+   "source": "concepts/architecture/_index.md",
+   "chunk_index": 10,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 473,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0006",
+   "question": "Customization and extensibility",
+   "source": "concepts/architecture/_index.md",
+   "chunk_index": 11,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 544,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0007",
+   "question": "What is cgroup v2?",
+   "source": "concepts/architecture/cgroups.md",
+   "chunk_index": 0,
+   "style": "topic_question",
+   "heading_level": 2,
+   "body_chars": 938,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0008",
+   "question": "Using cgroup v2",
+   "source": "concepts/architecture/cgroups.md",
+   "chunk_index": 2,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 231,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0009",
+   "question": "Linux Distribution cgroup v2 support",
+   "source": "concepts/architecture/cgroups.md",
+   "chunk_index": 2,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1072,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0010",
+   "question": "Migrating to cgroup v2",
+   "source": "concepts/architecture/cgroups.md",
+   "chunk_index": 4,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1474,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0011",
+   "question": "Identify the cgroup version on Linux Nodes",
+   "source": "concepts/architecture/cgroups.md",
+   "chunk_index": 8,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 350,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0012",
+   "question": "Deprecation of cgroup v1",
+   "source": "concepts/architecture/cgroups.md",
+   "chunk_index": 8,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 362,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0013",
+   "question": "Node to Control Plane",
+   "source": "concepts/architecture/control-plane-node-communication.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1837,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0014",
+   "question": "Control plane to node",
+   "source": "concepts/architecture/control-plane-node-communication.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 294,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0015",
+   "question": "API server to kubelet",
+   "source": "concepts/architecture/control-plane-node-communication.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 971,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0016",
+   "question": "API server to nodes, pods, and services",
+   "source": "concepts/architecture/control-plane-node-communication.md",
+   "chunk_index": 5,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 555,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0017",
+   "question": "Control via API server",
+   "source": "concepts/architecture/controller.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1359,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0018",
+   "question": "Desired versus current state",
+   "source": "concepts/architecture/controller.md",
+   "chunk_index": 4,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 412,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0019",
+   "question": "Ways of running controllers",
+   "source": "concepts/architecture/controller.md",
+   "chunk_index": 7,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 727,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0020",
+   "question": "Owners and dependents",
+   "source": "concepts/architecture/garbage-collection.md",
+   "chunk_index": 2,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1994,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0021",
+   "question": "Foreground cascading deletion",
+   "source": "concepts/architecture/garbage-collection.md",
+   "chunk_index": 5,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1321,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0022",
+   "question": "Background cascading deletion",
+   "source": "concepts/architecture/garbage-collection.md",
+   "chunk_index": 8,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 607,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0023",
+   "question": "Container image lifecycle",
+   "source": "concepts/architecture/garbage-collection.md",
+   "chunk_index": 10,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 552,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0024",
+   "question": "Garbage collection for unused container images",
+   "source": "concepts/architecture/garbage-collection.md",
+   "chunk_index": 11,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 769,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0025",
+   "question": "Container garbage collection",
+   "source": "concepts/architecture/garbage-collection.md",
+   "chunk_index": 12,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1203,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0026",
+   "question": "Kube controller manager lock release on exit",
+   "source": "concepts/architecture/leases.md",
+   "chunk_index": 2,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 323,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0027",
+   "question": "API server identity",
+   "source": "concepts/architecture/leases.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 2469,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0028",
+   "question": "Enabling Peer-aggregated Discovery and Mixed Version Proxy",
+   "source": "concepts/architecture/mixed-version-proxy.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 975,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0029",
+   "question": "Proxy transport and authentication between API servers",
+   "source": "concepts/architecture/mixed-version-proxy.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 696,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0030",
+   "question": "Configuration for peer API server connectivity",
+   "source": "concepts/architecture/mixed-version-proxy.md",
+   "chunk_index": 4,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 466,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0031",
+   "question": "Mixed version proxying",
+   "source": "concepts/architecture/mixed-version-proxy.md",
+   "chunk_index": 5,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 787,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0032",
+   "question": "How it works under the hood",
+   "source": "concepts/architecture/mixed-version-proxy.md",
+   "chunk_index": 7,
+   "style": "topic_question",
+   "heading_level": 3,
+   "body_chars": 1760,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0033",
+   "question": "Node name uniqueness",
+   "source": "concepts/architecture/nodes.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 652,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0034",
+   "question": "Self-registration of Nodes",
+   "source": "concepts/architecture/nodes.md",
+   "chunk_index": 4,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 2654,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0035",
+   "question": "Manual Node administration",
+   "source": "concepts/architecture/nodes.md",
+   "chunk_index": 8,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1499,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0036",
+   "question": "Rate limits on eviction",
+   "source": "concepts/architecture/nodes.md",
+   "chunk_index": 13,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 2131,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0037",
+   "question": "Resource capacity tracking",
+   "source": "concepts/architecture/nodes.md",
+   "chunk_index": 17,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 961,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0038",
+   "question": "Planning a cluster",
+   "source": "concepts/cluster-administration/_index.md",
+   "chunk_index": 0,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1428,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0039",
+   "question": "Managing a cluster",
+   "source": "concepts/cluster-administration/_index.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 271,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0040",
+   "question": "Securing a cluster",
+   "source": "concepts/cluster-administration/_index.md",
+   "chunk_index": 4,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 440,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0041",
+   "question": "Networking and Network Policy",
+   "source": "concepts/cluster-administration/addons.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 626,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0042",
+   "question": "Importance of good webhook design",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1572,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0043",
+   "question": "Identify whether you use admission webhooks",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 603,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0044",
+   "question": "Choose an admission control mechanism",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 4,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 2514,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0045",
+   "question": "Performance and latency",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 9,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 419,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0046",
+   "question": "Design admission webhooks for low latency",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 10,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 880,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0047",
+   "question": "Prevent loops caused by competing controllers",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 11,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 750,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0048",
+   "question": "Set a small timeout value",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 12,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 267,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0049",
+   "question": "Use a load balancer to ensure webhook availability",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 12,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 237,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0050",
+   "question": "Use a high-availability deployment model",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 13,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 658,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0051",
+   "question": "Limit the scope of each webhook",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 14,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1136,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0052",
+   "question": "Filter for specific requests by using match conditions",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 16,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 702,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0053",
+   "question": "Match all versions of an API",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 17,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 443,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0054",
+   "question": "Mutation scope and field considerations",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 17,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 469,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0055",
+   "question": "Patch only required fields",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 18,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 644,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0056",
+   "question": "Don't overwrite array values",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 19,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 967,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0057",
+   "question": "Avoid side effects",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 20,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 707,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0058",
+   "question": "Avoid dependency loops",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 22,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1027,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0059",
+   "question": "Fail open and validate the final state",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 23,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 950,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0060",
+   "question": "Plan for future updates to fields",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 25,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 283,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0061",
+   "question": "Prevent your webhook from triggering itself",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 25,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 459,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0062",
+   "question": "Don't change immutable objects",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 26,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 495,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0063",
+   "question": "Mutating webhook ordering and idempotence",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 26,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 364,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0064",
+   "question": "Don't rely on mutating webhook invocation order",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 27,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 587,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0065",
+   "question": "Ensure that the mutating webhooks in your cluster are idempotent",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 28,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 2359,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0066",
+   "question": "Mutation testing and validation",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 31,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 329,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0067",
+   "question": "Test webhooks in staging environments",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 32,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 398,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0068",
+   "question": "Ensure that mutations don't violate validations",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 32,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 390,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0069",
+   "question": "Test minor version upgrades to ensure consistent behavior",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 33,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 303,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0070",
+   "question": "Validate mutations before admission",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 33,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 763,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0071",
+   "question": "Mutating webhook deployment",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 34,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 354,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0072",
+   "question": "Install and enable a mutating webhook",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 35,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 723,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0073",
+   "question": "Limit edit access to mutating webhooks",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 36,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 525,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0074",
+   "question": "Examples of good implementations",
+   "source": "concepts/cluster-administration/admission-webhooks-good-practices.md",
+   "chunk_index": 37,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 283,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0075",
+   "question": "Enabling coordinated leader election",
+   "source": "concepts/cluster-administration/coordinated-leader-election.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 356,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0076",
+   "question": "Leader selection for Kubernetes components",
+   "source": "concepts/cluster-administration/coordinated-leader-election.md",
+   "chunk_index": 2,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 3444,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0077",
+   "question": "Separate permissions to DRA related APIs",
+   "source": "concepts/cluster-administration/dra.md",
+   "chunk_index": 0,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 449,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0078",
+   "question": "DRA driver deployment and maintenance",
+   "source": "concepts/cluster-administration/dra.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 357,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0079",
+   "question": "Use drivers with seamless upgrade if available",
+   "source": "concepts/cluster-administration/dra.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1076,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0080",
+   "question": "Confirm your DRA driver exposes a liveness probe and utilize it",
+   "source": "concepts/cluster-administration/dra.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 682,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0081",
+   "question": "When draining a node, drain the DRA driver as late as possible",
+   "source": "concepts/cluster-administration/dra.md",
+   "chunk_index": 4,
+   "style": "topic_question",
+   "heading_level": 3,
+   "body_chars": 383,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0082",
+   "question": "DRA kubeletplugin operations",
+   "source": "concepts/cluster-administration/dra.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 760,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0083",
+   "question": "Enabling/Disabling API Priority and Fairness",
+   "source": "concepts/cluster-administration/flow-control.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 923,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0084",
+   "question": "Recursive server scenarios",
+   "source": "concepts/cluster-administration/flow-control.md",
+   "chunk_index": 4,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1603,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0085",
+   "question": "Seats Occupied by a Request",
+   "source": "concepts/cluster-administration/flow-control.md",
+   "chunk_index": 9,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 839,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0086",
+   "question": "Execution time tweaks for watch requests",
+   "source": "concepts/cluster-administration/flow-control.md",
+   "chunk_index": 10,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 997,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0087",
+   "question": "Mandatory Configuration Objects",
+   "source": "concepts/cluster-administration/flow-control.md",
+   "chunk_index": 26,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1192,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0088",
+   "question": "Suggested Configuration Objects",
+   "source": "concepts/cluster-administration/flow-control.md",
+   "chunk_index": 27,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1643,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0089",
+   "question": "Maintenance of the Mandatory and Suggested Configuration Objects",
+   "source": "concepts/cluster-administration/flow-control.md",
+   "chunk_index": 29,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 2874,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0090",
+   "question": "Health check concurrency exemption",
+   "source": "concepts/cluster-administration/flow-control.md",
+   "chunk_index": 33,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 853,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0091",
+   "question": "Maturity level BETA",
+   "source": "concepts/cluster-administration/flow-control.md",
+   "chunk_index": 35,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 2254,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0092",
+   "question": "Maturity level ALPHA",
+   "source": "concepts/cluster-administration/flow-control.md",
+   "chunk_index": 39,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 6716,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0093",
+   "question": "Good practices for using API Priority and Fairness",
+   "source": "concepts/cluster-administration/flow-control.md",
+   "chunk_index": 48,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 897,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0094",
+   "question": "Priority and fairness settings",
+   "source": "concepts/cluster-administration/flow-control.md",
+   "chunk_index": 52,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 352,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0095",
+   "question": "Give more seats to high priority requests",
+   "source": "concepts/cluster-administration/flow-control.md",
+   "chunk_index": 54,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 1453,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0096",
+   "question": "Isolate non-essential requests from starving other flows",
+   "source": "concepts/cluster-administration/flow-control.md",
+   "chunk_index": 56,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 1188,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0097",
+   "question": "Example: using metrics from kube-state-metrics to query the cluster state",
+   "source": "concepts/cluster-administration/kube-state-metrics.md",
+   "chunk_index": 2,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 359,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0098",
+   "question": "Example: alerting based on from kube-state-metrics",
+   "source": "concepts/cluster-administration/kube-state-metrics.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 634,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0099",
+   "question": "Pod and container logs",
+   "source": "concepts/cluster-administration/logging.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 891,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0100",
+   "question": "Container log streams",
+   "source": "concepts/cluster-administration/logging.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1245,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0101",
+   "question": "How nodes handle container logs",
+   "source": "concepts/cluster-administration/logging.md",
+   "chunk_index": 4,
+   "style": "topic_question",
+   "heading_level": 3,
+   "body_chars": 702,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0102",
+   "question": "System component logs",
+   "source": "concepts/cluster-administration/logging.md",
+   "chunk_index": 8,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 526,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0103",
+   "question": "Cluster-level logging architectures",
+   "source": "concepts/cluster-administration/logging.md",
+   "chunk_index": 13,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 350,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0104",
+   "question": "Using a node logging agent",
+   "source": "concepts/cluster-administration/logging.md",
+   "chunk_index": 13,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 786,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0105",
+   "question": "Using a sidecar container with the logging agent",
+   "source": "concepts/cluster-administration/logging.md",
+   "chunk_index": 14,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 244,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0106",
+   "question": "Streaming sidecar container",
+   "source": "concepts/cluster-administration/logging.md",
+   "chunk_index": 15,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 2846,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0107",
+   "question": "Sidecar container with a logging agent",
+   "source": "concepts/cluster-administration/logging.md",
+   "chunk_index": 18,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 1044,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0108",
+   "question": "Exposing logs directly from the application",
+   "source": "concepts/cluster-administration/logging.md",
+   "chunk_index": 20,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 220,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0109",
+   "question": "Kubernetes IP address ranges",
+   "source": "concepts/cluster-administration/networking.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 405,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0110",
+   "question": "Cluster networking types",
+   "source": "concepts/cluster-administration/networking.md",
+   "chunk_index": 2,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1146,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0111",
+   "question": "How to implement the Kubernetes network model",
+   "source": "concepts/cluster-administration/networking.md",
+   "chunk_index": 5,
+   "style": "topic_question",
+   "heading_level": 2,
+   "body_chars": 734,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0112",
+   "question": "Pod scheduling constraints",
+   "source": "concepts/cluster-administration/node-autoscaling.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1108,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0113",
+   "question": "Node constraints imposed by autoscaler configuration",
+   "source": "concepts/cluster-administration/node-autoscaling.md",
+   "chunk_index": 5,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 272,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0114",
+   "question": "Horizontal workload autoscaling",
+   "source": "concepts/cluster-administration/node-autoscaling.md",
+   "chunk_index": 16,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1305,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0115",
+   "question": "Vertical workload autoscaling",
+   "source": "concepts/cluster-administration/node-autoscaling.md",
+   "chunk_index": 18,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1026,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0116",
+   "question": "Workload autoscalers based on cluster size",
+   "source": "concepts/cluster-administration/node-autoscaling.md",
+   "chunk_index": 20,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 454,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0117",
+   "question": "Graceful node shutdown",
+   "source": "concepts/cluster-administration/node-shutdown.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 361,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0118",
+   "question": "Enabling graceful node shutdown",
+   "source": "concepts/cluster-administration/node-shutdown.md",
+   "chunk_index": 2,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1655,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0119",
+   "question": "Configuring graceful node shutdown",
+   "source": "concepts/cluster-administration/node-shutdown.md",
+   "chunk_index": 5,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 3090,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0120",
+   "question": "Pod Priority based graceful node shutdown",
+   "source": "concepts/cluster-administration/node-shutdown.md",
+   "chunk_index": 9,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 3772,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0121",
+   "question": "Non-graceful node shutdown handling",
+   "source": "concepts/cluster-administration/node-shutdown.md",
+   "chunk_index": 15,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 2395,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0122",
+   "question": "Forced storage detach on timeout",
+   "source": "concepts/cluster-administration/node-shutdown.md",
+   "chunk_index": 19,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1545,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0123",
+   "question": "Common observability tools",
+   "source": "concepts/cluster-administration/observability.md",
+   "chunk_index": 9,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 338,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0124",
+   "question": "Operating system support",
+   "source": "concepts/cluster-administration/swap-memory-management.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 276,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0125",
+   "question": "How does it work?",
+   "source": "concepts/cluster-administration/swap-memory-management.md",
+   "chunk_index": 1,
+   "style": "topic_question",
+   "heading_level": 2,
+   "body_chars": 843,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0126",
+   "question": "Container runtime integration",
+   "source": "concepts/cluster-administration/swap-memory-management.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 392,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0127",
+   "question": "Node and container level metric statistics",
+   "source": "concepts/cluster-administration/swap-memory-management.md",
+   "chunk_index": 4,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 884,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0128",
+   "question": "Using `kubectl top --show-swap`",
+   "source": "concepts/cluster-administration/swap-memory-management.md",
+   "chunk_index": 5,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1215,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0129",
+   "question": "Nodes to report swap capacity as part of node status",
+   "source": "concepts/cluster-administration/swap-memory-management.md",
+   "chunk_index": 7,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 781,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0130",
+   "question": "Swap discovery using Node Feature Discovery (NFD)",
+   "source": "concepts/cluster-administration/swap-memory-management.md",
+   "chunk_index": 8,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 748,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0131",
+   "question": "Risks and caveats",
+   "source": "concepts/cluster-administration/swap-memory-management.md",
+   "chunk_index": 9,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1467,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0132",
+   "question": "Unutilized swap space",
+   "source": "concepts/cluster-administration/swap-memory-management.md",
+   "chunk_index": 16,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 903,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0133",
+   "question": "Disable swap for system-critical daemons",
+   "source": "concepts/cluster-administration/swap-memory-management.md",
+   "chunk_index": 18,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 377,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0134",
+   "question": "Protect system-critical daemons for I/O latency",
+   "source": "concepts/cluster-administration/swap-memory-management.md",
+   "chunk_index": 18,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 692,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0135",
+   "question": "Swap and control plane nodes",
+   "source": "concepts/cluster-administration/swap-memory-management.md",
+   "chunk_index": 19,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 296,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0136",
+   "question": "Use of a dedicated disk for swap",
+   "source": "concepts/cluster-administration/swap-memory-management.md",
+   "chunk_index": 20,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 608,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0137",
+   "question": "Selecting storage for optimal performance",
+   "source": "concepts/cluster-administration/swap-memory-management.md",
+   "chunk_index": 22,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 485,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0138",
+   "question": "How is the swap limit being determined with LimitedSwap?",
+   "source": "concepts/cluster-administration/swap-memory-management.md",
+   "chunk_index": 23,
+   "style": "topic_question",
+   "heading_level": 3,
+   "body_chars": 2223,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0139",
+   "question": "JSON log format",
+   "source": "concepts/cluster-administration/system-logs.md",
+   "chunk_index": 9,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 995,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0140",
+   "question": "Log verbosity level",
+   "source": "concepts/cluster-administration/system-logs.md",
+   "chunk_index": 11,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 277,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0141",
+   "question": "Metrics in Kubernetes",
+   "source": "concepts/cluster-administration/system-metrics.md",
+   "chunk_index": 0,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 914,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0142",
+   "question": "Show hidden metrics",
+   "source": "concepts/cluster-administration/system-metrics.md",
+   "chunk_index": 5,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1533,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0143",
+   "question": "kubelet Pressure Stall Information (PSI) metrics",
+   "source": "concepts/cluster-administration/system-metrics.md",
+   "chunk_index": 10,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 4048,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0144",
+   "question": "Metric cardinality enforcement",
+   "source": "concepts/cluster-administration/system-metrics.md",
+   "chunk_index": 17,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1505,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0145",
+   "question": "Enabling tracing in the kube-apiserver",
+   "source": "concepts/cluster-administration/system-traces.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 575,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0146",
+   "question": "Enabling tracing in the kubelet",
+   "source": "concepts/cluster-administration/system-traces.md",
+   "chunk_index": 5,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 1433,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0147",
+   "question": "ConfigMaps and Pods",
+   "source": "concepts/configuration/configmap.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 2365,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0148",
+   "question": "Using ConfigMaps as files from a Pod",
+   "source": "concepts/configuration/configmap.md",
+   "chunk_index": 8,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1279,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0149",
+   "question": "Mounted ConfigMaps are updated automatically",
+   "source": "concepts/configuration/configmap.md",
+   "chunk_index": 10,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 1178,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0150",
+   "question": "Using Configmaps as environment variables",
+   "source": "concepts/configuration/configmap.md",
+   "chunk_index": 11,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 2603,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0151",
+   "question": "Requests and limits",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1914,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0152",
+   "question": "Resource requests and limits of Pod and container",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 6,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 809,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0153",
+   "question": "Pod-level resource specification",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 7,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1026,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0154",
+   "question": "CPU resource units",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 8,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1559,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0155",
+   "question": "Memory resource units",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 11,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 935,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0156",
+   "question": "Container resources example",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 12,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 686,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0157",
+   "question": "Pod resources example",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 13,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 528,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0158",
+   "question": "How Pods with resource requests are scheduled",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 14,
+   "style": "topic_question",
+   "heading_level": 2,
+   "body_chars": 654,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0159",
+   "question": "How Kubernetes applies resource requests and limits",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 15,
+   "style": "topic_question",
+   "heading_level": 2,
+   "body_chars": 2219,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0160",
+   "question": "Resizing by launching replacement Pods",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 20,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 777,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0161",
+   "question": "Monitoring compute & memory resource usage",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 21,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 457,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0162",
+   "question": "Considerations for memory backed `emptyDir` volumes",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 22,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 2478,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0163",
+   "question": "Local ephemeral storage",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 25,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 235,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0164",
+   "question": "Resource monitoring for local ephemeral storage",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 26,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 507,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0165",
+   "question": "Cluster-level extended resources",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 29,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 950,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0166",
+   "question": "Extended resources allocation by DRA",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 31,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 357,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0167",
+   "question": "Consuming extended resources",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 31,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1328,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0168",
+   "question": "My Pods are pending with event message `FailedScheduling`",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 33,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 4100,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0169",
+   "question": "My container is terminated",
+   "source": "concepts/configuration/manage-resources-containers.md",
+   "chunk_index": 39,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1766,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0170",
+   "question": "Supporting multiple clusters, users, and authentication mechanisms",
+   "source": "concepts/configuration/organize-cluster-access-kubeconfig.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 470,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0171",
+   "question": "The KUBECONFIG environment variable",
+   "source": "concepts/configuration/organize-cluster-access-kubeconfig.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 526,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0172",
+   "question": "Uses for Secrets",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 685,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0173",
+   "question": "Use case: dotfiles in a secret volume",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 4,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 515,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0174",
+   "question": "Use case: Secret visible to one container in a Pod",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 5,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 790,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0175",
+   "question": "Alternatives to Secrets",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 6,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1721,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0176",
+   "question": "Types of Secret",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 9,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1683,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0177",
+   "question": "ServiceAccount token Secrets",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 13,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 2685,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0178",
+   "question": "Docker config Secrets",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 17,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 2357,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0179",
+   "question": "Basic authentication Secret",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 20,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 971,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0180",
+   "question": "SSH authentication Secrets",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 21,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1023,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0181",
+   "question": "Bootstrap token Secrets",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 25,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1332,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0182",
+   "question": "Constraints on Secret names and data",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 27,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 842,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0183",
+   "question": "Editing a Secret",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 29,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 637,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0184",
+   "question": "Using a Secret",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 30,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 803,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0185",
+   "question": "Using Secrets as files from a Pod",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 32,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1784,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0186",
+   "question": "Using Secrets as environment variables",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 34,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 890,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0187",
+   "question": "Container image pull Secrets",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 35,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 253,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0188",
+   "question": "Marking a Secret as immutable",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 38,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 531,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0189",
+   "question": "Information security for Secrets",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 39,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1841,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0190",
+   "question": "Configure least-privilege access to Secrets",
+   "source": "concepts/configuration/secret.md",
+   "chunk_index": 41,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 210,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0191",
+   "question": "Hook handler implementations",
+   "source": "concepts/containers/container-lifecycle-hooks.md",
+   "chunk_index": 2,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 483,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0192",
+   "question": "Hook handler execution",
+   "source": "concepts/containers/container-lifecycle-hooks.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1909,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0193",
+   "question": "Hook delivery guarantees",
+   "source": "concepts/containers/container-lifecycle-hooks.md",
+   "chunk_index": 6,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 558,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0194",
+   "question": "Debugging Hook handlers",
+   "source": "concepts/containers/container-lifecycle-hooks.md",
+   "chunk_index": 7,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1692,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0195",
+   "question": "Image pull policy",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 5,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 2860,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0196",
+   "question": "Default image pull policy",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 9,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 1215,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0197",
+   "question": "Required image pull",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 11,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 541,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0198",
+   "question": "Image pull per runtime class",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 13,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 523,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0199",
+   "question": "Serial and parallel image pulls",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 14,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1254,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0200",
+   "question": "Maximum parallel image pulls",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 17,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 915,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0201",
+   "question": "Multi-architecture images with image indexes",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 19,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1034,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0202",
+   "question": "Using a private registry",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 20,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 908,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0203",
+   "question": "Specifying `imagePullSecrets` on a Pod",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 22,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 327,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0204",
+   "question": "Configuring nodes to authenticate to a private registry",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 22,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 431,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0205",
+   "question": "Kubelet credential provider for authenticated image pulls",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 23,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 695,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0206",
+   "question": "Interpretation of config.json",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 25,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1896,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0207",
+   "question": "Ensure image pull credential verification",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 30,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1987,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0208",
+   "question": "Enabling `KubeletEnsureSecretPulledImages` for the first time",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 32,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 805,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0209",
+   "question": "Creating a Secret with a Docker config",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 33,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1067,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0210",
+   "question": "Referring to `imagePullSecrets` on a Pod",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 34,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 1020,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0211",
+   "question": "Legacy built-in kubelet credential provider",
+   "source": "concepts/containers/images.md",
+   "chunk_index": 39,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 634,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0212",
+   "question": "1. Configure the CRI implementation on nodes",
+   "source": "concepts/containers/runtime-class.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 692,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0213",
+   "question": "2. Create the corresponding RuntimeClass resources",
+   "source": "concepts/containers/runtime-class.md",
+   "chunk_index": 2,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1061,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0214",
+   "question": "Key to the figure",
+   "source": "concepts/extend-kubernetes/_index.md",
+   "chunk_index": 8,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 1990,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0215",
+   "question": "Extension point choice flowchart",
+   "source": "concepts/extend-kubernetes/_index.md",
+   "chunk_index": 10,
+   "style": "topic",
+   "heading_level": 4,
+   "body_chars": 250,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0216",
+   "question": "Custom resource definitions",
+   "source": "concepts/extend-kubernetes/_index.md",
+   "chunk_index": 12,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 352,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0217",
+   "question": "API aggregation layer",
+   "source": "concepts/extend-kubernetes/_index.md",
+   "chunk_index": 12,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 258,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0218",
+   "question": "Combining new APIs with automation",
+   "source": "concepts/extend-kubernetes/_index.md",
+   "chunk_index": 13,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 556,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0219",
+   "question": "Changing built-in resources",
+   "source": "concepts/extend-kubernetes/_index.md",
+   "chunk_index": 14,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 296,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0220",
+   "question": "API access extensions",
+   "source": "concepts/extend-kubernetes/_index.md",
+   "chunk_index": 14,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 443,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0221",
+   "question": "Dynamic admission control",
+   "source": "concepts/extend-kubernetes/_index.md",
+   "chunk_index": 16,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 719,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0222",
+   "question": "Kubelet image credential provider plugins",
+   "source": "concepts/extend-kubernetes/_index.md",
+   "chunk_index": 19,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 611,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0223",
+   "question": "Should I add a custom resource to my Kubernetes cluster?",
+   "source": "concepts/extend-kubernetes/api-extension/custom-resources.md",
+   "chunk_index": 3,
+   "style": "topic_question",
+   "heading_level": 2,
+   "body_chars": 1384,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0224",
+   "question": "Should I use a ConfigMap or a custom resource?",
+   "source": "concepts/extend-kubernetes/api-extension/custom-resources.md",
+   "chunk_index": 8,
+   "style": "topic_question",
+   "heading_level": 2,
+   "body_chars": 1309,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0225",
+   "question": "Adding custom resources",
+   "source": "concepts/extend-kubernetes/api-extension/custom-resources.md",
+   "chunk_index": 9,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1593,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0226",
+   "question": "API server aggregation",
+   "source": "concepts/extend-kubernetes/api-extension/custom-resources.md",
+   "chunk_index": 13,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 669,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0227",
+   "question": "Choosing a method for adding custom resources",
+   "source": "concepts/extend-kubernetes/api-extension/custom-resources.md",
+   "chunk_index": 14,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 299,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0228",
+   "question": "Advanced features and flexibility",
+   "source": "concepts/extend-kubernetes/api-extension/custom-resources.md",
+   "chunk_index": 16,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 4038,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0229",
+   "question": "Third party code and new points of failure",
+   "source": "concepts/extend-kubernetes/api-extension/custom-resources.md",
+   "chunk_index": 25,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 407,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0230",
+   "question": "Authentication, authorization, and auditing",
+   "source": "concepts/extend-kubernetes/api-extension/custom-resources.md",
+   "chunk_index": 26,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 563,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0231",
+   "question": "Accessing a custom resource",
+   "source": "concepts/extend-kubernetes/api-extension/custom-resources.md",
+   "chunk_index": 27,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 562,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0232",
+   "question": "Custom resource field selectors",
+   "source": "concepts/extend-kubernetes/api-extension/custom-resources.md",
+   "chunk_index": 28,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 389,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0233",
+   "question": "Selectable fields for custom resources",
+   "source": "concepts/extend-kubernetes/api-extension/custom-resources.md",
+   "chunk_index": 29,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 479,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0234",
+   "question": "Device plugin registration",
+   "source": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md",
+   "chunk_index": 0,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1545,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0235",
+   "question": "Device plugin implementation",
+   "source": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 3877,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0236",
+   "question": "Handling kubelet restarts",
+   "source": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md",
+   "chunk_index": 9,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 368,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0237",
+   "question": "Device plugin and unhealthy devices",
+   "source": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md",
+   "chunk_index": 9,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1618,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0238",
+   "question": "Device plugin deployment",
+   "source": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md",
+   "chunk_index": 11,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 667,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0239",
+   "question": "Monitoring device plugin resources",
+   "source": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md",
+   "chunk_index": 14,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1134,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0240",
+   "question": "`List` gRPC endpoint",
+   "source": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md",
+   "chunk_index": 15,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 3059,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0241",
+   "question": "`GetAllocatableResources` gRPC endpoint",
+   "source": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md",
+   "chunk_index": 20,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 3073,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0242",
+   "question": "`Get` gRPC endpoint",
+   "source": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md",
+   "chunk_index": 24,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 570,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0243",
+   "question": "Device plugin integration with the Topology Manager",
+   "source": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md",
+   "chunk_index": 25,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1224,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0244",
+   "question": "Device plugin examples",
+   "source": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md",
+   "chunk_index": 27,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1415,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0245",
+   "question": "Support traffic shaping",
+   "source": "concepts/extend-kubernetes/compute-storage-net/network-plugins.md",
+   "chunk_index": 6,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1210,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0246",
+   "question": "Operators in Kubernetes",
+   "source": "concepts/extend-kubernetes/operator.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 547,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0247",
+   "question": "An example operator",
+   "source": "concepts/extend-kubernetes/operator.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1908,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0248",
+   "question": "Using an operator",
+   "source": "concepts/extend-kubernetes/operator.md",
+   "chunk_index": 5,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 483,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0249",
+   "question": "Writing your own operator",
+   "source": "concepts/extend-kubernetes/operator.md",
+   "chunk_index": 6,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 378,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0250",
+   "question": "Why you need Kubernetes and what it can do",
+   "source": "concepts/overview/_index.md",
+   "chunk_index": 1,
+   "style": "topic_question",
+   "heading_level": 2,
+   "body_chars": 2727,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0251",
+   "question": "What Kubernetes is not",
+   "source": "concepts/overview/_index.md",
+   "chunk_index": 6,
+   "style": "topic_question",
+   "heading_level": 2,
+   "body_chars": 2588,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0252",
+   "question": "Historical context for Kubernetes",
+   "source": "concepts/overview/_index.md",
+   "chunk_index": 10,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 3437,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0253",
+   "question": "Control Plane Components",
+   "source": "concepts/overview/components.md",
+   "chunk_index": 0,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 696,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0254",
+   "question": "Flexibility in Architecture",
+   "source": "concepts/overview/components.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 383,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0255",
+   "question": "Role of kubectl",
+   "source": "concepts/overview/kubectl.md",
+   "chunk_index": 1,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 619,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0256",
+   "question": "How kubectl works",
+   "source": "concepts/overview/kubectl.md",
+   "chunk_index": 2,
+   "style": "topic_question",
+   "heading_level": 2,
+   "body_chars": 1088,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0257",
+   "question": "What you can do with kubectl",
+   "source": "concepts/overview/kubectl.md",
+   "chunk_index": 3,
+   "style": "topic_question",
+   "heading_level": 2,
+   "body_chars": 870,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0258",
+   "question": "Declarative vs imperative",
+   "source": "concepts/overview/kubectl.md",
+   "chunk_index": 5,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 445,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0259",
+   "question": "Extending kubectl with plugins",
+   "source": "concepts/overview/kubectl.md",
+   "chunk_index": 5,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 334,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0260",
+   "question": "OpenAPI interface definition",
+   "source": "concepts/overview/kubernetes-api.md",
+   "chunk_index": 7,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 465,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0261",
+   "question": "API groups and versioning",
+   "source": "concepts/overview/kubernetes-api.md",
+   "chunk_index": 15,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1435,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0262",
+   "question": "Understanding Kubernetes objects",
+   "source": "concepts/overview/working-with-objects/_index.md",
+   "chunk_index": 0,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1138,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0263",
+   "question": "Object spec and status",
+   "source": "concepts/overview/working-with-objects/_index.md",
+   "chunk_index": 2,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1358,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0264",
+   "question": "Describing a Kubernetes object",
+   "source": "concepts/overview/working-with-objects/_index.md",
+   "chunk_index": 4,
+   "style": "topic",
+   "heading_level": 3,
+   "body_chars": 1186,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0265",
+   "question": "Server side field validation",
+   "source": "concepts/overview/working-with-objects/_index.md",
+   "chunk_index": 8,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1139,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0266",
+   "question": "Attaching metadata to objects",
+   "source": "concepts/overview/working-with-objects/annotations.md",
+   "chunk_index": 0,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 2094,
+   "provenance": "structural"
+  },
+  {
+   "id": "s0267",
+   "question": "Syntax and character set",
+   "source": "concepts/overview/working-with-objects/annotations.md",
+   "chunk_index": 3,
+   "style": "topic",
+   "heading_level": 2,
+   "body_chars": 1677,
+   "provenance": "structural"
+  }
+ ]
+}

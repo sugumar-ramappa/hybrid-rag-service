@@ -1,0 +1,333 @@
+{
+  "label": "hybrid-baseline",
+  "golden_set": "eval/golden_set.json",
+  "mode": "hybrid",
+  "keyword_weight": 1.0,
+  "corpus_chunks": 784,
+  "summary": {
+    "overall": {
+      "n": 43,
+      "recall@1": 0.7441860465116279,
+      "recall@5": 0.9767441860465116,
+      "recall@10": 0.9767441860465116,
+      "mrr": 0.8271317829457363
+    },
+    "exact_term": {
+      "n": 21,
+      "recall@1": 0.8571428571428571,
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "mrr": 0.9087301587301587
+    },
+    "paraphrase": {
+      "n": 22,
+      "recall@1": 0.6363636363636364,
+      "recall@5": 0.9545454545454546,
+      "recall@10": 0.9545454545454546,
+      "mrr": 0.7492424242424243
+    }
+  },
+  "outcomes": [
+    {
+      "id": "q003",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/system-logs.md#4",
+      "question": "What is the current beta status for structured logging features starting in version v1.23?"
+    },
+    {
+      "id": "q005",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/kube-state-metrics.md#3",
+      "question": "How should I configure a Prometheus rule to identify pods trapped in a Terminating state?"
+    },
+    {
+      "id": "q006",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/architecture/leases.md#3",
+      "question": "How can I list the active kube-apiserver instances using a label selector?"
+    },
+    {
+      "id": "q007",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/containers/cri.md#0",
+      "question": "What allows the kubelet to utilize diverse runtimes while avoiding the necessity of rebuilding cluster components?"
+    },
+    {
+      "id": "q008",
+      "style": "paraphrase",
+      "rank": 4,
+      "expected": "concepts/architecture/_index.md#3",
+      "question": "Where should I host control plane services if I want to avoid running user workloads there?"
+    },
+    {
+      "id": "q010",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/architecture/nodes.md#3",
+      "question": "What should I do if I need to update a Node's state significantly?"
+    },
+    {
+      "id": "q012",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/flow-control.md#24",
+      "question": "Can I use wildcards to match all values within FlowSchema rules?"
+    },
+    {
+      "id": "q013",
+      "style": "exact_term",
+      "rank": 4,
+      "expected": "concepts/extend-kubernetes/api-extension/apiserver-aggregation.md#0",
+      "question": "How does the aggregation layer differ from the functionality provided by Custom Resource Definitions?"
+    },
+    {
+      "id": "q015",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/architecture/mixed-version-proxy.md#1",
+      "question": "Which feature gate must be active on the kube-apiserver to utilize Mixed Version Proxy capabilities?"
+    },
+    {
+      "id": "q016",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/node-autoscaling.md#8",
+      "question": "Why might a Pod end up pending during the cluster consolidation process?"
+    },
+    {
+      "id": "q018",
+      "style": "paraphrase",
+      "rank": 5,
+      "expected": "concepts/overview/_index.md#4",
+      "question": "How do I update app configuration without needing to rebuild my container images?"
+    },
+    {
+      "id": "q019",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md#3",
+      "question": "How should a Pod define the hardware-vendor.example/foo limit to secure two specific devices for its container?"
+    },
+    {
+      "id": "q020",
+      "style": "paraphrase",
+      "rank": null,
+      "expected": "concepts/overview/working-with-objects/_index.md#6",
+      "question": "What configuration fields are mandatory when defining a new Kubernetes resource?"
+    },
+    {
+      "id": "q021",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/system-traces.md#2",
+      "question": "How can you provide authentication credentials using the OTEL_EXPORTER_OTLP_HEADERS environment variable for trace backends?"
+    },
+    {
+      "id": "q022",
+      "style": "paraphrase",
+      "rank": 5,
+      "expected": "concepts/cluster-administration/networking.md#5",
+      "question": "Which component is responsible for implementing the cluster network model on every node?"
+    },
+    {
+      "id": "q023",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/configuration/configmap.md#13",
+      "question": "How do you extract a specific key from a ConfigMap using the env.valueFrom syntax?"
+    },
+    {
+      "id": "q024",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/coordinated-leader-election.md#2",
+      "question": "How does the system decide which controller manager instance takes charge in a high-availability setup?"
+    },
+    {
+      "id": "q025",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/configuration/windows-resource-management.md#2",
+      "question": "How should one configure --windows-priorityclass to prevent Pods from exhausting the kubelet's processor resources?"
+    },
+    {
+      "id": "q027",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#24",
+      "question": "Which Pod quality classifications are blocked from accessing swap memory when LimitedSwap is active?"
+    },
+    {
+      "id": "q028",
+      "style": "paraphrase",
+      "rank": 2,
+      "expected": "concepts/extend-kubernetes/api-extension/custom-resources.md#29",
+      "question": "How do I enable field selectors for specific properties within a custom resource?"
+    },
+    {
+      "id": "q031",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/node-shutdown.md#2",
+      "question": "Which specific feature gate must be active to allow for orderly host power-down procedures on Linux systems?"
+    },
+    {
+      "id": "q032",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/containers/images.md#36",
+      "question": "What is the best way to handle private images if I cannot modify my node configuration?"
+    },
+    {
+      "id": "q034",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/containers/container-lifecycle-hooks.md#2",
+      "question": "How can I override the container image STOPSIGNAL instruction for a pod?"
+    },
+    {
+      "id": "q035",
+      "style": "exact_term",
+      "rank": 2,
+      "expected": "concepts/cluster-administration/logging.md#8",
+      "question": "How does the `kubectl logs` command behave when log files undergo rotation?"
+    },
+    {
+      "id": "q036",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/compatibility-version.md#0",
+      "question": "Which flag do I use to make a control plane component act like an older Kubernetes version?"
+    },
+    {
+      "id": "q038",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/architecture/garbage-collection.md#5",
+      "question": "What are the two modes available for handling dependent object removal during resource deletion?"
+    },
+    {
+      "id": "q039",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#26",
+      "question": "Which annotation identifies mirror Pods to help prevent accidental modification during admission?"
+    },
+    {
+      "id": "q040",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/system-metrics.md#7",
+      "question": "What metrics can I use to track persistent volume operation health in AWS or GCE?"
+    },
+    {
+      "id": "q041",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/configuration/organize-cluster-access-kubeconfig.md#2",
+      "question": "What three specific parameters are bundled together when defining a context in a kubeconfig file?"
+    },
+    {
+      "id": "q042",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/architecture/cgroups.md#7",
+      "question": "Which Node.js versions prevent OOM issues when using cgroup v2 memory limits?"
+    },
+    {
+      "id": "q043",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/overview/working-with-objects/annotations.md#3",
+      "question": "What requirement applies to an annotation key if you omit a DNS subdomain prefix?"
+    },
+    {
+      "id": "q046",
+      "style": "paraphrase",
+      "rank": 3,
+      "expected": "concepts/cluster-administration/dra.md#4",
+      "question": "What should I check for before shutting down a DRA driver during node maintenance?"
+    },
+    {
+      "id": "q047",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/proxies.md#1",
+      "question": "What limitations does the kube proxy face regarding communication protocols?"
+    },
+    {
+      "id": "q048",
+      "style": "paraphrase",
+      "rank": 2,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/_index.md#1",
+      "question": "Are FlexVolume plugins still supported in modern Kubernetes versions?"
+    },
+    {
+      "id": "q049",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/containers/container-environment.md#1",
+      "question": "How can a container access its own namespace details via the downward API?"
+    },
+    {
+      "id": "q051",
+      "style": "exact_term",
+      "rank": 3,
+      "expected": "concepts/extend-kubernetes/_index.md#17",
+      "question": "Which storage extension type became obsolete as of the v1.23 release in preference of the CSI standard?"
+    },
+    {
+      "id": "q052",
+      "style": "paraphrase",
+      "rank": 2,
+      "expected": "concepts/architecture/cloud-controller.md#7",
+      "question": "What permissions does the cloud controller manager need for ServiceAccounts and Events?"
+    },
+    {
+      "id": "q054",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/configuration/secret.md#28",
+      "question": "What happens if I define a key in both stringData and data for a Secret?"
+    },
+    {
+      "id": "q055",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/overview/_index.md#1",
+      "question": "What history lies behind the name K8s being used as an abbreviation for Kubernetes?"
+    },
+    {
+      "id": "q057",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/dra.md#6",
+      "question": "How do insufficient QPS settings in the kube-scheduler impact the timing of Pod binding?"
+    },
+    {
+      "id": "q058",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/architecture/garbage-collection.md#4",
+      "question": "How do I identify dependents with invalid cross-namespace owner references?"
+    },
+    {
+      "id": "q059",
+      "style": "exact_term",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/kube-state-metrics.md#2",
+      "question": "Which PromQL query determines the total quantity of pods with a condition equal to false using kube_pod_status_ready?"
+    },
+    {
+      "id": "q060",
+      "style": "paraphrase",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/networking.md#4",
+      "question": "Which specific fields determine the network model IP families for nodes and pods?"
+    }
+  ]
+}

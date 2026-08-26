@@ -1,0 +1,2139 @@
+{
+  "label": "struct-hybrid-rr",
+  "golden_set": "eval/structural_set.json",
+  "mode": "hybrid",
+  "keyword_weight": 1.0,
+  "corpus_chunks": 784,
+  "summary": {
+    "overall": {
+      "n": 301,
+      "recall@1": 0.654485049833887,
+      "recall@5": 0.8803986710963455,
+      "recall@10": 0.9036544850498339,
+      "mrr": 0.746593366028582
+    },
+    "topic": {
+      "n": 286,
+      "recall@1": 0.6503496503496503,
+      "recall@5": 0.8741258741258742,
+      "recall@10": 0.8986013986013986,
+      "mrr": 0.7428016428016428
+    },
+    "topic_question": {
+      "n": 15,
+      "recall@1": 0.7333333333333333,
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "mrr": 0.8188888888888889
+    }
+  },
+  "outcomes": [
+    {
+      "id": "s0001",
+      "style": "topic",
+      "rank": 5,
+      "expected": "concepts/architecture/_index.md#2",
+      "question": "Control plane components"
+    },
+    {
+      "id": "s0002",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/architecture/_index.md#7",
+      "question": "Web UI (Dashboard)"
+    },
+    {
+      "id": "s0003",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/architecture/_index.md#8",
+      "question": "Container resource monitoring"
+    },
+    {
+      "id": "s0004",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/_index.md#9",
+      "question": "Control plane deployment options"
+    },
+    {
+      "id": "s0005",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/_index.md#10",
+      "question": "Workload placement considerations"
+    },
+    {
+      "id": "s0006",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/_index.md#11",
+      "question": "Customization and extensibility"
+    },
+    {
+      "id": "s0007",
+      "style": "topic_question",
+      "rank": 2,
+      "expected": "concepts/architecture/cgroups.md#0",
+      "question": "What is cgroup v2?"
+    },
+    {
+      "id": "s0008",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/cgroups.md#2",
+      "question": "Using cgroup v2"
+    },
+    {
+      "id": "s0009",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/cgroups.md#2",
+      "question": "Linux Distribution cgroup v2 support"
+    },
+    {
+      "id": "s0010",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/cgroups.md#4",
+      "question": "Migrating to cgroup v2"
+    },
+    {
+      "id": "s0011",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/cgroups.md#8",
+      "question": "Identify the cgroup version on Linux Nodes"
+    },
+    {
+      "id": "s0012",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/cgroups.md#8",
+      "question": "Deprecation of cgroup v1"
+    },
+    {
+      "id": "s0013",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/architecture/cgroups.md#9",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0014",
+      "style": "topic",
+      "rank": 9,
+      "expected": "concepts/architecture/cloud-controller.md#8",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0015",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/architecture/control-plane-node-communication.md#1",
+      "question": "Node to Control Plane"
+    },
+    {
+      "id": "s0016",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/control-plane-node-communication.md#3",
+      "question": "Control plane to node"
+    },
+    {
+      "id": "s0017",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/control-plane-node-communication.md#3",
+      "question": "API server to kubelet"
+    },
+    {
+      "id": "s0018",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/architecture/control-plane-node-communication.md#5",
+      "question": "API server to nodes, pods, and services"
+    },
+    {
+      "id": "s0019",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/architecture/control-plane-node-communication.md#8",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0020",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/controller.md#1",
+      "question": "Control via API server"
+    },
+    {
+      "id": "s0021",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/architecture/controller.md#4",
+      "question": "Desired versus current state"
+    },
+    {
+      "id": "s0022",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/controller.md#7",
+      "question": "Ways of running controllers"
+    },
+    {
+      "id": "s0023",
+      "style": "topic",
+      "rank": 4,
+      "expected": "concepts/architecture/controller.md#9",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0024",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/garbage-collection.md#2",
+      "question": "Owners and dependents"
+    },
+    {
+      "id": "s0025",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/architecture/garbage-collection.md#5",
+      "question": "Foreground cascading deletion"
+    },
+    {
+      "id": "s0026",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/garbage-collection.md#8",
+      "question": "Background cascading deletion"
+    },
+    {
+      "id": "s0027",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/garbage-collection.md#10",
+      "question": "Container image lifecycle"
+    },
+    {
+      "id": "s0028",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/architecture/garbage-collection.md#11",
+      "question": "Garbage collection for unused container images"
+    },
+    {
+      "id": "s0029",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/garbage-collection.md#12",
+      "question": "Container garbage collection"
+    },
+    {
+      "id": "s0030",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/architecture/garbage-collection.md#14",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0031",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/leases.md#2",
+      "question": "Kube controller manager lock release on exit"
+    },
+    {
+      "id": "s0032",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/leases.md#3",
+      "question": "API server identity"
+    },
+    {
+      "id": "s0033",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/mixed-version-proxy.md#1",
+      "question": "Enabling Peer-aggregated Discovery and Mixed Version Proxy"
+    },
+    {
+      "id": "s0034",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/mixed-version-proxy.md#3",
+      "question": "Proxy transport and authentication between API servers"
+    },
+    {
+      "id": "s0035",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/mixed-version-proxy.md#4",
+      "question": "Configuration for peer API server connectivity"
+    },
+    {
+      "id": "s0036",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/architecture/mixed-version-proxy.md#5",
+      "question": "Mixed version proxying"
+    },
+    {
+      "id": "s0037",
+      "style": "topic_question",
+      "rank": 1,
+      "expected": "concepts/architecture/mixed-version-proxy.md#7",
+      "question": "How it works under the hood"
+    },
+    {
+      "id": "s0038",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/nodes.md#3",
+      "question": "Node name uniqueness"
+    },
+    {
+      "id": "s0039",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/nodes.md#4",
+      "question": "Self-registration of Nodes"
+    },
+    {
+      "id": "s0040",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/nodes.md#8",
+      "question": "Manual Node administration"
+    },
+    {
+      "id": "s0041",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/architecture/nodes.md#13",
+      "question": "Rate limits on eviction"
+    },
+    {
+      "id": "s0042",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/architecture/nodes.md#17",
+      "question": "Resource capacity tracking"
+    },
+    {
+      "id": "s0043",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/architecture/nodes.md#20",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0044",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/architecture/self-healing.md#3",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0045",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/_index.md#0",
+      "question": "Planning a cluster"
+    },
+    {
+      "id": "s0046",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/_index.md#3",
+      "question": "Managing a cluster"
+    },
+    {
+      "id": "s0047",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/cluster-administration/_index.md#4",
+      "question": "Securing a cluster"
+    },
+    {
+      "id": "s0048",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/cluster-administration/addons.md#1",
+      "question": "Networking and Network Policy"
+    },
+    {
+      "id": "s0049",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#1",
+      "question": "Importance of good webhook design"
+    },
+    {
+      "id": "s0050",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#3",
+      "question": "Identify whether you use admission webhooks"
+    },
+    {
+      "id": "s0051",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#4",
+      "question": "Choose an admission control mechanism"
+    },
+    {
+      "id": "s0052",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#9",
+      "question": "Performance and latency"
+    },
+    {
+      "id": "s0053",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#10",
+      "question": "Design admission webhooks for low latency"
+    },
+    {
+      "id": "s0054",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#11",
+      "question": "Prevent loops caused by competing controllers"
+    },
+    {
+      "id": "s0055",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#12",
+      "question": "Set a small timeout value"
+    },
+    {
+      "id": "s0056",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#12",
+      "question": "Use a load balancer to ensure webhook availability"
+    },
+    {
+      "id": "s0057",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#13",
+      "question": "Use a high-availability deployment model"
+    },
+    {
+      "id": "s0058",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#14",
+      "question": "Limit the scope of each webhook"
+    },
+    {
+      "id": "s0059",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#16",
+      "question": "Filter for specific requests by using match conditions"
+    },
+    {
+      "id": "s0060",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#17",
+      "question": "Match all versions of an API"
+    },
+    {
+      "id": "s0061",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#17",
+      "question": "Mutation scope and field considerations"
+    },
+    {
+      "id": "s0062",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#18",
+      "question": "Patch only required fields"
+    },
+    {
+      "id": "s0063",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#19",
+      "question": "Don't overwrite array values"
+    },
+    {
+      "id": "s0064",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#20",
+      "question": "Avoid side effects"
+    },
+    {
+      "id": "s0065",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#22",
+      "question": "Avoid dependency loops"
+    },
+    {
+      "id": "s0066",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#23",
+      "question": "Fail open and validate the final state"
+    },
+    {
+      "id": "s0067",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#25",
+      "question": "Plan for future updates to fields"
+    },
+    {
+      "id": "s0068",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#25",
+      "question": "Prevent your webhook from triggering itself"
+    },
+    {
+      "id": "s0069",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#26",
+      "question": "Don't change immutable objects"
+    },
+    {
+      "id": "s0070",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#26",
+      "question": "Mutating webhook ordering and idempotence"
+    },
+    {
+      "id": "s0071",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#27",
+      "question": "Don't rely on mutating webhook invocation order"
+    },
+    {
+      "id": "s0072",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#28",
+      "question": "Ensure that the mutating webhooks in your cluster are idempotent"
+    },
+    {
+      "id": "s0073",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#31",
+      "question": "Mutation testing and validation"
+    },
+    {
+      "id": "s0074",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#32",
+      "question": "Test webhooks in staging environments"
+    },
+    {
+      "id": "s0075",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#32",
+      "question": "Ensure that mutations don't violate validations"
+    },
+    {
+      "id": "s0076",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#33",
+      "question": "Test minor version upgrades to ensure consistent behavior"
+    },
+    {
+      "id": "s0077",
+      "style": "topic",
+      "rank": 3,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#33",
+      "question": "Validate mutations before admission"
+    },
+    {
+      "id": "s0078",
+      "style": "topic",
+      "rank": 3,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#34",
+      "question": "Mutating webhook deployment"
+    },
+    {
+      "id": "s0079",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#35",
+      "question": "Install and enable a mutating webhook"
+    },
+    {
+      "id": "s0080",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#36",
+      "question": "Limit edit access to mutating webhooks"
+    },
+    {
+      "id": "s0081",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/admission-webhooks-good-practices.md#37",
+      "question": "Examples of good implementations"
+    },
+    {
+      "id": "s0082",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/coordinated-leader-election.md#1",
+      "question": "Enabling coordinated leader election"
+    },
+    {
+      "id": "s0083",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/coordinated-leader-election.md#2",
+      "question": "Leader selection for Kubernetes components"
+    },
+    {
+      "id": "s0084",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/dra.md#0",
+      "question": "Separate permissions to DRA related APIs"
+    },
+    {
+      "id": "s0085",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/dra.md#1",
+      "question": "DRA driver deployment and maintenance"
+    },
+    {
+      "id": "s0086",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/dra.md#1",
+      "question": "Use drivers with seamless upgrade if available"
+    },
+    {
+      "id": "s0087",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/dra.md#3",
+      "question": "Confirm your DRA driver exposes a liveness probe and utilize it"
+    },
+    {
+      "id": "s0088",
+      "style": "topic_question",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/dra.md#4",
+      "question": "When draining a node, drain the DRA driver as late as possible"
+    },
+    {
+      "id": "s0089",
+      "style": "topic",
+      "rank": 3,
+      "expected": "concepts/cluster-administration/dra.md#1",
+      "question": "DRA kubeletplugin operations"
+    },
+    {
+      "id": "s0090",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/flow-control.md#3",
+      "question": "Enabling/Disabling API Priority and Fairness"
+    },
+    {
+      "id": "s0091",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/flow-control.md#4",
+      "question": "Recursive server scenarios"
+    },
+    {
+      "id": "s0092",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/flow-control.md#9",
+      "question": "Seats Occupied by a Request"
+    },
+    {
+      "id": "s0093",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/flow-control.md#10",
+      "question": "Execution time tweaks for watch requests"
+    },
+    {
+      "id": "s0094",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/flow-control.md#26",
+      "question": "Mandatory Configuration Objects"
+    },
+    {
+      "id": "s0095",
+      "style": "topic",
+      "rank": 4,
+      "expected": "concepts/cluster-administration/flow-control.md#27",
+      "question": "Suggested Configuration Objects"
+    },
+    {
+      "id": "s0096",
+      "style": "topic",
+      "rank": 4,
+      "expected": "concepts/cluster-administration/flow-control.md#29",
+      "question": "Maintenance of the Mandatory and Suggested Configuration Objects"
+    },
+    {
+      "id": "s0097",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/flow-control.md#33",
+      "question": "Health check concurrency exemption"
+    },
+    {
+      "id": "s0098",
+      "style": "topic",
+      "rank": 3,
+      "expected": "concepts/cluster-administration/flow-control.md#35",
+      "question": "Maturity level BETA"
+    },
+    {
+      "id": "s0099",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/flow-control.md#39",
+      "question": "Maturity level ALPHA"
+    },
+    {
+      "id": "s0100",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/flow-control.md#48",
+      "question": "Good practices for using API Priority and Fairness"
+    },
+    {
+      "id": "s0101",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/cluster-administration/flow-control.md#52",
+      "question": "Priority and fairness settings"
+    },
+    {
+      "id": "s0102",
+      "style": "topic",
+      "rank": 3,
+      "expected": "concepts/cluster-administration/flow-control.md#54",
+      "question": "Give more seats to high priority requests"
+    },
+    {
+      "id": "s0103",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/flow-control.md#56",
+      "question": "Isolate non-essential requests from starving other flows"
+    },
+    {
+      "id": "s0104",
+      "style": "topic",
+      "rank": 6,
+      "expected": "concepts/cluster-administration/flow-control.md#58",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0105",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/kube-state-metrics.md#2",
+      "question": "Example: using metrics from kube-state-metrics to query the cluster state"
+    },
+    {
+      "id": "s0106",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/kube-state-metrics.md#3",
+      "question": "Example: alerting based on from kube-state-metrics"
+    },
+    {
+      "id": "s0107",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/logging.md#1",
+      "question": "Pod and container logs"
+    },
+    {
+      "id": "s0108",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/logging.md#3",
+      "question": "Container log streams"
+    },
+    {
+      "id": "s0109",
+      "style": "topic_question",
+      "rank": 3,
+      "expected": "concepts/cluster-administration/logging.md#4",
+      "question": "How nodes handle container logs"
+    },
+    {
+      "id": "s0110",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/cluster-administration/logging.md#8",
+      "question": "System component logs"
+    },
+    {
+      "id": "s0111",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/cluster-administration/logging.md#13",
+      "question": "Cluster-level logging architectures"
+    },
+    {
+      "id": "s0112",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/cluster-administration/logging.md#13",
+      "question": "Using a node logging agent"
+    },
+    {
+      "id": "s0113",
+      "style": "topic",
+      "rank": 4,
+      "expected": "concepts/cluster-administration/logging.md#14",
+      "question": "Using a sidecar container with the logging agent"
+    },
+    {
+      "id": "s0114",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/logging.md#15",
+      "question": "Streaming sidecar container"
+    },
+    {
+      "id": "s0115",
+      "style": "topic",
+      "rank": 3,
+      "expected": "concepts/cluster-administration/logging.md#18",
+      "question": "Sidecar container with a logging agent"
+    },
+    {
+      "id": "s0116",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/logging.md#20",
+      "question": "Exposing logs directly from the application"
+    },
+    {
+      "id": "s0117",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/cluster-administration/logging.md#21",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0118",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/cluster-administration/networking.md#1",
+      "question": "Kubernetes IP address ranges"
+    },
+    {
+      "id": "s0119",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/cluster-administration/networking.md#2",
+      "question": "Cluster networking types"
+    },
+    {
+      "id": "s0120",
+      "style": "topic_question",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/networking.md#5",
+      "question": "How to implement the Kubernetes network model"
+    },
+    {
+      "id": "s0121",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/cluster-administration/networking.md#6",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0122",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/cluster-administration/node-autoscaling.md#3",
+      "question": "Pod scheduling constraints"
+    },
+    {
+      "id": "s0123",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/node-autoscaling.md#5",
+      "question": "Node constraints imposed by autoscaler configuration"
+    },
+    {
+      "id": "s0124",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/node-autoscaling.md#16",
+      "question": "Horizontal workload autoscaling"
+    },
+    {
+      "id": "s0125",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/node-autoscaling.md#18",
+      "question": "Vertical workload autoscaling"
+    },
+    {
+      "id": "s0126",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/node-autoscaling.md#20",
+      "question": "Workload autoscalers based on cluster size"
+    },
+    {
+      "id": "s0127",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/cluster-administration/node-shutdown.md#1",
+      "question": "Graceful node shutdown"
+    },
+    {
+      "id": "s0128",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/node-shutdown.md#2",
+      "question": "Enabling graceful node shutdown"
+    },
+    {
+      "id": "s0129",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/node-shutdown.md#5",
+      "question": "Configuring graceful node shutdown"
+    },
+    {
+      "id": "s0130",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/cluster-administration/node-shutdown.md#9",
+      "question": "Pod Priority based graceful node shutdown"
+    },
+    {
+      "id": "s0131",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/node-shutdown.md#15",
+      "question": "Non-graceful node shutdown handling"
+    },
+    {
+      "id": "s0132",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/cluster-administration/node-shutdown.md#19",
+      "question": "Forced storage detach on timeout"
+    },
+    {
+      "id": "s0133",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/cluster-administration/node-shutdown.md#21",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0134",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/observability.md#9",
+      "question": "Common observability tools"
+    },
+    {
+      "id": "s0135",
+      "style": "topic",
+      "rank": 3,
+      "expected": "concepts/cluster-administration/observability.md#12",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0136",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#1",
+      "question": "Operating system support"
+    },
+    {
+      "id": "s0137",
+      "style": "topic_question",
+      "rank": 5,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#1",
+      "question": "How does it work?"
+    },
+    {
+      "id": "s0138",
+      "style": "topic",
+      "rank": 4,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#3",
+      "question": "Container runtime integration"
+    },
+    {
+      "id": "s0139",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#4",
+      "question": "Node and container level metric statistics"
+    },
+    {
+      "id": "s0140",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#5",
+      "question": "Using `kubectl top --show-swap`"
+    },
+    {
+      "id": "s0141",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#7",
+      "question": "Nodes to report swap capacity as part of node status"
+    },
+    {
+      "id": "s0142",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#8",
+      "question": "Swap discovery using Node Feature Discovery (NFD)"
+    },
+    {
+      "id": "s0143",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#9",
+      "question": "Risks and caveats"
+    },
+    {
+      "id": "s0144",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#16",
+      "question": "Unutilized swap space"
+    },
+    {
+      "id": "s0145",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#18",
+      "question": "Disable swap for system-critical daemons"
+    },
+    {
+      "id": "s0146",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#18",
+      "question": "Protect system-critical daemons for I/O latency"
+    },
+    {
+      "id": "s0147",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#19",
+      "question": "Swap and control plane nodes"
+    },
+    {
+      "id": "s0148",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#20",
+      "question": "Use of a dedicated disk for swap"
+    },
+    {
+      "id": "s0149",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#22",
+      "question": "Selecting storage for optimal performance"
+    },
+    {
+      "id": "s0150",
+      "style": "topic_question",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#23",
+      "question": "How is the swap limit being determined with LimitedSwap?"
+    },
+    {
+      "id": "s0151",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/cluster-administration/swap-memory-management.md#26",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0152",
+      "style": "topic",
+      "rank": 3,
+      "expected": "concepts/cluster-administration/system-logs.md#9",
+      "question": "JSON log format"
+    },
+    {
+      "id": "s0153",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/system-logs.md#11",
+      "question": "Log verbosity level"
+    },
+    {
+      "id": "s0154",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/cluster-administration/system-logs.md#19",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0155",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/system-metrics.md#0",
+      "question": "Metrics in Kubernetes"
+    },
+    {
+      "id": "s0156",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/system-metrics.md#5",
+      "question": "Show hidden metrics"
+    },
+    {
+      "id": "s0157",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/system-metrics.md#10",
+      "question": "kubelet Pressure Stall Information (PSI) metrics"
+    },
+    {
+      "id": "s0158",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/system-metrics.md#17",
+      "question": "Metric cardinality enforcement"
+    },
+    {
+      "id": "s0159",
+      "style": "topic",
+      "rank": 7,
+      "expected": "concepts/cluster-administration/system-metrics.md#19",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0160",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/system-traces.md#3",
+      "question": "Enabling tracing in the kube-apiserver"
+    },
+    {
+      "id": "s0161",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/cluster-administration/system-traces.md#5",
+      "question": "Enabling tracing in the kubelet"
+    },
+    {
+      "id": "s0162",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/cluster-administration/system-traces.md#7",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0163",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/configmap.md#3",
+      "question": "ConfigMaps and Pods"
+    },
+    {
+      "id": "s0164",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/configmap.md#8",
+      "question": "Using ConfigMaps as files from a Pod"
+    },
+    {
+      "id": "s0165",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/configmap.md#10",
+      "question": "Mounted ConfigMaps are updated automatically"
+    },
+    {
+      "id": "s0166",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/configmap.md#11",
+      "question": "Using Configmaps as environment variables"
+    },
+    {
+      "id": "s0167",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/configuration/configmap.md#16",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0168",
+      "style": "topic",
+      "rank": 5,
+      "expected": "concepts/configuration/manage-resources-containers.md#1",
+      "question": "Requests and limits"
+    },
+    {
+      "id": "s0169",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/manage-resources-containers.md#6",
+      "question": "Resource requests and limits of Pod and container"
+    },
+    {
+      "id": "s0170",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/manage-resources-containers.md#7",
+      "question": "Pod-level resource specification"
+    },
+    {
+      "id": "s0171",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/manage-resources-containers.md#8",
+      "question": "CPU resource units"
+    },
+    {
+      "id": "s0172",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/configuration/manage-resources-containers.md#11",
+      "question": "Memory resource units"
+    },
+    {
+      "id": "s0173",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/manage-resources-containers.md#12",
+      "question": "Container resources example"
+    },
+    {
+      "id": "s0174",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/manage-resources-containers.md#13",
+      "question": "Pod resources example"
+    },
+    {
+      "id": "s0175",
+      "style": "topic_question",
+      "rank": 1,
+      "expected": "concepts/configuration/manage-resources-containers.md#14",
+      "question": "How Pods with resource requests are scheduled"
+    },
+    {
+      "id": "s0176",
+      "style": "topic_question",
+      "rank": 1,
+      "expected": "concepts/configuration/manage-resources-containers.md#15",
+      "question": "How Kubernetes applies resource requests and limits"
+    },
+    {
+      "id": "s0177",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/manage-resources-containers.md#20",
+      "question": "Resizing by launching replacement Pods"
+    },
+    {
+      "id": "s0178",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/manage-resources-containers.md#21",
+      "question": "Monitoring compute & memory resource usage"
+    },
+    {
+      "id": "s0179",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/manage-resources-containers.md#22",
+      "question": "Considerations for memory backed `emptyDir` volumes"
+    },
+    {
+      "id": "s0180",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/configuration/manage-resources-containers.md#25",
+      "question": "Local ephemeral storage"
+    },
+    {
+      "id": "s0181",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/manage-resources-containers.md#26",
+      "question": "Resource monitoring for local ephemeral storage"
+    },
+    {
+      "id": "s0182",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/manage-resources-containers.md#29",
+      "question": "Cluster-level extended resources"
+    },
+    {
+      "id": "s0183",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/manage-resources-containers.md#31",
+      "question": "Extended resources allocation by DRA"
+    },
+    {
+      "id": "s0184",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/manage-resources-containers.md#31",
+      "question": "Consuming extended resources"
+    },
+    {
+      "id": "s0185",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/configuration/manage-resources-containers.md#33",
+      "question": "My Pods are pending with event message `FailedScheduling`"
+    },
+    {
+      "id": "s0186",
+      "style": "topic",
+      "rank": 4,
+      "expected": "concepts/configuration/manage-resources-containers.md#39",
+      "question": "My container is terminated"
+    },
+    {
+      "id": "s0187",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/configuration/manage-resources-containers.md#43",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0188",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/organize-cluster-access-kubeconfig.md#1",
+      "question": "Supporting multiple clusters, users, and authentication mechanisms"
+    },
+    {
+      "id": "s0189",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/organize-cluster-access-kubeconfig.md#3",
+      "question": "The KUBECONFIG environment variable"
+    },
+    {
+      "id": "s0190",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/secret.md#3",
+      "question": "Uses for Secrets"
+    },
+    {
+      "id": "s0191",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/secret.md#4",
+      "question": "Use case: dotfiles in a secret volume"
+    },
+    {
+      "id": "s0192",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/secret.md#5",
+      "question": "Use case: Secret visible to one container in a Pod"
+    },
+    {
+      "id": "s0193",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/secret.md#6",
+      "question": "Alternatives to Secrets"
+    },
+    {
+      "id": "s0194",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/configuration/secret.md#9",
+      "question": "Types of Secret"
+    },
+    {
+      "id": "s0195",
+      "style": "topic",
+      "rank": 3,
+      "expected": "concepts/configuration/secret.md#13",
+      "question": "ServiceAccount token Secrets"
+    },
+    {
+      "id": "s0196",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/secret.md#17",
+      "question": "Docker config Secrets"
+    },
+    {
+      "id": "s0197",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/secret.md#20",
+      "question": "Basic authentication Secret"
+    },
+    {
+      "id": "s0198",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/configuration/secret.md#21",
+      "question": "SSH authentication Secrets"
+    },
+    {
+      "id": "s0199",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/secret.md#25",
+      "question": "Bootstrap token Secrets"
+    },
+    {
+      "id": "s0200",
+      "style": "topic",
+      "rank": 4,
+      "expected": "concepts/configuration/secret.md#27",
+      "question": "Constraints on Secret names and data"
+    },
+    {
+      "id": "s0201",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/secret.md#29",
+      "question": "Editing a Secret"
+    },
+    {
+      "id": "s0202",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/secret.md#30",
+      "question": "Using a Secret"
+    },
+    {
+      "id": "s0203",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/secret.md#32",
+      "question": "Using Secrets as files from a Pod"
+    },
+    {
+      "id": "s0204",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/secret.md#34",
+      "question": "Using Secrets as environment variables"
+    },
+    {
+      "id": "s0205",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/secret.md#35",
+      "question": "Container image pull Secrets"
+    },
+    {
+      "id": "s0206",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/secret.md#38",
+      "question": "Marking a Secret as immutable"
+    },
+    {
+      "id": "s0207",
+      "style": "topic",
+      "rank": 3,
+      "expected": "concepts/configuration/secret.md#39",
+      "question": "Information security for Secrets"
+    },
+    {
+      "id": "s0208",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/configuration/secret.md#41",
+      "question": "Configure least-privilege access to Secrets"
+    },
+    {
+      "id": "s0209",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/configuration/secret.md#2",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0210",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/containers/container-environment.md#2",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0211",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/containers/container-lifecycle-hooks.md#2",
+      "question": "Hook handler implementations"
+    },
+    {
+      "id": "s0212",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/container-lifecycle-hooks.md#3",
+      "question": "Hook handler execution"
+    },
+    {
+      "id": "s0213",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/container-lifecycle-hooks.md#6",
+      "question": "Hook delivery guarantees"
+    },
+    {
+      "id": "s0214",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/container-lifecycle-hooks.md#7",
+      "question": "Debugging Hook handlers"
+    },
+    {
+      "id": "s0215",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/containers/container-lifecycle-hooks.md#10",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0216",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/images.md#5",
+      "question": "Image pull policy"
+    },
+    {
+      "id": "s0217",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/images.md#9",
+      "question": "Default image pull policy"
+    },
+    {
+      "id": "s0218",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/images.md#11",
+      "question": "Required image pull"
+    },
+    {
+      "id": "s0219",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/containers/images.md#13",
+      "question": "Image pull per runtime class"
+    },
+    {
+      "id": "s0220",
+      "style": "topic",
+      "rank": 5,
+      "expected": "concepts/containers/images.md#14",
+      "question": "Serial and parallel image pulls"
+    },
+    {
+      "id": "s0221",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/images.md#17",
+      "question": "Maximum parallel image pulls"
+    },
+    {
+      "id": "s0222",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/images.md#19",
+      "question": "Multi-architecture images with image indexes"
+    },
+    {
+      "id": "s0223",
+      "style": "topic",
+      "rank": 5,
+      "expected": "concepts/containers/images.md#20",
+      "question": "Using a private registry"
+    },
+    {
+      "id": "s0224",
+      "style": "topic",
+      "rank": 3,
+      "expected": "concepts/containers/images.md#22",
+      "question": "Specifying `imagePullSecrets` on a Pod"
+    },
+    {
+      "id": "s0225",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/containers/images.md#22",
+      "question": "Configuring nodes to authenticate to a private registry"
+    },
+    {
+      "id": "s0226",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/images.md#23",
+      "question": "Kubelet credential provider for authenticated image pulls"
+    },
+    {
+      "id": "s0227",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/images.md#25",
+      "question": "Interpretation of config.json"
+    },
+    {
+      "id": "s0228",
+      "style": "topic",
+      "rank": 4,
+      "expected": "concepts/containers/images.md#30",
+      "question": "Ensure image pull credential verification"
+    },
+    {
+      "id": "s0229",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/images.md#32",
+      "question": "Enabling `KubeletEnsureSecretPulledImages` for the first time"
+    },
+    {
+      "id": "s0230",
+      "style": "topic",
+      "rank": 3,
+      "expected": "concepts/containers/images.md#33",
+      "question": "Creating a Secret with a Docker config"
+    },
+    {
+      "id": "s0231",
+      "style": "topic",
+      "rank": 5,
+      "expected": "concepts/containers/images.md#34",
+      "question": "Referring to `imagePullSecrets` on a Pod"
+    },
+    {
+      "id": "s0232",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/images.md#39",
+      "question": "Legacy built-in kubelet credential provider"
+    },
+    {
+      "id": "s0233",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/containers/images.md#40",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0234",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/runtime-class.md#1",
+      "question": "1. Configure the CRI implementation on nodes"
+    },
+    {
+      "id": "s0235",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/runtime-class.md#2",
+      "question": "2. Create the corresponding RuntimeClass resources"
+    },
+    {
+      "id": "s0236",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/runtime-class.md#5",
+      "question": "{{< glossary_tooltip term_id=\"containerd\" >}}"
+    },
+    {
+      "id": "s0237",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/containers/runtime-class.md#5",
+      "question": "{{< glossary_tooltip term_id=\"cri-o\" >}}"
+    },
+    {
+      "id": "s0238",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/_index.md#8",
+      "question": "Key to the figure"
+    },
+    {
+      "id": "s0239",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/_index.md#10",
+      "question": "Extension point choice flowchart"
+    },
+    {
+      "id": "s0240",
+      "style": "topic",
+      "rank": 7,
+      "expected": "concepts/extend-kubernetes/_index.md#12",
+      "question": "Custom resource definitions"
+    },
+    {
+      "id": "s0241",
+      "style": "topic",
+      "rank": 9,
+      "expected": "concepts/extend-kubernetes/_index.md#12",
+      "question": "API aggregation layer"
+    },
+    {
+      "id": "s0242",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/_index.md#13",
+      "question": "Combining new APIs with automation"
+    },
+    {
+      "id": "s0243",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/_index.md#14",
+      "question": "Changing built-in resources"
+    },
+    {
+      "id": "s0244",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/extend-kubernetes/_index.md#14",
+      "question": "API access extensions"
+    },
+    {
+      "id": "s0245",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/_index.md#16",
+      "question": "Dynamic admission control"
+    },
+    {
+      "id": "s0246",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/_index.md#19",
+      "question": "Kubelet image credential provider plugins"
+    },
+    {
+      "id": "s0247",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/extend-kubernetes/_index.md#23",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0248",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/extend-kubernetes/api-extension/apiserver-aggregation.md#2",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0249",
+      "style": "topic_question",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/api-extension/custom-resources.md#3",
+      "question": "Should I add a custom resource to my Kubernetes cluster?"
+    },
+    {
+      "id": "s0250",
+      "style": "topic_question",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/api-extension/custom-resources.md#8",
+      "question": "Should I use a ConfigMap or a custom resource?"
+    },
+    {
+      "id": "s0251",
+      "style": "topic",
+      "rank": 3,
+      "expected": "concepts/extend-kubernetes/api-extension/custom-resources.md#9",
+      "question": "Adding custom resources"
+    },
+    {
+      "id": "s0252",
+      "style": "topic",
+      "rank": 6,
+      "expected": "concepts/extend-kubernetes/api-extension/custom-resources.md#13",
+      "question": "API server aggregation"
+    },
+    {
+      "id": "s0253",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/api-extension/custom-resources.md#14",
+      "question": "Choosing a method for adding custom resources"
+    },
+    {
+      "id": "s0254",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/api-extension/custom-resources.md#16",
+      "question": "Advanced features and flexibility"
+    },
+    {
+      "id": "s0255",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/api-extension/custom-resources.md#25",
+      "question": "Third party code and new points of failure"
+    },
+    {
+      "id": "s0256",
+      "style": "topic",
+      "rank": 3,
+      "expected": "concepts/extend-kubernetes/api-extension/custom-resources.md#26",
+      "question": "Authentication, authorization, and auditing"
+    },
+    {
+      "id": "s0257",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/extend-kubernetes/api-extension/custom-resources.md#27",
+      "question": "Accessing a custom resource"
+    },
+    {
+      "id": "s0258",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/api-extension/custom-resources.md#28",
+      "question": "Custom resource field selectors"
+    },
+    {
+      "id": "s0259",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/api-extension/custom-resources.md#29",
+      "question": "Selectable fields for custom resources"
+    },
+    {
+      "id": "s0260",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/extend-kubernetes/api-extension/custom-resources.md#30",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0261",
+      "style": "topic",
+      "rank": 3,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md#0",
+      "question": "Device plugin registration"
+    },
+    {
+      "id": "s0262",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md#3",
+      "question": "Device plugin implementation"
+    },
+    {
+      "id": "s0263",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md#9",
+      "question": "Handling kubelet restarts"
+    },
+    {
+      "id": "s0264",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md#9",
+      "question": "Device plugin and unhealthy devices"
+    },
+    {
+      "id": "s0265",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md#11",
+      "question": "Device plugin deployment"
+    },
+    {
+      "id": "s0266",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md#14",
+      "question": "Monitoring device plugin resources"
+    },
+    {
+      "id": "s0267",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md#15",
+      "question": "`List` gRPC endpoint"
+    },
+    {
+      "id": "s0268",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md#20",
+      "question": "`GetAllocatableResources` gRPC endpoint"
+    },
+    {
+      "id": "s0269",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md#24",
+      "question": "`Get` gRPC endpoint"
+    },
+    {
+      "id": "s0270",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md#25",
+      "question": "Device plugin integration with the Topology Manager"
+    },
+    {
+      "id": "s0271",
+      "style": "topic",
+      "rank": 4,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md#27",
+      "question": "Device plugin examples"
+    },
+    {
+      "id": "s0272",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/device-plugins.md#29",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0273",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/network-plugins.md#6",
+      "question": "Support traffic shaping"
+    },
+    {
+      "id": "s0274",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/extend-kubernetes/compute-storage-net/network-plugins.md#8",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0275",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/operator.md#1",
+      "question": "Operators in Kubernetes"
+    },
+    {
+      "id": "s0276",
+      "style": "topic",
+      "rank": 4,
+      "expected": "concepts/extend-kubernetes/operator.md#1",
+      "question": "An example operator"
+    },
+    {
+      "id": "s0277",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/operator.md#5",
+      "question": "Using an operator"
+    },
+    {
+      "id": "s0278",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/extend-kubernetes/operator.md#6",
+      "question": "Writing your own operator"
+    },
+    {
+      "id": "s0279",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/extend-kubernetes/operator.md#8",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0280",
+      "style": "topic_question",
+      "rank": 1,
+      "expected": "concepts/overview/_index.md#1",
+      "question": "Why you need Kubernetes and what it can do"
+    },
+    {
+      "id": "s0281",
+      "style": "topic_question",
+      "rank": 1,
+      "expected": "concepts/overview/_index.md#6",
+      "question": "What Kubernetes is not"
+    },
+    {
+      "id": "s0282",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/overview/_index.md#10",
+      "question": "Historical context for Kubernetes"
+    },
+    {
+      "id": "s0283",
+      "style": "topic",
+      "rank": 10,
+      "expected": "concepts/overview/_index.md#15",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0284",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/overview/components.md#0",
+      "question": "Control Plane Components"
+    },
+    {
+      "id": "s0285",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/overview/components.md#3",
+      "question": "Flexibility in Architecture"
+    },
+    {
+      "id": "s0286",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/overview/kubectl.md#1",
+      "question": "Role of kubectl"
+    },
+    {
+      "id": "s0287",
+      "style": "topic_question",
+      "rank": 1,
+      "expected": "concepts/overview/kubectl.md#2",
+      "question": "How kubectl works"
+    },
+    {
+      "id": "s0288",
+      "style": "topic_question",
+      "rank": 4,
+      "expected": "concepts/overview/kubectl.md#3",
+      "question": "What you can do with kubectl"
+    },
+    {
+      "id": "s0289",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/overview/kubectl.md#5",
+      "question": "Declarative vs imperative"
+    },
+    {
+      "id": "s0290",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/overview/kubectl.md#5",
+      "question": "Extending kubectl with plugins"
+    },
+    {
+      "id": "s0291",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/overview/kubectl.md#6",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0292",
+      "style": "topic",
+      "rank": 2,
+      "expected": "concepts/overview/kubernetes-api.md#7",
+      "question": "OpenAPI interface definition"
+    },
+    {
+      "id": "s0293",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/overview/kubernetes-api.md#15",
+      "question": "API groups and versioning"
+    },
+    {
+      "id": "s0294",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/overview/kubernetes-api.md#20",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0295",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/overview/working-with-objects/_index.md#0",
+      "question": "Understanding Kubernetes objects"
+    },
+    {
+      "id": "s0296",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/overview/working-with-objects/_index.md#2",
+      "question": "Object spec and status"
+    },
+    {
+      "id": "s0297",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/overview/working-with-objects/_index.md#4",
+      "question": "Describing a Kubernetes object"
+    },
+    {
+      "id": "s0298",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/overview/working-with-objects/_index.md#8",
+      "question": "Server side field validation"
+    },
+    {
+      "id": "s0299",
+      "style": "topic",
+      "rank": null,
+      "expected": "concepts/overview/working-with-objects/_index.md#9",
+      "question": "{{% heading \"whatsnext\" %}}"
+    },
+    {
+      "id": "s0300",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/overview/working-with-objects/annotations.md#0",
+      "question": "Attaching metadata to objects"
+    },
+    {
+      "id": "s0301",
+      "style": "topic",
+      "rank": 1,
+      "expected": "concepts/overview/working-with-objects/annotations.md#3",
+      "question": "Syntax and character set"
+    }
+  ]
+}
