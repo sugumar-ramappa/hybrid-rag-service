@@ -241,6 +241,14 @@ local, no API key).
 
 **Latency:** dense 51 ms · hybrid 30 ms · +rerank 195 ms.
 
+> **On the millisecond column.** The quality figures come straight from
+> `eval/results/sd2.json`, `sdr2.json`, `sh2.json` and `shr2.json`. **The
+> latencies do not** — `evaluate.py` records rank and correctness, not timing, so
+> these were observed during the runs and written down. The ordering is not in
+> doubt (a cross-encoder pass is unarguably slower than not doing one), but treat
+> the ratio as indicative rather than measured, and say so if pushed.
+
+
 **Reranking stacks with hybrid rather than replacing it.** It lifts dense by
 0.169 and hybrid by 0.056 on recall@1. Keyword fusion and semantic reordering fix
 *different* failures, so they are additive — which was not the expectation going
