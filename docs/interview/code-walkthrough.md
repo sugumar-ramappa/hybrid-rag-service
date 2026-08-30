@@ -58,7 +58,7 @@ The values that carry decisions:
 | `EMBED_BATCH_SIZE` | 50 | Free tier is tokens/minute; batch size decides *how much work is lost* on a failure, not throughput |
 | `CHUNK_SIZE` / `CHUNK_OVERLAP` | 1000 / 200 | Baseline; overlap keeps a sentence split across a boundary retrievable |
 | `TOP_K_RESULTS` | 5 | What the prompt can carry — hence recall@**5** is the headline metric |
-| `RETRIEVAL_MODE` | `hybrid` | Measured better (0.95 → 0.98) |
+| `RETRIEVAL_MODE` | `hybrid` | Measured better: recall@5 0.95 → 0.98 on the 43-question set, 0.921 → 0.951 on the 267-pair set that superseded it |
 | `KEYWORD_WEIGHT` | 1.0 | Equal vote with dense |
 | `ANSWER_CACHE_THRESHOLD` | 0.12 | Calibrated: rephrasings 0.009–0.070, different questions 0.211 |
 | `MAX_FILES` | 56 (in `.env`) | Pins the corpus so the golden set stays valid |

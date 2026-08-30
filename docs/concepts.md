@@ -457,7 +457,7 @@ The fix — rewriting the operators to OR — took the keyword arm from **0 matc
 to 416**. Nothing about the code's shape changed, and no test had complained.
 Only the measurement showed the difference.
 
-**The aggregate can hide the mechanism.** Overall recall@5 moved 0.95 → 0.98,
+**The aggregate can hide the mechanism.** Overall recall@5 moved 0.95 → 0.98 *(43-question set; on the 267-pair set that superseded it, 0.921 → 0.951.)*,
 which is small enough to dismiss as noise. The per-style split is what makes it
 readable:
 

@@ -17,6 +17,22 @@ would know it was wrong.
 | Reranking | none | deferred |
 | Query rewriting | none | not needed (single-turn) |
 
+> **Figures below are from the 43-question golden set, and are superseded.**
+> That set was later replaced by a **267-pair structural set**, and the ranking
+> changed — which is the project's most important finding:
+>
+> | | 43 questions | 267 pairs |
+> |---|---:|---:|
+> | dense recall@1 | 0.67 | 0.509 |
+> | hybrid recall@1 | 0.74 | 0.674 |
+> | hybrid + rerank recall@1 | — | **0.730** |
+>
+> **A result that flips when you enlarge the test set was never a result**, and
+> the only way to find out is to enlarge it. The 43-question numbers are kept
+> because they are what the decisions below were made on. Current figures live in
+> the top-level [README](../README.md) and `eval/results/sd2.json`, `sh2.json`,
+> `shr2.json`.
+
 784 chunks, 56 Kubernetes documentation pages, measured against 43 hand-verified
 questions.
 

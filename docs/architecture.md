@@ -7,6 +7,22 @@ evaluation set before it counts.
 | | |
 |---|---|
 | Corpus | 784 chunks across 56 Kubernetes documentation pages |
+> **Figures below are from the 43-question golden set, and are superseded.**
+> That set was later replaced by a **267-pair structural set**, and the ranking
+> changed — which is the project's most important finding:
+>
+> | | 43 questions | 267 pairs |
+> |---|---:|---:|
+> | dense recall@1 | 0.67 | 0.509 |
+> | hybrid recall@1 | 0.74 | 0.674 |
+> | hybrid + rerank recall@1 | — | **0.730** |
+>
+> **A result that flips when you enlarge the test set was never a result**, and
+> the only way to find out is to enlarge it. The 43-question numbers are kept
+> because they are what the decisions below were made on. Current figures live in
+> the top-level [README](../README.md) and `eval/results/sd2.json`, `sh2.json`,
+> `shr2.json`.
+
 | Golden set | 43 hand-verified questions (21 exact-term, 22 natural phrasing) |
 | Embeddings | `gemini-embedding-001` at 768 dimensions, normalized |
 | Storage | Postgres 16 + pgvector, HNSW and GIN indexes |

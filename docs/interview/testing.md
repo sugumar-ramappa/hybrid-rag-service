@@ -355,9 +355,24 @@ retrieval never found it at all. Different problems, different fixes.
 
 ### What it prints
 
+> **These numbers are from the 43-question set and are SUPERSEDED.** They are kept
+> because the sample output is what this section is explaining, and because the
+> supersession is itself the project's most important finding.
+>
+> The 43-question set was later replaced by a **267-pair structural set**, and the
+> ranking changed: on 43 questions hybrid reads 0.74 recall@1; on 267 pairs it
+> reads **0.674**, with hybrid+rerank at **0.730**. A handful of questions moved
+> the answer, which is the point —
+>
+> **a result that flips when you enlarge the test set was never a result**, and
+> the only way to find out is to enlarge it.
+>
+> Current figures: [`../../README.md`](../../README.md) and
+> `eval/results/sd2.json`, `sh2.json`, `shr2.json`.
+
 ```
   ============================================================================
-    hybrid-v2   ·   43 questions   ·   784 chunks
+    hybrid-v2   ·   43 questions   ·   784 chunks   [SUPERSEDED - see above]
   ============================================================================
 
                  recall@1  recall@5  recall@10     MRR
@@ -371,8 +386,9 @@ retrieval never found it at all. Different problems, different fixes.
             wanted concepts/overview/working-with-objects/_index.md#6, got ...
 ```
 
-That is the **real and only miss** in the current hybrid run — one question out
-of 43. Worth knowing why it misses: *"what configuration fields are mandatory
+That was the only miss in the 43-question run — one question out of 43. The
+267-pair set is larger and harder, so the miss count there is different; see the
+current figures rather than scaling this one. Worth knowing why it misses: *"what configuration fields are mandatory
 when defining a new Kubernetes resource?"* is answered acceptably by several
 chunks about object spec and metadata, so the single chunk the golden set names
 is a defensible answer rather than the only one. It is close to the limit of what

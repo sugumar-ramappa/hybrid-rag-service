@@ -221,8 +221,10 @@ incremental ingest a requirement rather than an optimisation.
 
 ## Reranking — implemented, and the result reversed itself
 
-The baseline pointed here. Of the 8 questions dense retrieval missed, **5 had the
-correct chunk at rank 6-10** — found, but buried — and 3 were absent entirely. A
+The baseline pointed here. Of the 21 questions dense retrieval missed on the
+267-pair set, **10 had the correct chunk at rank 6-10** — found, but buried — and
+11 were absent entirely. *(First measured on a 42-question set, 5 of 8 buried;
+the larger set confirms it.)* A
 reranker only reorders what retrieval returned, so it targets the five.
 
 `retrieve 50 → cross-encoder → keep 5`, using `ms-marco-MiniLM-L-6-v2` (90 MB,

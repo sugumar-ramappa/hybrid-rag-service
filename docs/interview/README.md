@@ -23,6 +23,10 @@ Three documents, in the order you would walk someone through the project.
 > only contribute where the question carries a rare, distinctive term. Labelling
 > every golden-set question by style is what made that visible, rather than
 > reporting "+3 points" and hoping it wasn't noise.
+>
+> *Those are 43-question figures. The 267-pair set that replaced them reads
+> 0.921 → 0.951 recall@5, and 0.509 → 0.674 recall@1 — the direction held, the
+> magnitudes did not.*
 
 ## Three things to have ready
 
